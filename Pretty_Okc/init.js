@@ -1,3 +1,1 @@
-$(function(){
-	document.getElementsByTagName('body')[0].className += " pretty_okc";
-});
+document.getElementsByTagName('body')[0].className += " pretty_okc";
