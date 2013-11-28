@@ -28,7 +28,8 @@ Styling Fixes for Matches Search Page
 .pretty_okc .match_card_wrapper .match_card_text .profile_info .userinfo {
   font-size: 12px;
   line-height: 14px;
-  padding: 0px 5px;
+  padding: 0px 5px 0px 0px;
+  text-align: right;  
 }
 
 /* Hide Reply Frequency and Username */
@@ -39,21 +40,24 @@ Styling Fixes for Matches Search Page
 
 /* Change display of Match Percentages */
 .pretty_okc .match_card_wrapper .match_card_text .percentages {
+  background-color: #fff;
   color: #f83265;
-  font-size: 28px;
+  font-size: 20px;
   font-weight: bold;
   height: 25px;
   left: auto;
+  letter-spacing: 1px;
   overflow: hidden;
-  right: -90px;
-  text-align: right;
-  text-shadow: 2px 2px 0px #000;
+  padding-left: 3px;
+  right: -113px;
+  text-align: left;
+  /*text-shadow: 2px 2px 0px #000;
   -moz-text-shadow: 2px 2px 0px #000;
   -webkit-text-shadow: 2px 2px 0px #000;
   -moz-text-stroke: 1px #000;
-  -webkit-text-stroke: 1px #000;
-  top: -125px;
-  width: 160px;
+  -webkit-text-stroke: 1px #000;*/
+  top: -5px;
+  width: 140px;
   z-index: 100;
 }
 
