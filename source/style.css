@@ -42,14 +42,14 @@ Styling Fixes for Matches Search Page
 /* Change display of Match Percentages */
 .pretty_okc .match_card_wrapper .match_card_text .percentages {
   color: #f83265;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: bold;
   height: 25px;
   left: auto;
   overflow: hidden;
   right: 5px;
   text-align: right;
-  top: -5px;
+  top: -3px;
   width: auto;
   z-index: 100;
 }
