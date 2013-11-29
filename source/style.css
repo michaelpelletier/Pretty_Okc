@@ -30,7 +30,7 @@ Styling Fixes for Matches Search Page
   line-height: 14px;
   padding: 0px 0px 0px 5px;
   text-align: left;
-  width: 100px;
+  width: 95px;
 }
 
 /* Hide Reply Frequency and Username */
@@ -46,10 +46,11 @@ Styling Fixes for Matches Search Page
   font-weight: bold;
   height: 25px;
   left: auto;
+  line-height: 18px;
   overflow: hidden;
   right: 5px;
   text-align: right;
-  top: -3px;
+  top: -4px;
   width: auto;
   z-index: 100;
 }
