@@ -45,7 +45,7 @@ Styling Fixes for Matches Search Page
   height: 25px;
   left: auto;
   overflow: hidden;
-  right: -90px;
+  right: 3px;
   text-align: right;
   text-shadow: 2px 2px 0px #000;
   -moz-text-shadow: 2px 2px 0px #000;
@@ -53,7 +53,7 @@ Styling Fixes for Matches Search Page
   -moz-text-stroke: 1px #000;
   -webkit-text-stroke: 1px #000;
   top: -125px;
-  width: 160px;
+  width: auto;
   z-index: 100;
 }
 
