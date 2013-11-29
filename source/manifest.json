@@ -11,7 +11,7 @@
       "css": ["style.css"],
       "js": [
         "jquery-1.10.2.min.js",
-        "mutation-summary.js",
+        "mutation-summary.min.js",
         "init.js"
         ],
       "run_at": "document_end"

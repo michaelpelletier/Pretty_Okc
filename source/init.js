@@ -5,6 +5,11 @@ handleChanges = function() {
 		var match = $(this).find('.percentages').text();
 		match = match.split('%');
 		$(this).find('.percentages').text(match[0]);
+
+		var town = $(this).find('.userinfo').text();
+		town = town.replace('·', ' · ').split(',');
+		$(this).find('.userinfo').text(town[0]);
+
 	});
 }
 
