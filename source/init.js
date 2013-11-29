@@ -2,15 +2,19 @@ $('body').addClass("pretty_okc");
 
 handleChanges = function() {
 	$('.match_card_wrapper').each(function() {
-		// Remove "Match" from Match Percentage.
-		var match = $(this).find('.percentages').text();
-		match = match.split(' ');
-		$(this).find('.percentages').text(match[0]);
+		var self = $(this);
 
 		// Remove state abbreviation.
-		var town = $(this).find('.userinfo').text();
-		town = town.replace('·', ' · ').split(',');
-		$(this).find('.userinfo').text(town[0]);	
+		var userinfo = self.find('.userinfo');
+		var location = userinfo.text();
+		location = location.replace('·', ' · ').split(',');
+		userinfo.text(town[0]);	
+
+		// Remove "Match" from Match Percentage.
+		var percents = self.find('.percentages');
+		var match = $.trim(percents.text());
+		match = match.split(' ');
+		percents.text(match[0]);
 	});
 }
 
