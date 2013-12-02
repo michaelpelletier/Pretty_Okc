@@ -8,7 +8,7 @@ handleChanges = function() {
 		var userinfo = self.find('.userinfo');
 		var location = userinfo.text();
 		location = location.replace('·', ' · ').split(',');
-		userinfo.text(town[0]);	
+		userinfo.text(location[0]);	
 
 		// Remove "Match" from Match Percentage.
 		var percents = self.find('.percentages');
