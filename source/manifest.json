@@ -10,6 +10,8 @@
       "matches": ["http://www.okcupid.com/match*", "http://www.okcupid.com/profile/*"],
       "css": ["style.css"],
       "js": [
+        "jquery-1.10.2.min.js",
+        "mutation-summary.min.js",
         "init.js"
         ],
       "run_at": "document_end"
