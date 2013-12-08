@@ -1,6 +1,6 @@
-/**************************************
-Styling Fixes for Matches Search Page 
-***************************************/
+/***************************************************
+Styling Fixes for Matches Search Page - Tiles View
+****************************************************/
 
 /* Change Styling for Match Containers */
 .pretty_okc .match_card_wrapper {
@@ -9,16 +9,12 @@ Styling Fixes for Matches Search Page
   width: 135px;
 }
 
-.pretty_okc .match_card_wrapper .image_wrapper {
-  height: 125px;
+.pretty_okc .match_card_wrapper .match_card {
+  width: 135px;
 }
 
-.pretty_okc .match_card_wrapper .match_card {
-  border: 1px solid #dcdfe6;
-  box-shadow: none;
-  height: 150px;
-  overflow: hidden;
-  width: 135px;
+.pretty_okc .match_card_wrapper .image_wrapper {
+  height: 125px;
 }
 
 .pretty_okc .match_card_wrapper .match_card_text {
@@ -31,28 +27,6 @@ Styling Fixes for Matches Search Page
   padding: 0px 0px 0px 5px;
   text-align: left;
   width: 95px;
-}
-
-/* Hide Reply Frequency and Username */
-.pretty_okc .match_card .contact_bar,
-.pretty_okc .match_card_wrapper .match_card_text .profile_info .username {
-  display: none;
-}
-
-/* Change display of Match Percentages */
-.pretty_okc .match_card_wrapper .match_card_text .percentages {
-  color: #f83265;
-  font-size: 16px;
-  font-weight: bold;
-  height: 25px;
-  left: auto;
-  line-height: 18px;
-  overflow: hidden;
-  right: 5px;
-  text-align: right;
-  top: -4px;
-  width: auto;
-  z-index: 100;
 }
 
 /* Change Display of Online Status */
@@ -68,51 +42,33 @@ Styling Fixes for Matches Search Page
   width: 135px;
 }
 
+/* Hide Reply Frequency and Username */
+.pretty_okc .match_card .contact_bar,
+.pretty_okc .match_card_wrapper .match_card_text .profile_info .username {
+  display: none;
+}
+
+
 /* Move message after having hidden someone's profile */
 .pretty_okc .match_card_wrapper.user-hidden .user_hidden_overlay {
   padding-top: 20px;
 }
+
 
 /* Replace all hover resizing / changing borders and other such things. */
 .pretty_okc #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .image_wrapper {
   height: 130px;
 }
 
-.pretty_okc #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .image_wrapper img {
-  top: -10px;
-}
-
 .pretty_okc #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .match_card {
-  left: 0px;
-  top: 0px;
-  height: 150px;
   width: 135px;
-}
-
-.pretty_okc #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .profile_info {
-  top: 0px;
-}
-
-.pretty_okc #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .under_card {
-  bottom: -25px;
 }
 
 .pretty_okc #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .online_indicator {
   top: 100px;
 }
 
-
-/**************************************
-Styling Fixes for Profile Page 
-***************************************/
-
-/* Removes action button and just displays links for favorites, buy a-list, hide, report. */
-body.match_cards.pretty_okc .tabbed_heading #actions .trigger_action_options_wrapper,
-body.match_cards.pretty_okc .tabbed_heading #actions .trigger_action_options_wrapper #trigger_action_options {
-  display: none;
-}
-
-body.match_cards.pretty_okc .tabbed_heading #actions .action_options {
-  height: auto;
-  margin-top: 2px;
+/* Replace all the mouseover overrides */
+.pretty_okc #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .image_wrapper img {
+  top: -10px;
 }

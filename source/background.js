@@ -21,5 +21,6 @@ function inject_css() {
   	path = "css/tiles.css"
   }
 
+  chrome.tabs.insertCSS(null, {file: "css/base.css"});
 	chrome.tabs.insertCSS(null, {file: path});
 }
