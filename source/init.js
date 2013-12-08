@@ -24,7 +24,7 @@ chrome.runtime.sendMessage({retrieve: "settings"}, function(response) {
 });
 
 
-change_tile_text = function() {
+function change_tile_text() {
 	$('.match_card_wrapper').each(function() {
 		var self = $(this);
 
@@ -42,11 +42,43 @@ change_tile_text = function() {
 	});
 }
 
-add_excerpt_div = function() {
-		$('.match_card_wrapper').each(function() {
-			var self = $(this);
-			if (self.find('.pretty_okc_profile_excerpt').length < 1) {
-				self.find(".match_card_text").after('<div class="pretty_okc_profile_excerpt">Test</div>');
-			} 
-		});
+function add_excerpt_div() {
+	$('.match_card_wrapper').each(function() {
+		var self = $(this);
+		if (self.find('.pretty_okc_profile_excerpt').length < 1) {
+			self.find(".match_card_text").after('<div class="pretty_okc_profile_excerpt"></div>');
+			var username = self.attr('id').replace('usr-', '').replace('-wrapper', '');
+			get_profile_excerpt(username);
+		} 
+	});
+}
+
+function get_profile_excerpt(username) {
+	var full_url = 'http://www.okcupid.com/profile/' + username;
+
+	var xhr = new XMLHttpRequest();
+	xhr.open("GET", full_url, false);
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4) {
+	  	var fullpage = xhr.responseText;
+	  	var span = $(fullpage).find('#essay_0');
+	  	var excerpt = $('#usr-' + username + '-wrapper').find('.pretty_okc_profile_excerpt');
+	  	excerpt.html(span.html());
+			excerpt.dotdotdot({
+				ellipsis	: '... ',
+		 		wrap		: 'word',
+		 		fallbackToLetter: true,
+		 		after		: null,
+				watch		: false,
+				height		: null,
+				tolerance	: 0,
+				callback	: function( isTruncated, orgContent ) {},
+		 		lastCharacter	: {
+		 			remove		: [ ' ', ',', ';', '.', '!', '?' ],
+		 			noEllipsis	: []
+				}
+			});
+  	};
+	}
+	xhr.send();
 }
