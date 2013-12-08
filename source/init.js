@@ -1,6 +1,25 @@
 $('body').addClass("pretty_okc");
 
-handleChanges = function() {
+chrome.runtime.sendMessage({retrieve: "settings"}, function(response) {
+	var settings = response.settings;
+	console.log(settings)
+
+	if (settings === "tiles") {
+		change_tile_text();
+
+		// When more users are added to the page, call the function.
+		var observer = new MutationSummary({
+		  callback: change_tile_text,
+		  queries: [{ element: '.match_card_wrapper' }]
+		});
+	}
+
+});
+
+
+
+
+change_tile_text = function() {
 	$('.match_card_wrapper').each(function() {
 		var self = $(this);
 
@@ -17,11 +36,3 @@ handleChanges = function() {
 		percents.text(match[0]);
 	});
 }
-
-handleChanges();
-
-// When more users are added to the page, call the function.
-var observer = new MutationSummary({
-  callback: handleChanges,
-  queries: [{ element: '.match_card_wrapper' }]
-});
