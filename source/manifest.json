@@ -5,6 +5,7 @@
   "manifest_version": 2,
   "description": "UX / Styling improvements for OkCupid.",
   "homepage_url": "http://www.mpelletier.net",
+  "options_page": "options.html",
   "content_scripts": [
     {
       "matches": ["http://www.okcupid.com/match*", "http://www.okcupid.com/profile/*"],
