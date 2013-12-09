@@ -1,8 +1,8 @@
-$('body').addClass("pretty_okc");
-
 chrome.runtime.sendMessage({retrieve: "settings"}, function(response) {
 	var settings = response.settings;
 	console.log(settings)
+
+	$('body').addClass("pretty_okc");
 
 	change_tile_text();
 
@@ -55,30 +55,24 @@ function add_excerpt_div() {
 
 function get_profile_excerpt(username) {
 	var full_url = 'http://www.okcupid.com/profile/' + username;
+	var excerpt = $('#usr-' + username + '-wrapper').find('.pretty_okc_profile_excerpt');
 
-	var xhr = new XMLHttpRequest();
-	xhr.open("GET", full_url, false);
-	xhr.onreadystatechange = function() {
-		if (xhr.readyState == 4) {
-	  	var fullpage = xhr.responseText;
-	  	var span = $(fullpage).find('#essay_0');
-	  	var excerpt = $('#usr-' + username + '-wrapper').find('.pretty_okc_profile_excerpt');
-	  	excerpt.html(span.html());
-			excerpt.dotdotdot({
-				ellipsis	: '... ',
-		 		wrap		: 'word',
-		 		fallbackToLetter: true,
-		 		after		: null,
-				watch		: false,
-				height		: null,
-				tolerance	: 0,
-				callback	: function( isTruncated, orgContent ) {},
-		 		lastCharacter	: {
-		 			remove		: [ ' ', ',', ';', '.', '!', '?' ],
-		 			noEllipsis	: []
-				}
-			});
-  	};
-	}
-	xhr.send();
+	excerpt.load(full_url + " #essay_0", function() {
+		console.log("Excerpt Loaded");
+		// Truncate the ending with ... just to make it pretty.
+		excerpt.dotdotdot({
+			ellipsis	: '... ',
+	 		wrap		: 'word',
+	 		fallbackToLetter: true,
+	 		after		: null,
+			watch		: false,
+			height		: null,
+			tolerance	: 0,
+			callback	: function( isTruncated, orgContent ) {},
+	 		lastCharacter	: {
+	 			remove		: [ ' ', ',', ';', '.', '!', '?' ],
+	 			noEllipsis	: []
+			}
+		});
+	});
 }
