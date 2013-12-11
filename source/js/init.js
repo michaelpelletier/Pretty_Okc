@@ -4,6 +4,12 @@ chrome.runtime.sendMessage({retrieve: "settings"}, function(response) {
 	var settings = response.settings;
 
 	change_tile_text();
+	add_private_notes();
+
+  if(window.location.href.indexOf("profile") > -1) {
+    console.log("On a User's Page");
+    add_private_notes();
+  }
 
 	// When more users are added to the page, call the function.
 	var observer = new MutationSummary({
@@ -48,6 +54,11 @@ function add_excerpt_div() {
 			get_profile_excerpt(username);
 		} 
 	});
+}
+
+function add_private_notes() {
+	var onclick = "Profile.loadWindow('edit_notes', 244); return false;"
+	$('.action_options').append('<p class="btn small white"><a onclick="' + onclick + '">Add Note</a></p>');
 }
 
 function get_profile_excerpt(username) {
