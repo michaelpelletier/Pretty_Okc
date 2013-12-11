@@ -1,8 +1,7 @@
+$('body').addClass("pretty_okc");
+
 chrome.runtime.sendMessage({retrieve: "settings"}, function(response) {
 	var settings = response.settings;
-	console.log(settings)
-
-	$('body').addClass("pretty_okc");
 
 	change_tile_text();
 
@@ -20,9 +19,7 @@ chrome.runtime.sendMessage({retrieve: "settings"}, function(response) {
 		  queries: [{ element: '.match_card_wrapper' }]
 		});
 	} 
-
 });
-
 
 function change_tile_text() {
 	$('.match_card_wrapper').each(function() {
