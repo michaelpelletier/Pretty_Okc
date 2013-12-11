@@ -3,28 +3,27 @@ $('body').addClass("pretty_okc");
 chrome.runtime.sendMessage({retrieve: "settings"}, function(response) {
 	var settings = response.settings;
 
-	change_tile_text();
-	add_private_notes();
+	// If we're on a user's page.
+  if (get_location() === "profile") {
+  	add_private_notes();
+  } else if (get_location() === "matches") {
+  	change_tile_text();
 
-  if(window.location.href.indexOf("profile") > -1) {
-    console.log("On a User's Page");
-    add_private_notes();
-  }
-
-	// When more users are added to the page, call the function.
-	var observer = new MutationSummary({
-	  callback: change_tile_text,
-	  queries: [{ element: '.match_card_wrapper' }]
-	});
-
-	if (settings === "classic") {
-		add_excerpt_div();
-
+		// When more users are added to the page, call the function.
 		var observer = new MutationSummary({
-		  callback: add_excerpt_div,
+		  callback: change_tile_text,
 		  queries: [{ element: '.match_card_wrapper' }]
 		});
-	} 
+
+		if (settings === "classic") {
+			add_excerpt_div();
+
+			var observer = new MutationSummary({
+			  callback: add_excerpt_div,
+			  queries: [{ element: '.match_card_wrapper' }]
+			});
+		} 
+  }
 });
 
 function change_tile_text() {
@@ -83,4 +82,14 @@ function get_profile_excerpt(username) {
 			}
 		});
 	});
+}
+
+function get_location() {
+	var url = window.location.href;
+
+	if (url.indexOf("profile") > 0) {
+		return "profile"
+	} else if (url.indexOf("match") > 0) {
+		return "matches"
+	}
 }
