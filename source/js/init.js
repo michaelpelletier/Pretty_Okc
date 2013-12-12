@@ -3,7 +3,7 @@ $('body').addClass("pretty_okc");
 chrome.runtime.sendMessage({retrieve: "settings"}, function(response) {
 	// Store our settings in variables.
 	var matches_mode = response.mode;
-	var except_priority = response.priority;
+	var excerpt_priority = response.priority;
 	var add_notes = response.notes;
 
 	// If we're on a user's page.
@@ -12,6 +12,11 @@ chrome.runtime.sendMessage({retrieve: "settings"}, function(response) {
   		add_private_notes();
   	}  	
   } else if (get_location() === "matches") {
+  	// I really don't like this, but haven't found a better way to pass these settings yet.
+  	if (excerpt_priority) {
+  		$('body').append('<input type="hidden" id="excerpt_priority" value="' + excerpt_priority + '">')
+  	}
+
   	change_tile_text();
 
 		// When more users are added to the page, call the function.
@@ -29,6 +34,7 @@ chrome.runtime.sendMessage({retrieve: "settings"}, function(response) {
 			});
 		} 
   }
+
 });
 
 function change_tile_text() {
@@ -55,21 +61,24 @@ function add_excerpt_div() {
 		if (self.find('.pretty_okc_profile_excerpt').length < 1) {
 			self.find(".match_card_text").after('<div class="pretty_okc_profile_excerpt"></div>');
 			var username = self.attr('id').replace('usr-', '').replace('-wrapper', '');
-			get_profile_excerpt(username);
+			get_excerpt_by_priority(username);
 		} 
 	});
 }
 
-function add_private_notes() {
-	var onclick = "Profile.loadWindow('edit_notes', 244); return false;"
-	$('.action_options').prepend('<p class="btn small white"><a onclick="' + onclick + '">Add Note</a></p>');
+function get_excerpt_by_priority(username) {
+	var excerpt = $('#usr-' + username + '-wrapper').find('.pretty_okc_profile_excerpt');
+
+	var priority = $('#excerpt_priority').val();
+	priority = priority.split(',');
+	get_profile_excerpt(username, priority[0]);
 }
 
-function get_profile_excerpt(username) {
+function get_profile_excerpt(username, essay_section) {
 	var full_url = 'http://www.okcupid.com/profile/' + username;
 	var excerpt = $('#usr-' + username + '-wrapper').find('.pretty_okc_profile_excerpt');
 
-	excerpt.load(full_url + " #essay_0", function() {
+	excerpt.load(full_url + " #" + essay_section, function() {
 		console.log("Excerpt Loaded");
 		// Truncate the ending with ... just to make it pretty.
 		excerpt.dotdotdot({
@@ -87,6 +96,11 @@ function get_profile_excerpt(username) {
 			}
 		});
 	});
+}
+
+function add_private_notes() {
+	var onclick = "Profile.loadWindow('edit_notes', 244); return false;"
+	$('.action_options').prepend('<p class="btn small white"><a onclick="' + onclick + '">Add Note</a></p>');
 }
 
 function get_location() {
