@@ -1,13 +1,12 @@
-Current Version 0.3
+Current Version 0.5
 
 Features:
-- Tweaks the styling on the New Tiles view.
-- Reintroduces the Classic Match Results view.
-- Removes the "More options" hover from the Matches page.
+- Tweaks the styling on the New Tiles view to display more tiles at once, and improve consistency with the rest of the site.
+- Reintroduces the Classic Match Results view, with the ability to customise which excerpts you wan to see.
+- Removes the "More options" hover from the Matches page, instead displaying all the options at once.
 - Brings back the "Private Notes" feature.
 
 Coming Soon:
-- Configure the Priority Order of Profile Information for the Classic Match view. Possibly make it Drag and Drop in the options? Write the function so that "essay_0" gets passed in. Don't forget defaults.
 - Multiple Favourites Lists?
 - Way to view all photos from the Search Results? Either as a separate link or some kind of "Expandable" section that contains pictures / information. 
 - Image Icon for Chrome Extensions Page.
@@ -17,10 +16,11 @@ Version History:
 
 0.5 
 - Re-Enables Private Notes feature.
+- Add the functionality to grab different Excerpts for the Classic Matches View.
 - Moves "Options" to a separate page instead of a Popup when the Icon is clicked.
-- Begins to add the options for Excerpt Priority.
 - Huge amount of styling updates to the Options page.
 - Add Configuration settings for Add Notes.
+- Add Configuration for Excerpt Priority.
 
 0.4 
 - Greatly improve load times for Profile information on Classic View.
