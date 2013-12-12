@@ -1,7 +1,7 @@
 {
   "name": "Pretty OkCupid",
   "short_name": "Pretty_Okc",
-  "version": "0.1",
+  "version": "0.5",
   "manifest_version": 2,
   "description": "UX / Styling improvements for OkCupid.",
   "homepage_url": "http://www.mpelletier.net",
