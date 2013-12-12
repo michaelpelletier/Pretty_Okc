@@ -13,10 +13,6 @@ chrome.runtime.sendMessage({retrieve: "settings"}, function(response) {
   	}  	
   } else if (get_location() === "matches") {
   	// I really don't like this, but haven't found a better way to pass these settings yet.
-  	if (excerpt_priority) {
-  		$('body').append('<input type="hidden" id="excerpt_priority" value="' + excerpt_priority + '">')
-  	}
-
   	change_tile_text();
 
 		// When more users are added to the page, call the function.
@@ -26,6 +22,10 @@ chrome.runtime.sendMessage({retrieve: "settings"}, function(response) {
 		});
 
 		if (matches_mode === "classic") {
+	  	if (excerpt_priority) {
+	  		$('body').append('<input type="hidden" id="excerpt_priority" value="' + excerpt_priority + '">')
+	  	}
+
 			add_excerpt_div();
 
 			var observer = new MutationSummary({
@@ -61,40 +61,37 @@ function add_excerpt_div() {
 		if (self.find('.pretty_okc_profile_excerpt').length < 1) {
 			self.find(".match_card_text").after('<div class="pretty_okc_profile_excerpt"></div>');
 			var username = self.attr('id').replace('usr-', '').replace('-wrapper', '');
-			get_excerpt_by_priority(username);
+			get_excerpt_by_priority(username, 'first');
 		} 
 	});
 }
 
-function get_excerpt_by_priority(username) {
-	var excerpt = $('#usr-' + username + '-wrapper').find('.pretty_okc_profile_excerpt');
-
+function get_excerpt_by_priority(username, essay_number) {
 	var priority = $('#excerpt_priority').val();
 	priority = priority.split(',');
-	get_profile_excerpt(username, priority[0]);
+
+	if (essay_number === 'first') {
+		get_profile_excerpt(username, priority[0]);
+	} else {
+		get_profile_excerpt(username, priority[essay_number]);
+	}
 }
 
 function get_profile_excerpt(username, essay_section) {
 	var full_url = 'http://www.okcupid.com/profile/' + username;
 	var excerpt = $('#usr-' + username + '-wrapper').find('.pretty_okc_profile_excerpt');
+	var essay_container = "#essay_" + essay_section
 
-	excerpt.load(full_url + " #" + essay_section, function() {
-		console.log("Excerpt Loaded");
-		// Truncate the ending with ... just to make it pretty.
-		excerpt.dotdotdot({
-			ellipsis	: '... ',
-	 		wrap		: 'word',
-	 		fallbackToLetter: true,
-	 		after		: null,
-			watch		: false,
-			height		: null,
-			tolerance	: 0,
-			callback	: function( isTruncated, orgContent ) {},
-	 		lastCharacter	: {
-	 			remove		: [ ' ', ',', ';', '.', '!', '?' ],
-	 			noEllipsis	: []
-			}
-		});
+	excerpt.load(full_url + " " + essay_container, function(response) {
+	var check = excerpt.find('.essay.content').attr('id');
+		if (check === "essay_" + essay_section) {
+			// If we found that the content loaded correctly, truncate what we got.
+			truncate_excerpt(excerpt);
+		} else {
+			// Otherwise, get the next level priority and try again.
+			essay_section = parseInt(essay_section)
+			get_excerpt_by_priority(username, essay_section+1)
+		}
 	});
 }
 
@@ -111,4 +108,21 @@ function get_location() {
 	} else if (url.indexOf("match") > 0) {
 		return "matches"
 	}
+}
+
+function truncate_excerpt(container) {
+	container.dotdotdot({
+		ellipsis	: '... ',
+ 		wrap		: 'word',
+ 		fallbackToLetter: true,
+ 		after		: null,
+		watch		: false,
+		height		: null,
+		tolerance	: 0,
+		callback	: function( isTruncated, orgContent ) {},
+ 		lastCharacter	: {
+ 			remove		: [ ' ', ',', ';', '.', '!', '?' ],
+ 			noEllipsis	: []
+		}
+	});
 }
