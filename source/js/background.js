@@ -16,10 +16,16 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 
 // Get Settings
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  var my_settings = localStorage["mode"];
+  var matches_mode = localStorage["mode"];
+  var excerpt_priority = localStorage["priority"];
+  var add_notes = localStorage["add_notes"];
 
   if (request.retrieve == "settings"){
-    sendResponse({settings: my_settings});
+    sendResponse({ 
+      mode: matches_mode, 
+      priority: excerpt_priority,
+      notes: add_notes
+    });
   }
 });
 
