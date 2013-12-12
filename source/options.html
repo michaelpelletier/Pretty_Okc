@@ -1,20 +1,56 @@
 <html>
   <head>
     <title>Pretty OkC Options</title>
+    <link rel="stylesheet" type="text/css" href="css/options.css">
   </head>
   <body>
 
-  Matches Display:
-  <select id="mode">
-   <option value="tiles">New Tiles</option>
-   <option value="classic">Classic</option>
-  </select>
+  <div class="options">
+    <h3>Matches Page Settings</h3>
+    <select id="mode">
+      <option value="tiles">New Tiles</option>
+      <option value="classic">Classic</option>
+    </select>
+  </div>
 
-  <br>
+  <div class="options">
+    <h3>Excerpt Priority</h3>
+    <div class="description">The "classic" view for the Matches page displays a portion of text from the user's profile. You can customise the priority here. The first item will often be the one to show up, but in cases where the user has nothing filled in for it, it will head to the next one, and so on.</div>
+
+    <div class="reorder_header">Drag to Reorder</div>
+
+    <ul id="excerpt_priority">
+      <li class="draggable" id="essay_0">"My self-summary"</li>
+      <li class="draggable" id="essay_1">"What I'm doing with my life"</li>
+      <li class="draggable" id="essay_2">"I'm really good at"</li>
+      <li class="draggable" id="essay_3">"The first things people usually notice about me"</li>
+      <li class="draggable" id="essay_4">"Favorite books, movies, shows, music, and food"</li>
+      <li class="draggable" id="essay_5">"The six things I could never do without"</li>
+      <li class="draggable" id="essay_6">"I spend a lot of time thinking about"</li>
+      <li class="draggable" id="essay_7">"On a typical Friday night I am"</li>
+      <li class="draggable" id="essay_8">"The most private thing I'm willing to admit."</li>
+      <li class="draggable" id="what_i_want">"I'm looking for"</li>
+      <li class="draggable" id="essay_9">"You should message me if"</li>
+    </ul>
+
+  </div>
+
+  <div class="options">
+    <h3>Profile Page Settings</h3>
+    - Enable "Add Notes" Button?
+  </div>
+
+
+
+
+
+
   <div id="status"></div>
   <button id="save">Save</button>
   </body>
 
+  <script src="js/jquery-1.10.2.min.js"></script>
+  <script src="js/jquery-ui-1.10.3.custom.min.js"></script>
   <script src="js/options.js"></script>
 
 </html>

@@ -1,0 +1,74 @@
+body {
+	font-family: Verdana, "Bitstream Vera Sans", sans-serif;
+	font-size: 14px;
+	line-height: 16px;
+	margin: 20px;
+}
+
+/* Headers */
+h3 {
+	color: #FF1E72;
+	display: block;
+	font-family: Verdana, "Bitstream Vera Sans", sans-serif;
+	font-size: 18px;
+	font-weight: normal;
+	letter-spacing: 0px;
+	line-height: 20px;
+	margin: 10px 0px;
+	text-shadow: 0px 1px 0px #FFF;
+}
+
+.options {
+	margin-bottom: 15px;
+	width: 350px;
+}
+
+.description {
+	font-size: 11px;
+	margin-bottom: 20px;
+}
+
+/* Sortable Table */
+.reorder_header {
+	background: #d5e1ed;
+	border: 1px solid #d5e1ed;
+	border-top: 1px solid #fff;
+	border-bottom: 1px solid #b8cadd;
+	color: #2855A2;
+	cursor: default;
+	display: block;
+	font-size: 12px;
+	font-weight: bold;
+	height: 30px;
+	line-height: 31px;
+	margin: 0px;
+	overflow: hidden;
+	padding: 0px 10px;
+	text-shadow: 0px 1px 0px #fff;
+	width: auto;
+	border-radius: 5px 5px 0 0;
+	-moz-border-radius: 5px 5px 0 0;
+	-webkit-border-radius: 5px 5px 0 0;
+}
+
+ul#excerpt_priority {
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+li.draggable {
+	border: 1px solid #dddddd;
+	border-top: none;
+	color: #555;
+	cursor: pointer;
+	font-size: 12px;
+	line-height: 14px;
+	margin: 0px;
+	padding: 5px 10px;
+	position: relative;
+}
+
+li.draggable.ui-sortable-helper {
+	border-top: 1px solid #dddddd;
+}

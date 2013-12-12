@@ -1,31 +1,54 @@
+$(document).ready(function() {
+  $("#excerpt_priority").sortable();
+  $("#excerpt_priority").disableSelection();
+
+  restore_options();
+
+  $('#save').click(function() {
+    save_options()
+  })
+});
+
+
 // Saves options to localStorage.
 function save_options() {
-  var select = document.getElementById("mode");
-  var chosen_mode = select.children[select.selectedIndex].value;
+  // Save options for Matches View Mode
+  var select = $("select#mode");
+  var chosen_mode = select.val();
   localStorage["mode"] = chosen_mode;
 
+  // Store Priority as an Array
+  var priority_array = []
+  $('#excerpt_priority').find('li').each(function() {
+    var id = $(this).attr('id');
+    priority_array.push(id);
+  });
+
+  localStorage["priority"] = priority_array;
+
   // Update status to let user know options were saved.
-  var status = document.getElementById("status");
-  status.innerHTML = "Options Saved.";
+  var status = $("#status");
+  status.html("Options Saved.");
   setTimeout(function() {
-    status.innerHTML = "";
+    status.empty();
   }, 1000);
 }
 
-// Restores select box state to saved value from localStorage.
 function restore_options() {
+  // Restore Matches View Mode Settings.
   var options_mode = localStorage["mode"];
-  if (!options_mode) {
-    return;
+  if (options_mode) {
+    $('select#mode').val(options_mode)
   }
-  var select = document.getElementById("mode");
-  for (var i = 0; i < select.children.length; i++) {
-    var child = select.children[i];
-    if (child.value == options_mode) {
-      child.selected = "true";
-      break;
-    }
+
+  // Retrieve and split settings for Priority
+  var priority_settings = localStorage["priority"];
+  priority_settings = priority_settings.split(',')
+
+  // Put Priorities into the proper order.
+  for (var i = 0; i < priority_settings.length; i++) {
+    console.log(priority_settings[i])
+    var item = $('li#' + priority_settings[i]);
+    $('#excerpt_priority').append(item);
   }
 }
-document.addEventListener('DOMContentLoaded', restore_options);
-document.querySelector('#save').addEventListener('click', save_options);
