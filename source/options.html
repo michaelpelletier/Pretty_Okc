@@ -7,6 +7,8 @@
 
   <div class="options">
     <h3>Matches Page Settings</h3>
+    <div class="description">New Tiles improves upon OkCupid's new "Tiled" design, showing 5 in a row instead of 3, and making other styling tweaks, including better consistency of the "Online" indicator.</div>
+    <div class="description">Classic is the older style, which displays an excerpt from the user's profile, but otherwise contains much the same information.</div>
     <select id="mode">
       <option value="tiles">New Tiles</option>
       <option value="classic">Classic</option>
@@ -37,16 +39,17 @@
 
   <div class="options">
     <h3>Profile Page Settings</h3>
-    - Enable "Add Notes" Button?
+    <div class="option">
+      <input id="add_notes" type="checkbox" name="add_notes">Enable Add Notes Button?
+    </div>
+    <div class="description">OkCupid removed the AddNotes button for some reason, but none of the actual functionality. This will put the button back on Profile pages so that new notes can be added.</div>
   </div>
 
+  <div class="save_changes">
+    <div id="status"></div>
+    <button id="save">Save</button>
+  </div>
 
-
-
-
-
-  <div id="status"></div>
-  <button id="save">Save</button>
   </body>
 
   <script src="js/jquery-1.10.2.min.js"></script>
