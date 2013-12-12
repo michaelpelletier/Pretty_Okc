@@ -57,7 +57,7 @@ function add_excerpt_div() {
 
 function add_private_notes() {
 	var onclick = "Profile.loadWindow('edit_notes', 244); return false;"
-	$('.action_options').append('<p class="btn small white"><a onclick="' + onclick + '">Add Note</a></p>');
+	$('.action_options').prepend('<p class="btn small white"><a onclick="' + onclick + '">Add Note</a></p>');
 }
 
 function get_profile_excerpt(username) {
