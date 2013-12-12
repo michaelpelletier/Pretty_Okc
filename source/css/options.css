@@ -23,9 +23,15 @@ h3 {
 	width: 350px;
 }
 
+.option {
+	font-size: 12px;
+	line-height: 14px;
+	margin-bottom: 5px;
+}
+
 .description {
 	font-size: 11px;
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 }
 
 /* Sortable Table */
