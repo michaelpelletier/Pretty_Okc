@@ -1,11 +1,16 @@
 $('body').addClass("pretty_okc");
 
 chrome.runtime.sendMessage({retrieve: "settings"}, function(response) {
-	var settings = response.settings;
+	// Store our settings in variables.
+	var matches_mode = response.mode;
+	var except_priority = response.priority;
+	var add_notes = response.notes;
 
 	// If we're on a user's page.
   if (get_location() === "profile") {
-  	add_private_notes();
+  	if (add_notes === 'true') {
+  		add_private_notes();
+  	}  	
   } else if (get_location() === "matches") {
   	change_tile_text();
 
@@ -15,7 +20,7 @@ chrome.runtime.sendMessage({retrieve: "settings"}, function(response) {
 		  queries: [{ element: '.match_card_wrapper' }]
 		});
 
-		if (settings === "classic") {
+		if (matches_mode === "classic") {
 			add_excerpt_div();
 
 			var observer = new MutationSummary({
