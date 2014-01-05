@@ -179,3 +179,8 @@ Styling Fixes for Favorites Page
 .pretty_okc .action_remove_list.removed { background-position:   0px   0px; }
 .pretty_okc .action_add_note            { background-position: -30px   0px; }
 .pretty_okc .action_add_note.has_note   { background-position: -30px -26px; }
+
+.pretty_okc div.user_row_item div.note .editor textarea {
+  min-width: 370px;
+  max-width: 370px; 
+}
