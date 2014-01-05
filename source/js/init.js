@@ -54,19 +54,9 @@ chrome.runtime.sendMessage({retrieve: "settings"}, function(response) {
 
 
 /* TO DO */
-// - Remove from List
 // - Better hover colour and list styling.
-// - Add Icon for Adding Profile Notes from the Favorites Page.
-// - Probably remove "Last Rated" date because who cares?
-// - Enhance "About" area to specify drag and drop.
-
-// - Icons: Delete List, Add Notes
 // - Change profile page to have new icons for Notes, Favorites, Ratings.
 // - Remove the Buy her A-List button.
-
-
-
-
 
 
 
