@@ -98,6 +98,7 @@ Styling Fixes for Favorites Page
 .favorite_list_all,
 .favorite_list_none,
 .favorite_list {
+  background: #F7f7f7;
   border: 1px solid #dfdfdf;
   color: #777;
   margin-bottom: 10px;
@@ -111,19 +112,16 @@ Styling Fixes for Favorites Page
   background: #dfdfdf;
 }
 
+.pretty_okc .droppable_hover,
 .favorite_list_none:hover,
 .favorite_list_all:hover,
 .favorite_list:hover {
-  background: #F7f7f7;
+  background: #e7eef5;
   color: #4173d2;
   cursor: pointer;
 }
 
-/* Draggable Items */
-.pretty_okc .droppable_hover {
-  background: #dff09f;
-}
-
+.pretty_okc .user_row_item.ui-draggable-dragging,
 .pretty_okc .user_row_item:hover {
   background: #efefef;
 }
@@ -149,8 +147,53 @@ Styling Fixes for Favorites Page
 }
 
 .pretty_okc .remove_list {
+  background: url('chrome-extension://__MSG_@@extension_id__/images/okc_icons.png') -55px -2px no-repeat;
   float: right;
+  display: block;
+  float: right;
+  height: 26px;
+  text-indent: -9999px;
+  width: 30px;
 }
+
+.pretty_okc .remove_list:hover {
+  background-position: -55px -28px;
+}
+
+ body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.notes.white,
+ body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.favorite.white {
+  display: inline-block;
+  margin-bottom: 0px;
+  width: 30px;
+}
+
+.pretty_okc .btn.notes.white a,
+.pretty_okc .btn.favorite.white a {
+  border: 1px solid #ddd;
+  border-right: none;
+  display: inline-block;
+  height: 26px;
+  padding: 0px;
+  text-indent: -9999px;
+  width: 30px;
+}
+
+.pretty_okc .btn.notes.white a {
+  background: #F6F6F6 url('chrome-extension://__MSG_@@extension_id__/images/okc_icons.png') -30px   0px no-repeat!important;
+}
+
+.pretty_okc .btn.notes.white a.has_note { background-position: -30px -26px!important;}
+
+.pretty_okc .btn.favorite.white a {
+  background: #F6F6F6 url(http://akcdn.okccdn.com/media/img/icons/user_actions.png) -31px 0px no-repeat!important;
+}
+
+.pretty_okc .btn.favorite.white a.is_favorite      { background-position: -31px -26px!important; }
+
+
+
+
+
 
 .pretty_okc div.user_row_item p.last_rated, 
 .pretty_okc div.user_row_item p.last_visited {

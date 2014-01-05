@@ -11,8 +11,8 @@ chrome.runtime.sendMessage({retrieve: "settings"}, function(response) {
 	// If we're on a user's page.
   if (get_location() === "profile") {
   	if (add_notes === 'true') {
-  		add_private_notes();
-  	}  	
+  		style_buttons_with_icons();
+  	} 
   } else if (get_location() === "matches") {
   	// I really don't like this, but haven't found a better way to pass these settings yet.
   	update_tiles();
@@ -54,11 +54,8 @@ chrome.runtime.sendMessage({retrieve: "settings"}, function(response) {
 
 
 /* TO DO */
-// - Better hover colour and list styling.
 // - Change profile page to have new icons for Notes, Favorites, Ratings.
 // - Remove the Buy her A-List button.
-
-
 
 /*** Favorites List Functions ***/
 function add_name_to_list(name, list, favorites_array) {
@@ -230,11 +227,11 @@ function populate_favorites_lists(favorites_array) {
 
 	// Add container for Favorite Lists
 	$('#right_bar').find('.side_favorites').remove();
-	$('#right_bar').append('<div class="side_favorites"><h2>Favorites Lists</h2><div class="favorites_lists"><ul class="favorites"><li class="favorite_list_all current">All</li><li class="favorite_list_none">Ungrouped</li></ul></div><h2>Add New List</h2><div class="add_list"><input type="text" id="new_favorite_list" name="favorites"><span class="save_list">Save List</span></div></div>');
+	$('#right_bar').append('<div class="side_favorites"><h2>Favorites Lists</h2><div class="favorites_lists"><ul class="favorites"><li class="favorite_list_all current">All</li><li class="favorite_list_none">Ungrouped</li></ul></div><h2>Add New List</h2><div class="add_list"><input type="text" id="new_favorite_list" name="favorites" size="34"><span class="save_list">Save List</span></div></div>');
 
 	// Add each favorite list
 	$.each(favorites_array, function(index, value) {
-		$('ul.favorites').append('<li class="favorite_list"><span class="list_name">' + value.list_name + '</span><span class="remove_list">Delete List</span></li>');
+		$('ul.favorites').append('<li class="favorite_list"><span class="list_name">' + value.list_name + '</span><span class="remove_list" title="Delete list">Delete List</span></li>');
 	});
 
 	show_all_favorites();
@@ -339,9 +336,56 @@ function get_location() {
 }
 
 /*** Profile View Specific Functions ***/
-function add_private_notes() {
+function style_buttons_with_icons() {
+	$('.action_options').find('.btn.small.white').not('.small_white').not('.hideflag').first().addClass("favorite");
+
+	var favorites_button = $('.action_options').find('.btn.favorite').find('a');
+
+	check_favorite_status_default();
+	favorites_button.click(function() {
+		check_favorite_status();
+	})
+
+	function check_favorite_status_default() {
+		if (favorites_button.text() === "Remove Favorite") {
+			favorites_button.addClass("is_favorite");
+			favorites_button.attr('title', 'Remove from Favorites');
+		} else {
+			favorites_button.removeClass("is_favorite");
+			favorites_button.attr('title', 'Add to Favorites');
+		}
+	}
+
+	function check_favorite_status() {
+		if (favorites_button.hasClass('is_favorite')) {
+			favorites_button.removeClass("is_favorite");
+			favorites_button.attr('title', 'Add to Favorites');
+		} else {
+			favorites_button.addClass("is_favorite");
+			favorites_button.attr('title', 'Remove from Favorites');
+		}
+	}
+
+	// Add Note
 	var onclick = "Profile.loadWindow('edit_notes', 244); return false;"
-	$('.action_options').prepend('<p class="btn small white"><a onclick="' + onclick + '">Add Note</a></p>');
+	$('.action_options').prepend('<p class="btn small white notes"><a onclick="' + onclick + '">Add Note</a></p>');
+	var notes_button = $('.action_options').find('.btn.notes').find('a');
+
+	check_notes_status();
+	$('#edit_notes_form').find('#save_a').click(function() {
+		check_notes_status();
+	});
+
+	function check_notes_status() {
+		if ($('#inline_notes').is(':visible')) {
+			notes_button.addClass('has_note');
+			notes_button.attr('title', 'Add Note');
+		} else {
+			notes_button.removeClass('has_note');
+			notes_button.attr('title', 'Edit Note');
+		}
+	}
+
 }
 
 /*** Tiles View Specific Functions ***/
