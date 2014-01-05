@@ -59,16 +59,14 @@ body.match_cards.pretty_okc .tabbed_heading #actions .action_options {
 Styling Fixes for Favorites Page 
 ***************************************/
 
-.pretty_okc #right_bar .add_list {
-  margin-top: 20px;
-}
-
+/* Container for Favorite Lists */
 .pretty_okc div#right_bar div.body,
 .pretty_okc .side_favorites {
   background: #eee;
   padding: 10px;
 }
 
+/* Button to Save New List */
 .pretty_okc #right_bar .save_list {
   background: #F7f7f7;
   border: 1px solid #ddd;
@@ -92,35 +90,64 @@ Styling Fixes for Favorites Page
   border-radius: 2px;
 }
 
+.pretty_okc #right_bar .save_list:hover {
+  background: #e5e5e5;
+}
+
+/* Links for selecting Favorite Lists */
 .favorite_list_all,
+.favorite_list_none,
 .favorite_list {
   border: 1px solid #dfdfdf;
+  color: #777;
   margin-bottom: 10px;
   padding: 10px;
+  text-shadow: 0px 1px 0px #f6f6f6;
 }
 
 .favorite_list_all.current,
+.favorite_list_none.current,
 .favorite_list.current {
   background: #dfdfdf;
 }
 
-.pretty_okc .hidden_helper {
-  display: none;
+.favorite_list_none:hover,
+.favorite_list_all:hover,
+.favorite_list:hover {
+  background: #F7f7f7;
+  color: #4173d2;
+  cursor: pointer;
 }
 
+/* Draggable Items */
 .pretty_okc .droppable_hover {
   background: #dff09f;
-}
-
-.pretty_okc .user_row_item {
-  padding: 10px;
-  width: 390px;
 }
 
 .pretty_okc .user_row_item.ui-draggable-dragging {
   background: #efefef;
 }
 
+
+
+.pretty_okc .hidden_helper {
+  display: none;
+}
+
+.pretty_okc .user_row_item {
+  border-top: none;
+  padding: 10px;
+  width: 390px;
+}
+
 .pretty_okc div.user_row_item p.match_percentages {
   right: 10px;
+}
+
+.pretty_okc div.user_row_item div.extra_info {
+  left: 210px;
+}
+
+.pretty_okc .remove_list {
+  float: right;
 }
