@@ -2,6 +2,7 @@
 Styling Fixes for Matches Page 
 ***************************************/
 
+/* Changes to overall Match container */
 .pretty_okc .match_card_wrapper .match_card {
   border: 1px solid #dcdfe6;
   box-shadow: none;
@@ -25,6 +26,7 @@ Styling Fixes for Matches Page
   z-index: 100;
 }
 
+/* Hover Changes */
 .pretty_okc #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .match_card {
   left: 0px;
   top: 0px;
@@ -44,7 +46,7 @@ Styling Fixes for Matches Page
 Styling Fixes for Profile Page 
 ***************************************/
 
-/* Removes action button and just displays links for favorites, buy a-list, hide, report. */
+/* Removes "more options" button and just displays links for favorites, buy a-list, hide, report. */
 body.match_cards.pretty_okc .tabbed_heading #actions .trigger_action_options_wrapper,
 body.match_cards.pretty_okc .tabbed_heading #actions .trigger_action_options_wrapper #trigger_action_options {
   display: none;
@@ -54,6 +56,31 @@ body.match_cards.pretty_okc .tabbed_heading #actions .action_options {
   height: auto;
   margin-top: 2px;
 }
+
+/* Change Buttons to be Icons */
+ body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.notes.white,
+ body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.favorite.white {
+  display: inline-block;
+  margin-bottom: 0px;
+  width: 30px;
+}
+
+.pretty_okc .btn.notes.white a,
+.pretty_okc .btn.favorite.white a {
+  border: 1px solid #ddd;
+  border-right: none;
+  display: inline-block;
+  height: 26px;
+  padding: 0px;
+  text-indent: -9999px;
+  width: 30px;
+}
+
+.pretty_okc .btn.notes.white a { background: #F6F6F6 url('chrome-extension://__MSG_@@extension_id__/images/okc_icons.png') -30px   0px no-repeat!important; }
+.pretty_okc .btn.notes.white a.has_note { background-position: -30px -26px!important;}
+
+.pretty_okc .btn.favorite.white a { background: #F6F6F6 url(http://akcdn.okccdn.com/media/img/icons/user_actions.png) -31px 0px no-repeat!important; }
+.pretty_okc .btn.favorite.white a.is_favorite { background-position: -31px -26px!important; }
 
 /**************************************
 Styling Fixes for Favorites Page 
@@ -121,17 +148,18 @@ Styling Fixes for Favorites Page
   cursor: pointer;
 }
 
+/* Draggable Elements */
 .pretty_okc .user_row_item.ui-draggable-dragging,
 .pretty_okc .user_row_item:hover {
   background: #efefef;
 }
-
 
 .pretty_okc .favorites_action.hidden_helper,
 .pretty_okc .hidden_helper {
   display: none;
 }
 
+/* Individual Favorited Users */
 .pretty_okc .user_row_item {
   border-top: none;
   padding: 10px;
@@ -146,6 +174,20 @@ Styling Fixes for Favorites Page
   left: 210px;
 }
 
+.pretty_okc div.user_row_item p.last_rated, 
+.pretty_okc div.user_row_item p.last_visited,
+.pretty_okc div.user_row_item div.extra_info p.hidden_actions {
+  display: none;
+  visibility: hidden;
+}
+
+/* Notes Text Field */
+.pretty_okc div.user_row_item div.note .editor textarea {
+  min-width: 370px;
+  max-width: 370px; 
+}
+
+/* New Buttons */
 .pretty_okc .remove_list {
   background: url('chrome-extension://__MSG_@@extension_id__/images/okc_icons.png') -55px -2px no-repeat;
   float: right;
@@ -158,52 +200,6 @@ Styling Fixes for Favorites Page
 
 .pretty_okc .remove_list:hover {
   background-position: -55px -28px;
-}
-
- body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.notes.white,
- body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.favorite.white {
-  display: inline-block;
-  margin-bottom: 0px;
-  width: 30px;
-}
-
-.pretty_okc .btn.notes.white a,
-.pretty_okc .btn.favorite.white a {
-  border: 1px solid #ddd;
-  border-right: none;
-  display: inline-block;
-  height: 26px;
-  padding: 0px;
-  text-indent: -9999px;
-  width: 30px;
-}
-
-.pretty_okc .btn.notes.white a {
-  background: #F6F6F6 url('chrome-extension://__MSG_@@extension_id__/images/okc_icons.png') -30px   0px no-repeat!important;
-}
-
-.pretty_okc .btn.notes.white a.has_note { background-position: -30px -26px!important;}
-
-.pretty_okc .btn.favorite.white a {
-  background: #F6F6F6 url(http://akcdn.okccdn.com/media/img/icons/user_actions.png) -31px 0px no-repeat!important;
-}
-
-.pretty_okc .btn.favorite.white a.is_favorite      { background-position: -31px -26px!important; }
-
-
-
-
-
-
-.pretty_okc div.user_row_item p.last_rated, 
-.pretty_okc div.user_row_item p.last_visited {
-  display: none;
-}
-
-
-.pretty_okc div.user_row_item div.extra_info p.hidden_actions {
-  display: none;
-  visibility: hidden;
 }
 
 .pretty_okc .favorites_action {
@@ -226,8 +222,3 @@ Styling Fixes for Favorites Page
 .pretty_okc .action_remove_list.removed { background-position:   0px   0px; }
 .pretty_okc .action_add_note            { background-position: -30px   0px; }
 .pretty_okc .action_add_note.has_note   { background-position: -30px -26px; }
-
-.pretty_okc div.user_row_item div.note .editor textarea {
-  min-width: 370px;
-  max-width: 370px; 
-}
