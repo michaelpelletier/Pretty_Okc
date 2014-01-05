@@ -124,12 +124,12 @@ Styling Fixes for Favorites Page
   background: #dff09f;
 }
 
-.pretty_okc .user_row_item.ui-draggable-dragging {
+.pretty_okc .user_row_item:hover {
   background: #efefef;
 }
 
 
-
+.pretty_okc .favorites_action.hidden_helper,
 .pretty_okc .hidden_helper {
   display: none;
 }
@@ -151,3 +151,31 @@ Styling Fixes for Favorites Page
 .pretty_okc .remove_list {
   float: right;
 }
+
+.pretty_okc div.user_row_item p.last_rated, 
+.pretty_okc div.user_row_item p.last_visited {
+  display: none;
+}
+
+
+.pretty_okc div.user_row_item div.extra_info p.hidden_actions {
+  display: none;
+  visibility: hidden;
+}
+
+.pretty_okc .favorites_action {
+  background: url('chrome-extension://__MSG_@@extension_id__/images/okc_icons.png') no-repeat;
+  border: 1px solid #ddd;
+  border-right: none;
+  cursor: pointer;
+  display: block;
+  float: left;
+  height: 26px;
+  text-indent: -9999px;
+  width: 30px;
+}
+
+.pretty_okc .action_remove_list         { background-position:   0px -26px; }
+.pretty_okc .action_remove_list.removed { background-position:   0px   0px; }
+.pretty_okc .action_add_note            { background-position: -30px   0px; }
+.pretty_okc .action_add_note.has_note   { background-position: -30px -26px; }

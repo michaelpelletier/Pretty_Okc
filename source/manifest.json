@@ -13,9 +13,15 @@
   "browser_action": {
     "default_icon": "images/icon.png"
   },
+  "web_accessible_resources": [
+      "images/okc_icons.png"
+  ],
   "content_scripts": [
     {
       "matches": ["http://www.okcupid.com/match*", "http://www.okcupid.com/profile/*", "http://www.okcupid.com/favorites*"],
+      "css": [
+        "css/base.css"
+      ],
       "js": [
         "js/jquery-1.10.2.min.js",
         "js/jquery-ui-1.10.3.custom.min.js",

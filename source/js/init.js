@@ -46,10 +46,29 @@ chrome.runtime.sendMessage({retrieve: "settings"}, function(response) {
 				favorites_array = obj.favorites;
 			}
 
+			adjust_favorites_list(favorites_array);
 			populate_favorites_lists(favorites_array);
 		});
   }
 });
+
+
+/* TO DO */
+// - Remove from List
+// - Better hover colour and list styling.
+// - Add Icon for Adding Profile Notes from the Favorites Page.
+// - Probably remove "Last Rated" date because who cares?
+// - Enhance "About" area to specify drag and drop.
+
+// - Icons: Delete List, Add Notes
+// - Change profile page to have new icons for Notes, Favorites, Ratings.
+// - Remove the Buy her A-List button.
+
+
+
+
+
+
 
 /*** Favorites List Functions ***/
 function add_name_to_list(name, list, favorites_array) {
@@ -59,7 +78,23 @@ function add_name_to_list(name, list, favorites_array) {
 		if (value.list_name === list) {
 			if ($.inArray(name, value.users) < 0) {
 				value.users.push(name);
-				save_favorites(favorites_array)
+				save_favorites(favorites_array);
+			}
+		}
+	});
+}
+
+function remove_name_from_list(name, list, favorites_array) {
+	name = name.replace('usr-', '');
+
+	$.each(favorites_array, function(index, value) {
+		if (value.list_name === list) {
+			if ($.inArray(name, value.users) > -1) {
+				var index_for_removal = value.users.indexOf(name)
+				value.users.splice(index_for_removal, 1);
+				console.log(index_for_removal)
+				save_favorites(favorites_array);
+				console.log(favorites_array)
 			}
 		}
 	});
@@ -141,9 +176,67 @@ function bind_drag_and_drop(favorites_array) {
 	});
 }
 
+function add_remove_from_list_button(favorites_array) {
+	$('.user_row_item').each(function() {
+		$(this).find('.action_rate').before('<span class="favorites_action action_remove_list" title="Remove from list">remove from list</span>');
+	});
+
+	$('.action_remove_list').click(function() {
+		var name = $(this).parent('.user_row_item').attr('id');
+		var list = $('li.favorite_list.current').find('.list_name').text()
+
+		if ($(this).hasClass("removed")) {
+			$(this).removeClass("removed");
+			$(this).attr('title', "Remove from list");
+			add_name_to_list(name, list, favorites_array);
+		} else {
+			$(this).addClass("removed");
+			$(this).attr('title', "Add to list");
+			remove_name_from_list(name, list, favorites_array);
+		}
+	});
+}
+
+function show_remove_from_list_button() {
+	console.log("Show")
+	$('.user_row_item').not('.hidden_helper').each(function() {
+		$(this).find('.action_remove_list').removeClass('hidden_helper');
+	});
+}
+
+function hide_remove_from_list_button() {
+	$('.user_row_item').each(function() {
+		$(this).find('.action_remove_list').addClass('hidden_helper');
+	});
+}
+
+function add_private_notes_to_favorites() {
+	$('.user_row_item').each(function() {
+		var notes = $(this).find('.note');
+		var onclick = notes.find('a').attr('onclick');
+		var classes;
+		var title;
+
+		if (notes.is(':visible')) {
+			classes = "favorites_action action_add_note has_note";
+			title = "Edit private note";
+		} else {
+			classes = "favorites_action action_add_note";
+			title = "Add private note";
+		}
+
+		$(this).find('.action_rate').before('<span class="' + classes + '" onclick="' + onclick + '" title="' + title + '">private note</span>');
+	});
+}
+
+function adjust_favorites_list(favorites_array) {
+	add_remove_from_list_button(favorites_array);
+	add_private_notes_to_favorites();
+}
+
 function populate_favorites_lists(favorites_array) {
 	// Replace "About Favorites" text
-	$('#right_bar').find('.body').html('<h2>About Favorites</h2><p>Use Favorites Lists to save people you like on OkCupid. These lists are private.</p>');
+	$('#right_bar').find('.body').html('<h2>About Favorites</h2><p>Use Favorites Lists to save people you like on OkCupid. These lists are private. You can click and drag people to add them to different lists.</p>');
 
 	// Add container for Favorite Lists
 	$('#right_bar').find('.side_favorites').remove();
@@ -190,6 +283,8 @@ function show_all_favorites() {
 	$('.user_row_item').each(function() {
 		$(this).removeClass('hidden_helper');
 	});
+
+	hide_remove_from_list_button();
 }
 
 function show_ungrouped_favorites(favorites_array) {
@@ -202,10 +297,16 @@ function show_ungrouped_favorites(favorites_array) {
 	// Show all the users.
 	show_all_favorites();
 
+	console.log(listed_names)
+
 	// Hide the users that are on lists.
 	$.each(listed_names, function(index, value) {
-		$('#usr-' + value).addClass('hidden_helper');
+		$.each(value, function(index, value) {
+			$('#usr-' + value).addClass('hidden_helper');
+		});		
 	});	
+
+	hide_remove_from_list_button();
 }
 
 function show_selected_list(searched_list, favorites_array) {
@@ -226,6 +327,8 @@ function show_selected_list(searched_list, favorites_array) {
 	$.each(names, function(index, value) {
 		$('#usr-' + value).removeClass('hidden_helper');
 	});	
+
+	show_remove_from_list_button();
 }
 
 /*** General Functions ***/
