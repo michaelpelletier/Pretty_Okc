@@ -336,14 +336,25 @@ function populate_favorites_lists(favorites_array) {
 	}
 
 	function bind_new_list_link() {
+		$('input#new_favorite_list').keypress(function(e) {
+      if (e.keyCode == 13) {
+      	save_new_list();
+      }
+    });
+
 		$('.save_list').click(function() {
+			save_new_list();
+		});
+
+		function save_new_list() {
 			var new_list_name = $('#new_favorite_list').val();
 			var new_list = {list_name: new_list_name, users: []}
 
 			favorites_array.push(new_list);
 			save_favorites(favorites_array);
 			populate_favorites_lists(favorites_array);
-		});
+		}
+
 	}
 
 	function bind_favorite_list_toggle() {
