@@ -48,12 +48,6 @@ chrome.runtime.sendMessage({retrieve: "settings"}, function(response) {
   }
 });
 
-
-// - Rename List
-// - Add to specific list right from Profile page?
-// - Sort users by recently saved?
-
-
 /*** General Functions ***/
 function add_body_class() {
 	$('body').addClass("pretty_okc");
