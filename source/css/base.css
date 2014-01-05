@@ -221,10 +221,6 @@ Styling Fixes for Favorites Page
   width: 30px;
 }
 
-.pretty_okc .remove_list:hover {
-  background-position: -55px -28px;
-}
-
 .pretty_okc .favorites_action {
   background: url('chrome-extension://__MSG_@@extension_id__/images/okc_icons.png') no-repeat;
   border: 1px solid #ddd;
