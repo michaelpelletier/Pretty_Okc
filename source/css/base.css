@@ -222,8 +222,13 @@ Styling Fixes for Favorites Page
 }
 
 .pretty_okc .favorite_list.current .remove_list       { background-position: -55px -28px; }
-.pretty_okc .favorite_list.current .remove_list:hover { background-position: -55px  -2px; }
 
+.pretty_okc .favorite_list.current .remove_list:hover,
+.pretty_okc .favorite_list.current:hover .remove_list,
+.pretty_okc .favorite_list.current:hover .remove_list:hover 
+{ 
+  background-position: -55px  -2px; 
+}
 
 
 .pretty_okc .favorites_action {
