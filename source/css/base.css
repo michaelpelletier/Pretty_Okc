@@ -163,6 +163,7 @@ Styling Fixes for Favorites Page
 .pretty_okc .user_row_item.ui-draggable-dragging .match_percentages,
 .pretty_okc .user_row_item.ui-draggable-dragging .bottom,
 .pretty_okc .favorites_action.hidden_helper,
+.pretty_okc .edit_list.hidden_helper,
 .pretty_okc .hidden_helper {
   display: none;
 }
@@ -211,6 +212,7 @@ Styling Fixes for Favorites Page
 }
 
 /* New Buttons */
+.pretty_okc .edit_list,
 .pretty_okc .remove_list {
   background: url('chrome-extension://__MSG_@@extension_id__/images/okc_icons.png') -55px -2px no-repeat;
   float: right;
@@ -221,8 +223,12 @@ Styling Fixes for Favorites Page
   width: 30px;
 }
 
+.pretty_okc .favorite_list.current .edit_list,
 .pretty_okc .favorite_list.current .remove_list       { background-position: -55px -28px; }
 
+.pretty_okc .favorite_list.current .edit_list:hover,
+.pretty_okc .favorite_list.current:hover .edit_list,
+.pretty_okc .favorite_list.current:hover .edit_list:hover 
 .pretty_okc .favorite_list.current .remove_list:hover,
 .pretty_okc .favorite_list.current:hover .remove_list,
 .pretty_okc .favorite_list.current:hover .remove_list:hover 
@@ -230,6 +236,10 @@ Styling Fixes for Favorites Page
   background-position: -55px  -2px; 
 }
 
+.update_list,
+.cancel_list {
+  margin-left: 5px;
+}
 
 .pretty_okc .favorites_action {
   background: url('chrome-extension://__MSG_@@extension_id__/images/okc_icons.png') no-repeat;

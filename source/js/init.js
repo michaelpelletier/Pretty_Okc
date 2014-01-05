@@ -309,15 +309,16 @@ function populate_favorites_lists(favorites_array) {
 
 	// Add each favorite list
 	$.each(favorites_array, function(index, value) {
-		$('ul.favorites').append('<li class="favorite_list"><span class="list_name">' + value.list_name + '</span><span class="remove_list" title="Delete list">Delete List</span></li>');
+		$('ul.favorites').append('<li class="favorite_list"><span class="list_name">' + value.list_name + '</span><span class="remove_list" title="Delete list">Delete List</span><span class="edit_list" title="Edit list">Edit List</span></li>');
 	});
 
 	show_all_favorites();
 	unbind_list_events();
-	bind_favorite_list_toggle(favorites_array);
-	bind_favorite_list_delete(favorites_array);
-	bind_new_list_link(favorites_array);
-	bind_drag_and_drop(favorites_array);
+	bind_favorite_list_toggle();
+	bind_delete_list_link();
+	bind_edit_list_link();
+	bind_new_list_link();
+	bind_drag_and_drop();
 
 	function unbind_list_events() {
 		$('.save_list').unbind("click");
@@ -348,7 +349,6 @@ function populate_favorites_lists(favorites_array) {
 			save_favorites(favorites_array);
 			populate_favorites_lists(favorites_array);
 		}
-
 	}
 
 	function bind_favorite_list_toggle() {
@@ -383,12 +383,11 @@ function populate_favorites_lists(favorites_array) {
 		}
 	}
 
-	function bind_favorite_list_delete() {
+	function bind_delete_list_link() {
 		$('.remove_list').click(function() {
 			var list = $(this).siblings('.list_name').text();
 			var index_for_removal;
 
-			console.log(favorites_array)
 			$.each(favorites_array, function(index, value) {
 				if (value.list_name === list) {
 					index_for_removal = index;
@@ -398,6 +397,57 @@ function populate_favorites_lists(favorites_array) {
 			save_favorites(favorites_array);
 			populate_favorites_lists(favorites_array);
 		});
+	}
+
+	function bind_edit_list_link() {
+		$('.edit_list').click(function(e) {
+			e.stopPropagation();
+			$(this).addClass('hidden_helper');
+			var original_list = $(this).siblings('.list_name').text();
+			var index_to_change;
+
+			$(this).siblings('.list_name').addClass('hidden_helper');
+			$(this).parent().prepend('<span class="edit_list_container"><input type="text" id="edit_favorite_list" name="favorites" size="10"><span class="update_list">Save</span><span class="cancel_list">Cancel</span></span>');
+
+			$('#edit_favorite_list').click(function(e) {
+				e.stopPropagation();
+			})
+
+			$('#edit_favorite_list').keypress(function(e) {
+		    if (e.keyCode == 13) {
+		    	e.stopPropagation();
+		    	update_list();
+		    }
+		  });
+
+		  $('.update_list').click(function(e) {
+		  	e.stopPropagation();
+		  	update_list();
+		  });
+
+		  $('.cancel_list').click(function(e) {
+		  	e.stopPropagation();
+		  	$(this).parent().siblings('.list_name').text(original_list).removeClass('hidden_helper');
+		  	$(this).parent().siblings('.list_name').siblings('.edit_list_container').remove();
+		  	$('.edit_list').removeClass('hidden_helper');
+		  });
+
+		  function update_list() {
+				var new_name = $('#edit_favorite_list').val();
+				$.each(favorites_array, function(index, value) {
+					if (value.list_name === original_list) {
+						value.list_name = new_name;
+					}
+				});
+				$(this).parent('.list_name').siblings('.edit_list_container').remove();
+				$(this).parent('.list_name').text(new_name).removeClass('hidden_helper');
+				save_favorites(favorites_array);
+				populate_favorites_lists(favorites_array);
+				$('.edit_list').removeClass('hidden_helper');
+		  }
+		});
+
+
 	}
 
 	function bind_drag_and_drop() {
