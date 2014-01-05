@@ -1,0 +1,74 @@
+/***************************************************
+Styling Fixes for Matches Search Page - Tiles View
+****************************************************/
+
+/* Change Styling for Match Containers */
+.pretty_okc .match_card_wrapper {
+  height: 150px;
+  margin-bottom: 30px;
+  width: 135px;
+}
+
+.pretty_okc .match_card_wrapper .match_card {
+  width: 135px;
+}
+
+.pretty_okc .match_card_wrapper .image_wrapper {
+  height: 125px;
+}
+
+.pretty_okc .match_card_wrapper .match_card_text {
+  top: 130px;
+}
+
+.pretty_okc .match_card_wrapper .match_card_text .profile_info .userinfo {
+  font-size: 12px;
+  line-height: 14px;
+  padding: 0px 0px 0px 5px;
+  text-align: left;
+  width: 95px;
+}
+
+/* Change Display of Online Status */
+.pretty_okc .match_card_wrapper .online_indicator.chat_enabled, 
+.pretty_okc a.online_indicator.online {
+  background-color: #2855a2;
+  border-radius: 0px;
+  font-weight: bold;
+  left: 0px;
+  margin-left: 0px;
+  opacity: .6;
+  top: 100px;
+  width: 135px;
+}
+
+/* Hide Reply Frequency and Username */
+.pretty_okc .match_card .contact_bar,
+.pretty_okc .match_card_wrapper .match_card_text .profile_info .username {
+  display: none;
+}
+
+
+/* Move message after having hidden someone's profile */
+.pretty_okc .match_card_wrapper.user-hidden .user_hidden_overlay {
+  padding-top: 20px;
+}
+
+
+/* Replace all hover resizing / changing borders and other such things. */
+.pretty_okc #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .image_wrapper {
+  height: 130px;
+}
+
+.pretty_okc #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .match_card {
+  width: 135px;
+}
+
+.pretty_okc #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .online_indicator {
+  top: 100px;
+}
+
+/* Replace all the mouseover overrides */
+.pretty_okc #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .image_wrapper img {
+  top: -10px;
+}
