@@ -1,6 +1,8 @@
-$('body').addClass("pretty_okc");
+add_body_class();
 
 chrome.runtime.sendMessage({retrieve: "settings"}, function(response) {
+	add_body_class();
+
 	// Store our settings in variables.
 	var matches_mode = response.mode;
 	var excerpt_priority = response.priority;
@@ -13,11 +15,11 @@ chrome.runtime.sendMessage({retrieve: "settings"}, function(response) {
   	}  	
   } else if (get_location() === "matches") {
   	// I really don't like this, but haven't found a better way to pass these settings yet.
-  	change_tile_text();
+  	update_tiles();
 
 		// When more users are added to the page, call the function.
 		var observer = new MutationSummary({
-		  callback: change_tile_text,
+		  callback: update_tiles,
 		  queries: [{ element: '.match_card_wrapper' }]
 		});
 
@@ -37,6 +39,12 @@ chrome.runtime.sendMessage({retrieve: "settings"}, function(response) {
 
 });
 
+function update_tiles() {
+	change_tile_text();
+	add_star_ratings();
+}
+
+
 function change_tile_text() {
 	$('.match_card_wrapper').each(function() {
 		var self = $(this);
@@ -53,6 +61,33 @@ function change_tile_text() {
 		match = match.split(' ');
 		percents.text(match[0]);
 	});
+}
+
+function add_star_ratings() {
+	$('.match_card_wrapper').each(function() {
+		var self = $(this);
+		var stars = "";
+		var rating_width = self.find('.current-rating').css('width').replace("px", "");
+		rating_width = parseInt(rating_width);
+		
+		if (rating_width === 0) {
+			stars = "no_rating";
+		} else if (rating_width > 70 && rating_width < 100) {
+			stars = "partial_rating";
+		} else if (rating_width > 100) {
+			stars = "full_rating";
+		}
+
+		var action_rating = self.find('.star_rating').length === 0;
+		if (action_rating) {
+			self.find('.match_card_text').append('<div class="star_rating ' + stars + '"></div>');
+		}
+		
+	});
+}
+
+function add_body_class() {
+	$('body').addClass("pretty_okc");
 }
 
 function add_excerpt_div() {

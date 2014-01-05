@@ -14,6 +14,9 @@ Coming Soon:
 
 Version History:
 
+0.6 (In Progress)
+- Incorporate better styling for "Star Ratings" on Matches page in Tiles view.
+
 0.5 
 - Re-Enables Private Notes feature.
 - Add the functionality to grab different Excerpts for the Classic Matches View.
