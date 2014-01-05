@@ -1,21 +1,26 @@
-Current Version 0.5
+Current Version 0.6
 
-Features:
+*** Features ***
+
 - Tweaks the styling on the New Tiles view to display more tiles at once, and improve consistency with the rest of the site.
-- Reintroduces the Classic Match Results view, with the ability to customise which excerpts you wan to see.
+- Reintroduces the Classic Match Results view, with the ability to customise which excerpts you want to see.
 - Removes the "More options" hover from the Matches page, instead displaying all the options at once.
 - Brings back the "Private Notes" feature.
+- Adds better support for Favorited users, including having customizable Favorite lists.
 
-Coming Soon:
-- Multiple Favourites Lists?
-- Way to view all photos from the Search Results? Either as a separate link or some kind of "Expandable" section that contains pictures / information. 
+
+*** Coming Soon ***
+
+- Incorporate a way to view all photos from the Matches page? Either as a separate link or some kind of "Expandable" section that contains pictures / information. 
 - Image Icon for Chrome Extensions Page.
+- Ability to add favorited users to a particular list right from their profile page?
 
 
-Version History:
+*** Version History ***
 
 0.6 (In Progress)
 - Incorporate better styling for "Star Ratings" on Matches page in Tiles view.
+- Multiple Favorites Lists.
 
 0.5 
 - Re-Enables Private Notes feature.
