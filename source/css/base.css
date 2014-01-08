@@ -58,29 +58,166 @@ body.match_cards.pretty_okc .tabbed_heading #actions .action_options {
 }
 
 /* Change Buttons to be Icons */
- body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.notes.white,
- body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.favorite.white {
-  display: inline-block;
-  margin-bottom: 0px;
-  width: 30px;
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options .btn.white a {
+  border: none!important;
 }
 
-.pretty_okc .btn.notes.white a,
-.pretty_okc .btn.favorite.white a {
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options .btn.white a.flag {
+  border: 1px solid #ddd!important;
+}
+
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.white.favorite,
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.white.notes,
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.white.alist,
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.small_white a.hide.grey,
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.small_white a.flag,
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options #hide_btn,
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options #unhide_btn,
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options .flag
+{
+  background-color: #F6F6F6!important;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/okc_icons.png')!important;
+  background-position: 0px 0px;
+  background-repeat: no-repeat;
   border: 1px solid #ddd;
   border-right: none;
-  display: inline-block;
-  height: 26px;
+  display: inline-block!important;
+  height: 27px!important;
+  line-height: 27px!important;
+  margin-bottom: 0px;
   padding: 0px;
+  position: relative;
   text-indent: -9999px;
   width: 30px;
+  -webkit-margin-before: 0em;
+  -webkit-margin-after: 0em;
+  border-radius: none;
+  -moz-border-radius: none;
+  -webkit-border-radius: none;
 }
 
-.pretty_okc .btn.notes.white a { background: #F6F6F6 url('chrome-extension://__MSG_@@extension_id__/images/okc_icons.png') -30px   0px no-repeat!important; }
-.pretty_okc .btn.notes.white a.has_note { background-position: -30px -26px!important;}
+div.tabbed_heading div#actions p.btn a.hide,
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options .btn.small_white a {
+  border: 1px solid #ddd!important;
+  border-right: none!important;
+  border-radius: 0px!important;
+  -moz-border-radius: 0px!important;
+  -webkit-border-radius: 0px!important;
+}
 
-.pretty_okc .btn.favorite.white a { background: #F6F6F6 url(http://akcdn.okccdn.com/media/img/icons/user_actions.png) -31px 0px no-repeat!important; }
-.pretty_okc .btn.favorite.white a.is_favorite { background-position: -31px -26px!important; }
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.white.favorite:hover,
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.white.notes:hover,
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.white.alist:hover,
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.small_white a.hide.grey:hover,
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.small_white a.flag:hover,
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options #hide_btn:hover,
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options #unhide_btn:hover,
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options .flag:hover {
+  background-color: #FFF!important;
+}
+
+.pretty_okc .btn.white.alist          { background-position: -191px -26px!important; }
+.pretty_okc .btn.notes.white          { background-position:  -30px   0px!important; }
+.pretty_okc .btn.notes.white.has_note { background-position:  -30px -26px!important; }
+.pretty_okc #hide_btn                 { background-position:  -90px -26px!important; }
+.pretty_okc #unhide_btn               { background-position:  -90px   2px!important; }
+.pretty_okc .btn.white .flag          { background-position: -160px -25px!important; }
+
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.white.favorite { 
+  background: #F6F6F6 url(http://akcdn.okccdn.com/media/img/icons/user_actions.png) -31px 0px no-repeat!important; 
+}
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.white.favorite.is_favorite { 
+  background-position: -31px -26px!important;
+}
+
+/* Various Fixes */
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options .hide {
+  float: left;
+}
+
+body.match_cards.pretty_okc .tabbed_heading #actions {
+  padding-left: 20px;
+  padding-right: 15px;
+  width: 160px;
+}
+
+body.match_cards.pretty_okc .tabbed_heading #actions .message, 
+body.match_cards.pretty_okc .tabbed_heading #actions .sign_up_btn {
+  width: 156px;
+}
+
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options {
+  width: 160px;
+}
+
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options .flag { border-right: 1px solid #ddd; }
+
+.pretty_okc #upgrade_form {
+  display: inline-block;
+}
+
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options #hide_btn.unhider,
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options #unhide_btn.unhider {
+  display: none!important;
+}
+
+.pretty_okc .action_options .btn.small_white {
+  display: inline-block;
+  height: 32px!important;
+  margin-bottom: 0px;
+  width: 65px!important;
+  vertical-align: top;
+}
+
+.pretty_okc .btn.white.favorite a,
+.pretty_okc .btn.white.alist a,
+.pretty_okc .btn.notes.white a,
+.pretty_okc .btn.a-list.white a { 
+  background: transparent!important;
+}
+
+/* Enhanced Options for Favoriting from the Profile Page. */
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.white.favorite {
+  overflow: visible;
+  vertical-align: top;
+}
+
+.pretty_okc .favorites_list {
+  background: #FFF;
+  margin-left: 10px;
+  position: absolute;
+  text-indent: 0px;
+  top: 104px;
+  width: 145px;
+}
+
+.pretty_okc .favorites_list .title {
+  background: #d5e1ed;
+  border: 1px solid #d5e1ed;
+  border-bottom: 1px solid #b8cadd;
+  color: #2855A2;
+  cursor: default;
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+  height: 30px;
+  line-height: 31px;
+  margin: 0px;
+  overflow: hidden;
+  padding: 0px 8px;
+  text-shadow: 0px 1px 0px #fff;
+  width: auto;
+}
+
+.pretty_okc .favorites_list ul.favorites {
+  margin-top: 0px;
+}
+
+.pretty_okc .favorites_list ul.favorites li {
+  border: 1px solid #DDD;
+  border-top: none;
+  padding: 5px;
+}
 
 /**************************************
 Styling Fixes for Favorites Page 
@@ -103,8 +240,8 @@ Styling Fixes for Favorites Page
   font-family: verdana, sans-serif;
   font-size: 11px;
   font-weight: bold;
-  height: 32px;
-  line-height: 32px;
+  height: 24px;
+  line-height: 24px;
   margin-left: 5px;
   overflow: hidden;
   padding: 0px 3px;
@@ -121,6 +258,11 @@ Styling Fixes for Favorites Page
   background: #e5e5e5;
 }
 
+#new_favorite_list {
+  margin: 0px;
+  width: 206px;
+}
+
 /* Links for selecting Favorite Lists */
 .favorite_list_all,
 .favorite_list_none,
@@ -128,6 +270,8 @@ Styling Fixes for Favorites Page
   background: #F7f7f7;
   border: 1px solid #dfdfdf;
   color: #777;
+  height: 29px;
+  line-height: 29px;
   margin-bottom: 10px;
   padding: 10px;
   text-shadow: 0px 1px 0px #f6f6f6;
@@ -157,15 +301,8 @@ Styling Fixes for Favorites Page
   background: #efefef;
 }
 
-.pretty_okc .user_row_item.ui-draggable-dragging .action_favorite,
-.pretty_okc .user_row_item.ui-draggable-dragging .favorites_action,
-.pretty_okc .user_row_item.ui-draggable-dragging .action_rate,
-.pretty_okc .user_row_item.ui-draggable-dragging .match_percentages,
-.pretty_okc .user_row_item.ui-draggable-dragging .bottom,
-.pretty_okc .favorites_action.hidden_helper,
-.pretty_okc .edit_list.hidden_helper,
 .pretty_okc .hidden_helper {
-  display: none;
+  display: none!important;
 }
 
 .pretty_okc .user_row_item.ui-draggable-dragging {
@@ -213,33 +350,45 @@ Styling Fixes for Favorites Page
 
 /* New Buttons */
 .pretty_okc .edit_list,
-.pretty_okc .remove_list {
-  background: url('chrome-extension://__MSG_@@extension_id__/images/okc_icons.png') -55px -2px no-repeat;
-  float: right;
+.pretty_okc .remove_list,
+.pretty_okc .update_list {
+  background: url('chrome-extension://__MSG_@@extension_id__/images/okc_icons.png') no-repeat;
   display: block;
   float: right;
-  height: 26px;
+  height: 29px;
   text-indent: -9999px;
-  width: 30px;
+  width: 20px;
 }
 
-.pretty_okc .favorite_list.current .edit_list,
-.pretty_okc .favorite_list.current .remove_list       { background-position: -55px -28px; }
-
+.pretty_okc .edit_list,
 .pretty_okc .favorite_list.current .edit_list:hover,
 .pretty_okc .favorite_list.current:hover .edit_list,
-.pretty_okc .favorite_list.current:hover .edit_list:hover 
-.pretty_okc .favorite_list.current .remove_list:hover,
-.pretty_okc .favorite_list.current:hover .remove_list,
-.pretty_okc .favorite_list.current:hover .remove_list:hover 
-{ 
-  background-position: -55px  -2px; 
+.pretty_okc .favorite_list.current:hover .edit_list:hover {
+  background-position: -130px 3px;
 }
 
-.update_list,
-.cancel_list {
+.pretty_okc .remove_list,                          
+.pretty_okc .favorite_list.current .remove_list:hover,
+.pretty_okc .favorite_list.current:hover .remove_list,
+.pretty_okc .favorite_list.current:hover .remove_list:hover { 
+  background-position: -65px 1px; 
+}
+
+.pretty_okc .update_list,
+.pretty_okc .favorite_list.current .update_list:hover,
+.pretty_okc .favorite_list.current:hover .update_list,
+.pretty_okc .favorite_list.current:hover .update_list:hover {
+  background-position: -227px 3px;
+  display: inline-block;
+  float: none;
   margin-left: 5px;
 }
+
+.pretty_okc .favorite_list.current .edit_list   { background-position: -130px -26px; }
+.pretty_okc .favorite_list.current .remove_list { background-position:  -65px -25px; }
+.pretty_okc .favorite_list.current .update_list { background-position: -227px -25px; }
+
+.pretty_okc #edit_favorite_list { width: 220px; }
 
 .pretty_okc .favorites_action {
   background: url('chrome-extension://__MSG_@@extension_id__/images/okc_icons.png') no-repeat;

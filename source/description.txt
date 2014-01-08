@@ -13,7 +13,6 @@ Current Version 0.6
 
 - Incorporate a way to view all photos from the Matches page? Either as a separate link or some kind of "Expandable" section that contains pictures / information. 
 - Image Icon for Chrome Extensions Page.
-- Ability to add favorited users to a particular list right from their profile page?
 
 
 *** Version History ***
@@ -21,6 +20,9 @@ Current Version 0.6
 0.6 (In Progress)
 - Incorporate better styling for "Star Ratings" on Matches page in Tiles view.
 - Multiple Favorites Lists.
+- Add, Remove, Rename Favorites Lists.
+- Add people to multiple lists right from their profiles.
+- Replace Profile buttons with icons. 
 
 0.5 
 - Re-Enables Private Notes feature.
