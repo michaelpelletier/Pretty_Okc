@@ -379,7 +379,7 @@ function populate_favorites_lists(favorites_array) {
 
 	// Add each favorite list
 	$.each(favorites_array, function(index, value) {
-		$('ul.favorites').append('<li class="favorite_list"><span class="list_name">' + value.list_name + '</span><span class="remove_list" title="Delete list">Delete List</span><span class="edit_list" title="Edit list">Edit List Name</span></li>');
+		$('ul.favorites').append('<li class="favorite_list"><span class="list_name">' + value.list_name + '</span><span class="remove_list" title="Delete list">Delete List</span><span class="edit_list" title="Edit list name">Edit List Name</span></li>');
 	});
 
 	show_all_favorites();
