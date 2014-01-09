@@ -91,6 +91,11 @@ Styling Fixes for Matches Search Page - Tiles View
   transition: none;
 }
 
+.pretty_okc #personality-rating.match_card_rating.show {
+  opacity: 0;
+  visibility: hidden;
+}
+
 .pretty_okc #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .match_card_rating {
   left: 1px;
   top: -127px;
