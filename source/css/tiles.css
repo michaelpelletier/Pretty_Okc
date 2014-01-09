@@ -73,7 +73,9 @@ Styling Fixes for Matches Search Page - Tiles View
   top: -10px;
 }
 
+.pretty_okc #match_results.not-scrolling .match_card_wrapper.user-not-hidden .percentages.hide_on_hover.hidden,
 .pretty_okc #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .percentages.hide_on_hover {
+  display: block!important;
   opacity: 1;
   filter:alpha(opacity=100);
 }

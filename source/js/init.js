@@ -47,8 +47,7 @@ chrome.runtime.sendMessage({retrieve: "settings"}, function(response) {
 				favorites_array = obj.favorites;
 			}
 
-			adjust_favorites_list(favorites_array);
-			populate_favorites_lists(favorites_array);
+			get_all_favorites(favorites_array);
 		});
   }
 });
@@ -322,9 +321,10 @@ function remove_name_from_list(name, list, favorites_array) {
 }
 
 function adjust_favorites_list(favorites_array) {
-	add_remove_from_list_button();
+	//add_remove_from_list_button();
 	add_private_notes_to_favorites();
 
+	// This function is going away.
 	function add_remove_from_list_button() {
 		// For each user, it adds a link to remove them from this particular list.
 		$('.user_row_item').each(function() {
@@ -604,4 +604,45 @@ function save_favorites(favorites_array) {
 	chrome.storage.local.set({favorites: favorites_array}, function() {
 	 	console.log("Storage Succesful");
   });
+}
+
+function get_all_favorites(favorites_array) {
+	var last_page = $('.pages.clearfix');
+	var pages = last_page.find('a.last').text();
+	var i = 0;
+	var pages_array = [];
+	var deferreds = [];
+
+	// Put all the pages into an array.
+	// Also note that each page will have a defer. More on that later.
+	for (var i = 2; i <= pages; i++) {
+	  pages_array.push(i);
+	  deferreds.push(new $.Deferred());
+	}
+
+	// Append our new container, and remove the pagination.
+	last_page.before('<div class="additional_pages"></div>');
+	last_page.remove();
+
+	$.each(pages_array, function(index, value) {
+		// Calculate the lowest numbered favorite.
+		var starting_results = ((value - 1) * 25) + 1;
+		$('.additional_pages').append('<div class="page_' + value + '"></div>');
+		var page_container = $('.page_' + value);
+		var url = 'http://www.okcupid.com/favorites?low=' + starting_results + ' #main_column';
+		// Load in the content.
+		page_container.load(url, function(response) {
+			page_container.find('.pages.clearfix').remove();
+			// Resolve the defer.
+			deferreds[i].resolve();
+			i++;
+		});
+	});
+
+	// When all the defers are resolved, run the functions that affect each 
+	// of the individual profile containers. 
+	$.when.apply(null, deferreds).done(function() { 
+   	adjust_favorites_list(favorites_array);
+		populate_favorites_lists(favorites_array);
+	});
 }

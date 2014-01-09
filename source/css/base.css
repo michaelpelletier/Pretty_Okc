@@ -230,6 +230,12 @@ Styling Fixes for Favorites Page
   padding: 10px;
 }
 
+/* Container for Ajax'ed In Favorites */
+.pretty_okc .additional_pages div#main_column,
+.pretty_okc .additional_pages div#main_column .user_list {
+  margin: 0px;
+}
+
 /* Button to Save New List */
 .pretty_okc #right_bar .save_list {
   background: #F7f7f7;
@@ -325,6 +331,10 @@ Styling Fixes for Favorites Page
   border-top: none;
   padding: 10px;
   width: 390px;
+}
+
+.pretty_okc .user_row_item.pagination {
+  border-bottom: 0px;
 }
 
 .pretty_okc div.user_row_item p.match_percentages {
