@@ -379,7 +379,7 @@ function populate_favorites_lists(favorites_array) {
 
 	// Add each favorite list
 	$.each(favorites_array, function(index, value) {
-		$('ul.favorites').append('<li class="favorite_list"><span class="list_name">' + value.list_name + '</span><span class="remove_list" title="Delete list">Delete List</span><span class="edit_list" title="Edit list">Edit List</span></li>');
+		$('ul.favorites').append('<li class="favorite_list"><span class="list_name">' + value.list_name + '</span><span class="remove_list" title="Delete list">Delete List</span><span class="edit_list" title="Edit list">Edit List Name</span></li>');
 	});
 
 	show_all_favorites();
@@ -480,7 +480,7 @@ function populate_favorites_lists(favorites_array) {
 			$(this).siblings('.list_name').addClass('hidden_helper');
 			$(this).siblings('.remove_list').addClass('hidden_helper');
 
-			$(this).parent().prepend('<div class="edit_list_container"><input type="text" id="edit_favorite_list" name="favorites" size="30" value="' + original_list + '"><span class="update_list">Save</span></div>');
+			$(this).parent().prepend('<div class="edit_list_container"><input type="text" id="edit_favorite_list" name="favorites" size="30" value="' + original_list + '"><span class="update_list" title="Update list name">Update</span></div>');
 
 			$('#edit_favorite_list').click(function(e) {
 				e.stopPropagation();
