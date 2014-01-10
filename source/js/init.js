@@ -497,7 +497,7 @@ function populate_favorites_lists(favorites_array) {
 		// Offset between the favorites list and top of the page.
 		// Change this to be calculated in a way that the changing offset
 		// won't change the variable.
-		var offset = 307;		
+		var offset = 315;		
   	if ($(window).scrollTop() > offset) {
    		lists_container.css({'position': 'fixed', 'top': '10px'}); 
   	} else {
