@@ -320,55 +320,6 @@ function remove_name_from_list(name, list, favorites_array) {
 	});
 }
 
-function adjust_favorites_list(favorites_array) {
-	//add_remove_from_list_button();
-	add_private_notes_to_favorites();
-
-	// This function is going away.
-	function add_remove_from_list_button() {
-		// For each user, it adds a link to remove them from this particular list.
-		$('.user_row_item').each(function() {
-			$(this).find('.action_rate').before('<span class="favorites_action action_remove_list" title="Remove from list">remove from list</span>');
-		});
-
-		// Which when clicked, toggles either adding them or removing them from the list.
-		$('.action_remove_list').click(function() {
-			var name = $(this).parent('.user_row_item').attr('id');
-			var list = $('li.favorite_list.current').find('.list_name').text()
-
-			if ($(this).hasClass("removed")) {
-				$(this).removeClass("removed");
-				$(this).attr('title', "Remove from list");
-				add_name_to_list(name, list, favorites_array);
-			} else {
-				$(this).addClass("removed");
-				$(this).attr('title', "Add to list");
-				remove_name_from_list(name, list, favorites_array);
-			}
-		});
-	}
-
-	function add_private_notes_to_favorites() {
-		// Adds a link for each user to Add or Edit private notes for them.
-		$('.user_row_item').each(function() {
-			var notes = $(this).find('.note');
-			var onclick = notes.find('a').attr('onclick');
-			var classes;
-			var title;
-
-			if (notes.is(':visible')) {
-				classes = "favorites_action action_add_note has_note";
-				title = "Edit private note";
-			} else {
-				classes = "favorites_action action_add_note";
-				title = "Add private note";
-			}
-
-			$(this).find('.action_rate').before('<span class="' + classes + '" onclick="' + onclick + '" title="' + title + '">private note</span>');
-		});
-	}
-}
-
 function populate_favorites_lists(favorites_array) {
 	// Replace "About Favorites" text
 	$('#right_bar').find('.body').html('<h2>About Favorites</h2><p>Use Favorites Lists to save people you like on OkCupid. These lists are private. You can click and drag people to add them to different lists.</p>');
@@ -389,6 +340,8 @@ function populate_favorites_lists(favorites_array) {
 	bind_edit_list_link();
 	bind_new_list_link();
 	bind_drag_and_drop();
+	make_lists_follow();
+	$(window).scroll(make_lists_follow);
 
 	function unbind_list_events() {
 		$('.save_list').unbind("click");
@@ -538,6 +491,20 @@ function populate_favorites_lists(favorites_array) {
 	    }
 		});
 	}
+
+	function make_lists_follow() {
+		var lists_container = $('.side_favorites'); 
+		// Offset between the favorites list and top of the page.
+		// Change this to be calculated in a way that the changing offset
+		// won't change the variable.
+		var offset = 307;		
+  	if ($(window).scrollTop() > offset) {
+   		lists_container.css({'position': 'fixed', 'top': '10px'}); 
+  	} else {
+    	lists_container.css({'position': 'relative', 'top': 'auto'});
+		}
+	}
+
 }
 
 function show_all_favorites() {
@@ -609,21 +576,20 @@ function save_favorites(favorites_array) {
 function get_all_favorites(favorites_array) {
 	var last_page = $('.pages.clearfix');
 	var pages = last_page.find('a.last').text();
-	var i = 0;
 	var pages_array = [];
-	var deferreds = [];
-
+	var defer_array = [];
 	// Put all the pages into an array.
 	// Also note that each page will have a defer. More on that later.
 	for (var i = 2; i <= pages; i++) {
 	  pages_array.push(i);
-	  deferreds.push(new $.Deferred());
+	 	defer_array.push(new $.Deferred());
 	}
 
 	// Append our new container, and remove the pagination.
 	last_page.before('<div class="additional_pages"></div>');
 	last_page.remove();
 
+	var i = 0;
 	$.each(pages_array, function(index, value) {
 		// Calculate the lowest numbered favorite.
 		var starting_results = ((value - 1) * 25) + 1;
@@ -634,15 +600,36 @@ function get_all_favorites(favorites_array) {
 		page_container.load(url, function(response) {
 			page_container.find('.pages.clearfix').remove();
 			// Resolve the defer.
-			deferreds[i].resolve();
+			defer_array[i].resolve();
 			i++;
 		});
 	});
 
 	// When all the defers are resolved, run the functions that affect each 
 	// of the individual profile containers. 
-	$.when.apply(null, deferreds).done(function() { 
-   	adjust_favorites_list(favorites_array);
+	$.when.apply(null, defer_array).done(function() { 
 		populate_favorites_lists(favorites_array);
+		add_private_notes_to_favorites();
 	});
+
+	function add_private_notes_to_favorites() {
+		// Adds a link for each user to Add or Edit private notes for them.
+		$('.user_row_item').each(function() {
+			var notes = $(this).find('.note');
+			var onclick = notes.find('a').attr('onclick');
+			var classes;
+			var title;
+
+			if (notes.is(':visible')) {
+				classes = "favorites_action action_add_note has_note";
+				title = "Edit private note";
+			} else {
+				classes = "favorites_action action_add_note";
+				title = "Add private note";
+			}
+
+			$(this).find('.action_rate').before('<span class="' + classes + '" onclick="' + onclick + '" title="' + title + '">private note</span>');
+		});
+	}
+
 }
