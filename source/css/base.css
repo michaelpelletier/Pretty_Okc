@@ -277,10 +277,10 @@ Styling Fixes for Favorites Page
   background: #F7f7f7;
   border: 1px solid #dfdfdf;
   color: #777;
-  height: 29px;
-  line-height: 29px;
+  height: 16px;
+  line-height: 16px;
   margin-bottom: 10px;
-  padding: 10px;
+  padding: 5px 10px;
   text-shadow: 0px 1px 0px #f6f6f6;
 }
 
@@ -354,6 +354,10 @@ Styling Fixes for Favorites Page
 }
 
 /* Notes Text Field */
+.edit_list_container {
+  margin: -6px;
+}
+
 .pretty_okc div.user_row_item div.note .editor textarea {
   min-width: 370px;
   max-width: 370px; 
@@ -375,29 +379,29 @@ Styling Fixes for Favorites Page
 .pretty_okc .favorite_list.current .edit_list:hover,
 .pretty_okc .favorite_list.current:hover .edit_list,
 .pretty_okc .favorite_list.current:hover .edit_list:hover {
-  background-position: -130px 3px;
+  background-position: -130px -3px;
 }
 
 .pretty_okc .remove_list,                          
 .pretty_okc .favorite_list.current .remove_list:hover,
 .pretty_okc .favorite_list.current:hover .remove_list,
 .pretty_okc .favorite_list.current:hover .remove_list:hover { 
-  background-position: -65px 1px; 
+  background-position: -65px -5px; 
 }
 
 .pretty_okc .update_list,
 .pretty_okc .favorite_list.current .update_list:hover,
 .pretty_okc .favorite_list.current:hover .update_list,
 .pretty_okc .favorite_list.current:hover .update_list:hover {
-  background-position: -227px 3px;
+  background-position: -227px -3px;
   display: inline-block;
   float: none;
   margin-left: 5px;
 }
 
-.pretty_okc .favorite_list.current .edit_list   { background-position: -130px -26px; }
-.pretty_okc .favorite_list.current .remove_list { background-position:  -65px -25px; }
-.pretty_okc .favorite_list.current .update_list { background-position: -227px -25px; }
+.pretty_okc .favorite_list.current .edit_list   { background-position: -130px -32px; }
+.pretty_okc .favorite_list.current .remove_list { background-position:  -65px -31px; }
+.pretty_okc .favorite_list.current .update_list { background-position: -227px -31px; }
 
 .pretty_okc #edit_favorite_list { width: 220px; }
 
