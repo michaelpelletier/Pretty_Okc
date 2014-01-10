@@ -213,23 +213,39 @@ function change_tile_text() {
 function add_star_ratings() {
 	$('.match_card_wrapper').each(function() {
 		var self = $(this);
-		var stars = "";
+		var stars = calculate_star_ratings(self);
+		apply_star_ratings(self, stars)
+
+		// If the user changes a rating, adjust accordingly
+		self.find('#personality-rating').find('li').find('a').click(function() {
+			setTimeout(function() {
+				var new_stars = calculate_star_ratings(self);
+				apply_star_ratings(self, new_stars);
+			}, 500);
+		});
+	});
+
+	function calculate_star_ratings(self) {
 		var rating_width = self.find('.current-rating').css('width').replace("px", "");
 		rating_width = parseInt(rating_width);
-		
-		if (rating_width === 0) {
-			stars = "no_rating";
-		} else if (rating_width > 70 && rating_width < 100) {
-			stars = "partial_rating";
-		} else if (rating_width > 100) {
-			stars = "full_rating";
-		}
 
+		if (rating_width === 0) {
+			return "no_rating";
+		} else if (rating_width > 70 && rating_width < 100) {
+			return "partial_rating";
+		} else if (rating_width > 100) {
+			return "full_rating";
+		}
+	}
+
+	function apply_star_ratings(self, stars) {
 		var action_rating = self.find('.star_rating').length === 0;
 		if (action_rating) {
 			self.find('.match_card_text').append('<div class="star_rating ' + stars + '"></div>');
-		}		
-	});
+		} else {
+			self.find('.star_rating').removeClass('no_rating').removeClass('partial_rating').removeClass('full_rating').addClass(stars);
+		}
+	}
 }
 
 /*** Classic View Specific Functions ***/
