@@ -4,8 +4,10 @@ add_body_class();
 chrome.runtime.sendMessage({retrieve: "settings"}, function(response) {
 	// Update the icon with the current message count
 	var message_count = $('#nav_mailbox_badge').find('span.curr').text();
-	chrome.runtime.sendMessage({ messages: message_count});
-
+	if (message_count) {
+		chrome.runtime.sendMessage({ messages: message_count});
+	}
+	
 	add_body_class();
 
 	// Store our settings in variables.
