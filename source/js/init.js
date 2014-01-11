@@ -447,26 +447,22 @@ function initialize_favorites_lists(favorites_array) {
 	}
 
 	function bind_favorite_list_toggle() {
-		$('li.favorite_list').click(function() {
+		$('ul.favorites li').click(function() {
+			// Hide the favorite list hover just in case.
+			$('.monolith').find('.favorites_list.favorites_page').addClass('hidden_helper');
+			
+			// Swap the "current" class.
 			remove_current();
 			$(this).addClass('current');
-
-			var list = $(this).find('.list_name').text();
-			show_selected_list(list, favorites_array);
-		});
-
-		$('li.favorite_list_none').click(function() {
-			remove_current();
-			$(this).addClass('current');
-
-			show_ungrouped_favorites(favorites_array);
-		});
-
-		$('li.favorite_list_all').click(function() {
-			remove_current();
-			$(this).addClass('current');
-
-			show_all_favorites();
+			
+			if ($(this).hasClass('favorite_list_all')) {
+				show_all_favorites();
+			} else if ($(this).hasClass('favorite_list_none')) {
+				show_ungrouped_favorites(favorites_array);
+			} else {
+				var list = $(this).find('.list_name').text();
+				show_selected_list(list, favorites_array);
+			}
 		});
 
 		function remove_current() {
