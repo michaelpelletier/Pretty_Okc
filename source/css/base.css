@@ -417,3 +417,35 @@ Styling Fixes for Favorites Page
 .pretty_okc .favorites_list.favorites_page {
   left: 135px;
 }
+
+/* Scroll to Top */
+.pretty_okc #back_to_top {
+  background: rgba(0,0,0,0.85);
+  border-radius: 5px;
+  bottom: 16px;
+  height: 70px;
+  left: 1194px;
+  opacity: 1;
+  padding-top: 21px;
+  position: fixed;
+  top: auto;
+  visibility: visible;
+  width: 70px;
+  z-index: 20001;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.pretty_okc #back_to_top .icon {
+  background: url(http://akcdn.okccdn.com/media/img/icons/back_to_top_arrow_v2.png) 0 0 no-repeat;
+  display: block;
+  height: 29px;
+  left: 50%;
+  line-height: 500px;
+  margin-bottom: 5px;
+  margin-left: -12px;
+  overflow: hidden;
+  position: relative;
+  width: 24px;
+}

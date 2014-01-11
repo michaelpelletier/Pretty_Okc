@@ -340,6 +340,9 @@ function initialize_favorites_lists(favorites_array) {
 	bind_new_list_link();
 	make_lists_follow();
 	$(window).scroll(make_lists_follow);
+	$(window).scroll(check_scroll_top);
+
+	create_scroll_top();
 
 	function create_sidebar_html() {
 		// Replace "About Favorites" text
@@ -549,6 +552,18 @@ function initialize_favorites_lists(favorites_array) {
 		}
 	}
 
+	function create_scroll_top() {
+		$('.monolith').append('<a id="back_to_top" class="opensans fixed show hidden_helper" href="#"><span class="icon">Back to top</span></a>');
+	}
+
+	function check_scroll_top() {
+		var offset = 200;
+		if ($(window).scrollTop() > offset) {
+			$('#back_to_top').removeClass('hidden_helper');
+		} else {
+			$('#back_to_top').addClass('hidden_helper');
+		}
+	}
 }
 
 function show_all_favorites() {
