@@ -1,7 +1,12 @@
+.pretty_okc .hidden_helper {
+  display: none!important;
+}
+
 /**************************************
 Styling Fixes for Matches Page 
 ***************************************/
 
+/* Changes to overall Match container */
 .pretty_okc .match_card_wrapper .match_card {
   border: 1px solid #dcdfe6;
   box-shadow: none;
@@ -12,6 +17,7 @@ Styling Fixes for Matches Page
 /* Change display of Match Percentages */
 .pretty_okc .match_card_wrapper .match_card_text .percentages {
   color: #f83265;
+  display: block!important;
   font-size: 16px;
   font-weight: bold;
   height: 25px;
@@ -25,6 +31,7 @@ Styling Fixes for Matches Page
   z-index: 100;
 }
 
+/* Hover Changes */
 .pretty_okc #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .match_card {
   left: 0px;
   top: 0px;
@@ -44,7 +51,7 @@ Styling Fixes for Matches Page
 Styling Fixes for Profile Page 
 ***************************************/
 
-/* Removes action button and just displays links for favorites, buy a-list, hide, report. */
+/* Removes "more options" button and just displays links for favorites, buy a-list, hide, report. */
 body.match_cards.pretty_okc .tabbed_heading #actions .trigger_action_options_wrapper,
 body.match_cards.pretty_okc .tabbed_heading #actions .trigger_action_options_wrapper #trigger_action_options {
   display: none;
@@ -53,4 +60,401 @@ body.match_cards.pretty_okc .tabbed_heading #actions .trigger_action_options_wra
 body.match_cards.pretty_okc .tabbed_heading #actions .action_options {
   height: auto;
   margin-top: 2px;
+}
+
+/* Change Buttons to be Icons */
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options .btn.white a {
+  border: none!important;
+}
+
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options .btn.white a.flag {
+  border: 1px solid #ddd!important;
+}
+
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.white.favorite,
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.white.notes,
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.white.alist,
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.small_white a.hide.grey,
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.small_white a.flag,
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options #hide_btn,
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options #unhide_btn,
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options .flag
+{
+  background-color: #F6F6F6!important;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/okc_icons.png')!important;
+  background-position: 0px 0px;
+  background-repeat: no-repeat;
+  border: 1px solid #ddd;
+  border-right: none;
+  display: inline-block!important;
+  height: 27px!important;
+  line-height: 27px!important;
+  margin-bottom: 0px;
+  padding: 0px;
+  position: relative;
+  text-indent: -9999px;
+  width: 30px;
+  -webkit-margin-before: 0em;
+  -webkit-margin-after: 0em;
+  border-radius: none;
+  -moz-border-radius: none;
+  -webkit-border-radius: none;
+}
+
+div.tabbed_heading div#actions p.btn a.hide,
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options .btn.small_white a {
+  border: 1px solid #ddd!important;
+  border-right: none!important;
+  border-radius: 0px!important;
+  -moz-border-radius: 0px!important;
+  -webkit-border-radius: 0px!important;
+}
+
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.white.favorite:hover,
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.white.notes:hover,
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.white.alist:hover,
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.small_white a.hide.grey:hover,
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.small_white a.flag:hover,
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options #hide_btn:hover,
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options #unhide_btn:hover,
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options .flag:hover {
+  background-color: #FFF!important;
+}
+
+.pretty_okc .btn.white.alist          { background-position: -191px -26px!important; }
+.pretty_okc .btn.notes.white          { background-position:  -30px   0px!important; }
+.pretty_okc .btn.notes.white.has_note { background-position:  -30px -26px!important; }
+.pretty_okc #hide_btn                 { background-position:  -90px -26px!important; }
+.pretty_okc #unhide_btn               { background-position:  -90px   2px!important; }
+.pretty_okc .btn.white .flag          { background-position: -160px -25px!important; }
+
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.white.favorite { 
+  background: #F6F6F6 url(http://akcdn.okccdn.com/media/img/icons/user_actions.png) -31px 0px no-repeat!important; 
+}
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.white.favorite.is_favorite { 
+  background-position: -31px -26px!important;
+}
+
+/* Various Fixes */
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options .hide {
+  float: left;
+}
+
+body.match_cards.pretty_okc .tabbed_heading #actions {
+  padding-left: 20px;
+  padding-right: 15px;
+  width: 160px;
+}
+
+body.match_cards.pretty_okc .tabbed_heading #actions .message, 
+body.match_cards.pretty_okc .tabbed_heading #actions .sign_up_btn {
+  width: 156px;
+}
+
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options {
+  width: 160px;
+}
+
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options .flag { border-right: 1px solid #ddd; }
+
+.pretty_okc #upgrade_form {
+  display: inline-block;
+}
+
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options #hide_btn.unhider,
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options #unhide_btn.unhider {
+  display: none!important;
+}
+
+.pretty_okc .action_options .btn.small_white {
+  display: inline-block;
+  height: 32px!important;
+  margin-bottom: 0px;
+  width: 65px!important;
+  vertical-align: top;
+}
+
+.pretty_okc .btn.white.favorite a,
+.pretty_okc .btn.white.alist a,
+.pretty_okc .btn.notes.white a,
+.pretty_okc .btn.a-list.white a { 
+  background: transparent!important;
+}
+
+/* Enhanced Options for Favoriting from the Profile Page. */
+body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.white.favorite {
+  overflow: visible;
+  vertical-align: top;
+}
+
+/**************************************
+Styling Fixes for Favorites Page 
+***************************************/
+
+.pretty_okc .monolith {
+  position: relative;
+}
+
+/* Container for Favorite Lists */
+.pretty_okc div#right_bar div.body,
+.pretty_okc .side_favorites {
+  background: #eee;
+  padding: 10px;
+  z-index: 1000;
+}
+
+/* Container for Ajax'ed In Favorites */
+.pretty_okc .additional_pages div#main_column,
+.pretty_okc .additional_pages div#main_column .user_list {
+  margin: 0px;
+}
+
+/* Button to Save New List */
+.pretty_okc #right_bar .save_list {
+  background: #F7f7f7;
+  border: 1px solid #ddd;
+  color: #555;
+  cursor: pointer;
+  display: inline-block;
+  font-family: verdana, sans-serif;
+  font-size: 11px;
+  font-weight: bold;
+  height: 24px;
+  line-height: 24px;
+  margin-left: 5px;
+  overflow: hidden;
+  padding: 0px 3px;
+  text-align: center;
+  text-transform: none;
+  vertical-align: bottom;
+  width: 50px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+}
+
+.pretty_okc #right_bar .save_list:hover {
+  background: #e5e5e5;
+}
+
+#new_favorite_list {
+  margin: 0px;
+  width: 206px;
+}
+
+/* Links for selecting Favorite Lists */
+.favorite_list_all,
+.favorite_list_none,
+.favorite_list {
+  background: #F7f7f7;
+  border: 1px solid #dfdfdf;
+  color: #777;
+  height: 16px;
+  line-height: 16px;
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  text-shadow: 0px 1px 0px #f6f6f6;
+}
+
+.favorite_list_all.current,
+.favorite_list_none.current,
+.favorite_list.current {
+  background: #d5e1ed;
+  color: #2855a2;
+}
+
+.favorite_list_none:hover,
+.favorite_list_all:hover,
+.favorite_list:hover {
+  background: #2855a2;
+  border: 1px solid #142d69;
+  color: #FFF;
+  cursor: pointer;
+  text-shadow: none;
+}
+
+/* Individual Favorited Users */
+.pretty_okc .user_row_item {
+  border-top: none;
+  padding: 10px;
+  width: 390px;
+}
+
+.pretty_okc .user_row_item.pagination {
+  border-bottom: 0px;
+}
+
+.pretty_okc div.user_row_item p.match_percentages {
+  right: 10px;
+}
+
+.pretty_okc div.user_row_item div.extra_info {
+  left: 210px;
+}
+
+.pretty_okc div.user_row_item p.last_rated, 
+.pretty_okc div.user_row_item p.last_visited,
+.pretty_okc div.user_row_item div.extra_info p.hidden_actions {
+  display: none;
+  visibility: hidden;
+}
+
+/* Notes Text Field */
+.edit_list_container {
+  margin: -6px;
+}
+
+.pretty_okc div.user_row_item div.note .editor textarea {
+  min-width: 370px;
+  max-width: 370px; 
+}
+
+/* New Buttons */
+.pretty_okc .edit_list,
+.pretty_okc .remove_list,
+.pretty_okc .update_list {
+  background: url('chrome-extension://__MSG_@@extension_id__/images/okc_icons.png') no-repeat;
+  display: block;
+  float: right;
+  height: 29px;
+  text-indent: -9999px;
+  width: 20px;
+}
+
+.pretty_okc .edit_list,
+.pretty_okc .favorite_list.current .edit_list:hover,
+.pretty_okc .favorite_list.current:hover .edit_list,
+.pretty_okc .favorite_list.current:hover .edit_list:hover {
+  background-position: -130px -3px;
+}
+
+.pretty_okc .remove_list,                          
+.pretty_okc .favorite_list.current .remove_list:hover,
+.pretty_okc .favorite_list.current:hover .remove_list,
+.pretty_okc .favorite_list.current:hover .remove_list:hover { 
+  background-position: -65px -5px; 
+}
+
+.pretty_okc .update_list,
+.pretty_okc .favorite_list.current .update_list:hover,
+.pretty_okc .favorite_list.current:hover .update_list,
+.pretty_okc .favorite_list.current:hover .update_list:hover {
+  background-position: -227px -3px;
+  display: inline-block;
+  float: none;
+  margin-left: 5px;
+}
+
+.pretty_okc .favorite_list.current .edit_list   { background-position: -130px -32px; }
+.pretty_okc .favorite_list.current .remove_list { background-position:  -65px -31px; }
+.pretty_okc .favorite_list.current .update_list { background-position: -227px -31px; }
+
+.pretty_okc #edit_favorite_list { width: 220px; }
+
+.pretty_okc .favorites_action {
+  background: url('chrome-extension://__MSG_@@extension_id__/images/okc_icons.png') no-repeat;
+  border: 1px solid #ddd;
+  border-right: none;
+  cursor: pointer;
+  display: block;
+  float: left;
+  height: 26px;
+  text-indent: -9999px;
+  width: 30px;
+}
+
+.pretty_okc .favorites_action:hover {
+  background-color: #FFF;
+}
+
+.pretty_okc .action_remove_list         { background-position:   0px -26px; }
+.pretty_okc .action_remove_list.removed { background-position:   0px   0px; }
+.pretty_okc .action_add_note            { background-position: -30px   0px; }
+.pretty_okc .action_add_note.has_note   { background-position: -30px -26px; }
+
+/* Enhanced Favorites Options */
+.pretty_okc .favorites_list {
+  background: #FFF;
+  margin-left: 10px;
+  position: absolute;
+  text-indent: 0px;
+  top: 104px;
+  width: 145px;
+  z-index: 1000;
+}
+
+.pretty_okc .favorites_list .title {
+  background: #d5e1ed;
+  border: 1px solid #d5e1ed;
+  border-bottom: 1px solid #b8cadd;
+  color: #2855A2;
+  cursor: default;
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+  height: 30px;
+  line-height: 31px;
+  margin: 0px;
+  overflow: hidden;
+  padding: 0px 8px;
+  text-shadow: 0px 1px 0px #fff;
+  width: auto;
+}
+
+.pretty_okc .favorites_list ul.favorites_hover,
+.pretty_okc .favorites_list ul.favorites {
+  margin-top: 0px;
+}
+
+.pretty_okc .favorites_list ul.favorites_hover li,
+.pretty_okc .favorites_list ul.favorites li {
+  background: #FFF;
+  border: 1px solid #DDD;
+  border-top: none;
+  padding: 5px;
+}
+
+.pretty_okc .favorites_list.favorites_page {
+  left: 135px;
+}
+
+/* Scroll to Top */
+.pretty_okc #back_to_top {
+  background: rgba(0,0,0,0.85);
+  border-radius: 5px;
+  bottom: 16px;
+  height: 70px;
+  left: 1194px;
+  opacity: 1;
+  padding-top: 21px;
+  position: fixed;
+  top: auto;
+  visibility: visible;
+  width: 70px;
+  z-index: 20001;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.pretty_okc #back_to_top .icon {
+  background: url(http://akcdn.okccdn.com/media/img/icons/back_to_top_arrow_v2.png) 0 0 no-repeat;
+  display: block;
+  height: 29px;
+  left: 50%;
+  line-height: 500px;
+  margin-bottom: 5px;
+  margin-left: -12px;
+  overflow: hidden;
+  position: relative;
+  width: 24px;
+}
+
+/* Error Messaging */
+.pretty_okc .favorites_lists .oknotice_error.unique {
+  border: 1px solid #FF1E72;
+  border-radius: 0px;
+  -moz-border-radius: 0px;
+  -webkit-border-radius: 0px;
+  margin: 10px 0px;
 }
