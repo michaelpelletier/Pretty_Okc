@@ -371,19 +371,33 @@ function initialize_favorites_lists(favorites_array) {
 			$('ul.favorites_hover').append('<li class="list_' + list + '"><input type="checkbox" name="favorites" value="' + list + '"><span>' + list + '</span></li>');
 		});
 
-		// Add the mouseover to display the favorite list hover.
-		$('.action_favorite').mouseover(function() {
-			var username = $(this).attr('id');
-			username = username.replace('action-box-', '').replace('-fav', '');
-			var padding = 124;
-			var offset = $(this).offset().top - padding;
-			favorites_container.css('top', offset).removeClass('hidden_helper');
-			reset_list_checks(username);
+		set_favorite_mouseover();
+
+		$('.action_favorite').click(function() {
+			set_favorite_mouseover();
+			if ($(this).hasClass('action_favorited')) {
+				favorites_container.addClass('hidden_helper');
+			}
 		});
 
-		favorites_container.mouseleave(function() {
-			favorites_container.addClass('hidden_helper');
-		});
+		function set_favorite_mouseover() {
+			$('.action_favorite').unbind('mouseover');
+			// Add the mouseover to display the favorite list hover.
+			$('.action_favorite').mouseover(function() {
+				if ($(this).hasClass('action_favorited')) {
+					var username = $(this).attr('id');
+					username = username.replace('action-box-', '').replace('-fav', '');
+					var padding = 124;
+					var offset = $(this).offset().top - padding;
+					favorites_container.css('top', offset).removeClass('hidden_helper');
+					reset_list_checks(username);
+				}
+			});
+
+			favorites_container.mouseleave(function() {
+				favorites_container.addClass('hidden_helper');
+			});
+		}
 	}
 
 	function reset_list_checks(username) {
