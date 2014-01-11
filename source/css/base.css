@@ -187,47 +187,13 @@ body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.white
   vertical-align: top;
 }
 
-.pretty_okc .favorites_list {
-  background: #FFF;
-  margin-left: 10px;
-  position: absolute;
-  text-indent: 0px;
-  top: 104px;
-  width: 145px;
-  z-index: 10;
-}
-
-.pretty_okc .favorites_list .title {
-  background: #d5e1ed;
-  border: 1px solid #d5e1ed;
-  border-bottom: 1px solid #b8cadd;
-  color: #2855A2;
-  cursor: default;
-  display: block;
-  font-size: 12px;
-  font-weight: bold;
-  height: 30px;
-  line-height: 31px;
-  margin: 0px;
-  overflow: hidden;
-  padding: 0px 8px;
-  text-shadow: 0px 1px 0px #fff;
-  width: auto;
-}
-
-.pretty_okc .favorites_list ul.favorites {
-  margin-top: 0px;
-}
-
-.pretty_okc .favorites_list ul.favorites li {
-  border: 1px solid #DDD;
-  border-top: none;
-  padding: 5px;
-}
-
 /**************************************
 Styling Fixes for Favorites Page 
 ***************************************/
+
+.pretty_okc .monolith {
+  position: relative;
+}
 
 /* Container for Favorite Lists */
 .pretty_okc div#right_bar div.body,
@@ -405,3 +371,49 @@ Styling Fixes for Favorites Page
 .pretty_okc .action_remove_list.removed { background-position:   0px   0px; }
 .pretty_okc .action_add_note            { background-position: -30px   0px; }
 .pretty_okc .action_add_note.has_note   { background-position: -30px -26px; }
+
+/* Enhanced Favorites Options */
+.pretty_okc .favorites_list {
+  background: #FFF;
+  margin-left: 10px;
+  position: absolute;
+  text-indent: 0px;
+  top: 104px;
+  width: 145px;
+  z-index: 1000;
+}
+
+.pretty_okc .favorites_list .title {
+  background: #d5e1ed;
+  border: 1px solid #d5e1ed;
+  border-bottom: 1px solid #b8cadd;
+  color: #2855A2;
+  cursor: default;
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+  height: 30px;
+  line-height: 31px;
+  margin: 0px;
+  overflow: hidden;
+  padding: 0px 8px;
+  text-shadow: 0px 1px 0px #fff;
+  width: auto;
+}
+
+.pretty_okc .favorites_list ul.favorites_hover,
+.pretty_okc .favorites_list ul.favorites {
+  margin-top: 0px;
+}
+
+.pretty_okc .favorites_list ul.favorites_hover li,
+.pretty_okc .favorites_list ul.favorites li {
+  background: #FFF;
+  border: 1px solid #DDD;
+  border-top: none;
+  padding: 5px;
+}
+
+.pretty_okc .favorites_list.favorites_page {
+  left: 135px;
+}

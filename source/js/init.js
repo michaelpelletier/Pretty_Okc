@@ -69,6 +69,7 @@ function get_location() {
 	}
 }
 
+
 /*** Profile View Specific Functions ***/
 function style_buttons_with_icons() {
 	$('.action_options').find('#upgrade_form').find('p.btn').addClass('alist').attr('title', 'Buy them A-List');
@@ -328,28 +329,93 @@ function remove_name_from_list(name, list, favorites_array) {
 	});
 }
 
-function populate_favorites_lists(favorites_array) {
-	// Replace "About Favorites" text
-	$('#right_bar').find('.body').html('<h2>About Favorites</h2><p>Use Favorites Lists to save people you like on OkCupid. These lists are private.</p>');
-
-	// Add container for Favorite Lists
-	$('#right_bar').find('.side_favorites').remove();
-	$('#right_bar').append('<div class="side_favorites"><h2>Favorites Lists</h2><div class="favorites_lists"><ul class="favorites"><li class="favorite_list_all current">All</li><li class="favorite_list_none">Ungrouped</li></ul></div><h2>Add New List</h2><div class="add_list"><input type="text" id="new_favorite_list" name="favorites" size="30"><span class="save_list">Save List</span></div></div>');
-
-	// Add each favorite list
-	$.each(favorites_array, function(index, value) {
-		$('ul.favorites').append('<li class="favorite_list"><span class="list_name">' + value.list_name + '</span><span class="remove_list" title="Delete list">Delete List</span><span class="edit_list" title="Edit list name">Edit List Name</span></li>');
-	});
-
+function initialize_favorites_lists(favorites_array) {
 	show_all_favorites();
 	unbind_list_events();
+	create_sidebar_html();
+	create_favorites_hover();
 	bind_favorite_list_toggle();
 	bind_delete_list_link();
 	bind_edit_list_link();
 	bind_new_list_link();
-	bind_drag_and_drop();
 	make_lists_follow();
 	$(window).scroll(make_lists_follow);
+
+	function create_sidebar_html() {
+		// Replace "About Favorites" text
+		$('#right_bar').find('.body').html('<h2>About Favorites</h2><p>Use Favorites Lists to save people you like on OkCupid. These lists are private.</p>');
+
+		// Add container for Favorite Lists
+		$('#right_bar').find('.side_favorites').remove();
+		$('#right_bar').append('<div class="side_favorites"><h2>Favorites Lists</h2><div class="favorites_lists"><ul class="favorites"><li class="favorite_list_all current">All</li><li class="favorite_list_none">Ungrouped</li></ul></div><h2>Add New List</h2><div class="add_list"><input type="text" id="new_favorite_list" name="favorites" size="30"><span class="save_list">Save List</span></div></div>');
+
+		// Add each favorite list
+		$.each(favorites_array, function(index, value) {
+			$('ul.favorites').append('<li class="favorite_list"><span class="list_name">' + value.list_name + '</span><span class="remove_list" title="Delete list">Delete List</span><span class="edit_list" title="Edit list name">Edit List Name</span></li>');
+		});
+	}
+
+	function create_favorites_hover() {
+		// Add one hover container for adding someone to multiple lists.
+		$('.monolith').find('.favorites_list.favorites_page').remove();
+		$('.monolith').append('<div class="favorites_list favorites_page hidden_helper"><span class="title">Add to List</span><ul class="favorites_hover"></ul></div>');
+
+		var favorites_container = $('.favorites_list.favorites_page');
+
+		// Populate the hover container with the lists.
+		$.each(favorites_array, function(index, value) {
+			var list = value.list_name;
+			$('ul.favorites_hover').append('<li class="list_' + list + '"><input type="checkbox" name="favorites" value="' + list + '"><span>' + list + '</span></li>');
+		});
+
+		// Add the mouseover to display the favorite list hover.
+		$('.action_favorite').mouseover(function() {
+			var username = $(this).attr('id');
+			username = username.replace('action-box-', '').replace('-fav', '');
+			var padding = 124;
+			var offset = $(this).offset().top - padding;
+			favorites_container.css('top', offset).removeClass('hidden_helper');
+			reset_list_checks(username);
+		});
+
+		favorites_container.mouseleave(function() {
+			favorites_container.addClass('hidden_helper');
+		});
+	}
+
+	function reset_list_checks(username) {
+		unbind_list_toggle();
+
+		$.each(favorites_array, function(index, value) {
+			var checked = ($.inArray(username, value.users) > 0);
+			var list = value.list_name;
+
+			if (checked) {
+				$('.list_' + list).find('input').prop('checked', true);
+			} else {
+				$('.list_' + list).find('input').prop('checked', false);
+			}		
+		});
+
+		bind_list_toggle(username)
+
+		function bind_list_toggle(profile_name) {
+			$('ul.favorites_hover').find('input').change(function() {
+				var checked = this.checked;
+				var this_list = $(this).val();
+
+				if (checked) {
+					add_name_to_list(profile_name, this_list, favorites_array);
+				} else {
+					remove_name_from_list(profile_name, this_list, favorites_array);
+				}
+			});
+		}
+
+		function unbind_list_toggle() {
+			$('ul.favorites_hover').find('input').unbind('change');
+		}
+	}
 
 	function unbind_list_events() {
 		$('.save_list').unbind("click");
@@ -357,8 +423,6 @@ function populate_favorites_lists(favorites_array) {
 		$('li.favorite_list_none').unbind("click");
 		$('li.favorite_list_all').unbind("click");
 		$('.remove_list').unbind("click");
-		$('.user_row_item').unbind("draggable");
-		$('li.favorite_list').unbind("droppable");
 	}
 
 	function bind_new_list_link() {
@@ -378,7 +442,7 @@ function populate_favorites_lists(favorites_array) {
 
 			favorites_array.push(new_list);
 			save_favorites(favorites_array);
-			populate_favorites_lists(favorites_array);
+			initialize_favorites_lists(favorites_array);
 		}
 	}
 
@@ -426,7 +490,7 @@ function populate_favorites_lists(favorites_array) {
 			});
 			favorites_array.splice(index_for_removal, 1);
 			save_favorites(favorites_array);
-			populate_favorites_lists(favorites_array);
+			initialize_favorites_lists(favorites_array);
 		});
 	}
 
@@ -470,33 +534,9 @@ function populate_favorites_lists(favorites_array) {
 				$(this).parent('.list_name').text(new_name).removeClass('hidden_helper');
 				$(this).parent('.list_name').siblings('.remove_list').removeClass('hidden_helper');
 				save_favorites(favorites_array);
-				populate_favorites_lists(favorites_array);
+				initialize_favorites_lists(favorites_array);
 				$('.edit_list').removeClass('hidden_helper');
 		  }
-		});
-	}
-
-	function bind_drag_and_drop() {
-		$('.user_row_item').draggable({ 
-			revert: 'invalid',
-			helper: 'clone',
-			drag: function(event, ui) {
-				$(ui.helper).css('opacity', '0.5');
-
-			},
-			stop: function(event, ui) {
-				$(ui.helper).css('opacity', '1.0');
-			}
-	  });
-
-		$('li.favorite_list').droppable({ 
-			hoverClass: "droppable_hover",
-			accept: ".user_row_item",
-			drop: function(event, ui) {
-				var list = $(this).find('.list_name').text();
-				var name = $(ui.draggable).attr('id');
-				add_name_to_list(name, list, favorites_array);
-	    }
 		});
 	}
 
@@ -616,7 +656,7 @@ function get_all_favorites(favorites_array) {
 	// When all the defers are resolved, run the functions that affect each 
 	// of the individual profile containers. 
 	$.when.apply(null, defer_array).done(function() { 
-		populate_favorites_lists(favorites_array);
+		initialize_favorites_lists(favorites_array);
 		add_private_notes_to_favorites();
 	});
 
