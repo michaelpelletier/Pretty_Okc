@@ -190,6 +190,7 @@ body.match_cards.pretty_okc .tabbed_heading #actions .action_options p.btn.white
   text-indent: 0px;
   top: 104px;
   width: 145px;
+  z-index: 10;
 }
 
 .pretty_okc .favorites_list .title {
