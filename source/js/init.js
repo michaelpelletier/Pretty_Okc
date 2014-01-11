@@ -335,9 +335,7 @@ function initialize_favorites_lists(favorites_array) {
 	create_sidebar_html();
 	create_favorites_hover();
 	bind_favorite_list_toggle();
-	bind_delete_list_link();
-	bind_edit_list_link();
-	bind_new_list_link();
+	bind_list_actions();
 	make_lists_follow();
 	$(window).scroll(make_lists_follow);
 	$(window).scroll(check_scroll_top);
@@ -442,24 +440,155 @@ function initialize_favorites_lists(favorites_array) {
 		$('.update_list').unbind("click");
 	}
 
-	function bind_new_list_link() {
-		$('input#new_favorite_list').keypress(function(e) {
-      if (e.keyCode == 13) {
-      	save_new_list();
-      }
-    });
+	function bind_list_actions() {
+		bind_new_list_link();
+		bind_delete_list_link();
+		bind_edit_list_link();
 
-		$('.save_list').click(function() {
-			save_new_list();
-		});
+		function bind_new_list_link() {
+			$('input#new_favorite_list').keypress(function(e) {
+	      if (e.keyCode == 13) {
+	      	save_new_list();
+	      }
+	    });
 
-		function save_new_list() {
-			var new_list_name = $('#new_favorite_list').val();
-			var new_list = {list_name: new_list_name, users: []}
+			$('.save_list').click(function() {
+				save_new_list();
+			});
 
-			favorites_array.push(new_list);
-			save_favorites(favorites_array);
-			initialize_favorites_lists(favorites_array);
+			function save_new_list() {
+				var new_list_name = $('#new_favorite_list').val();
+				var new_list = {list_name: new_list_name, users: []}
+
+				var unique = check_uniqueness(new_list_name);
+				if (!unique) {
+					display_uniqueness_error();
+				} else {
+					favorites_array.push(new_list);
+					save_favorites(favorites_array);
+					initialize_favorites_lists(favorites_array);
+				}
+			}
+		}
+
+		function bind_delete_list_link() {
+			$('.remove_list').click(function() {
+				var list = $(this).siblings('.list_name').text();
+				var index_for_removal;
+
+				$.each(favorites_array, function(index, value) {
+					if (value.list_name === list) {
+						index_for_removal = index;
+					}
+				});
+				favorites_array.splice(index_for_removal, 1);
+				save_favorites(favorites_array);
+				initialize_favorites_lists(favorites_array);
+			});
+		}
+
+		function bind_edit_list_link() {
+			$('.edit_list').click(function(e) {
+				// stopPropagation in here is to stop us from auto-focusing on the list.
+				e.stopPropagation();
+
+				// If we are not already editing
+				if ($('.edit_list_container').length === 0) {
+					// Get the original name, as well as the list we are focused on.
+					var original_name = $(this).siblings('.list_name').text();
+					var current_focus = $('ul.favorites').find('.current').find('.list_name').text();
+
+				  replace_with_input($(this), original_name);
+				  bind_edit_clicks();
+				}
+
+				function replace_with_input(self, original_name) {
+					self.addClass('hidden_helper');
+					self.siblings('.list_name').addClass('hidden_helper');
+					self.siblings('.remove_list').addClass('hidden_helper');
+
+					self.parent().prepend('<div class="edit_list_container"><input type="text" id="edit_favorite_list" name="favorites" size="30" value="' + original_name + '"><span class="update_list" title="Update list name">Update</span></div>');
+				}
+
+				function bind_edit_clicks() {
+					$('#edit_favorite_list').click(function(e) {
+						e.stopPropagation();
+					})
+
+					$('#edit_favorite_list').keypress(function(e) {
+				    if (e.keyCode == 13) {
+				    	e.stopPropagation();
+				    	update_list();
+				    }
+				  });
+
+				  $('.update_list').click(function(e) {
+				  	e.stopPropagation();
+				  	update_list();
+				  });
+				}
+
+				function update_list() {
+					var new_name = $('#edit_favorite_list').val();
+
+					// If there are changes.
+					if (original_name !== new_name) {
+						var unique = check_uniqueness(new_name);
+						
+						if (!unique) {
+							// Display an error if not unique.
+						 	display_uniqueness_error();
+						} else {
+							// Otherwise, update it in the array.
+							$.each(favorites_array, function(index, value) {
+								if (value.list_name === original_name) {
+									value.list_name = new_name;
+								}
+							});
+							refresh_list(new_name);
+						}
+					} else {
+						refresh_list(new_name);
+					}
+				}
+
+				function refresh_list(new_name) {
+					save_favorites(favorites_array);
+					initialize_favorites_lists(favorites_array);
+					// Stay on current list when we reinitialize the lists.
+					if (!current_focus) {
+						show_all_favorites();
+						remove_current();
+						$('.favorite_list_all').addClass('current');
+					} else if (current_focus) {
+						if (current_focus !== new_name) {
+							show_selected_list(new_name, favorites_array);
+							remove_current();
+							$('.favorite_list.' + new_name).addClass('current');
+						} else {
+							show_selected_list(current_focus, favorites_array);
+							remove_current();
+							$('.favorite_list.' + current_focus).addClass('current');
+						}
+					}
+				}
+			});
+		}
+
+		function check_uniqueness(checked_name) {
+			var unique = true;
+
+			$.each(favorites_array, function(index, value) {
+				if (value.list_name === checked_name) {
+					unique = false;
+				} 
+			});
+
+			return unique;
+		}
+
+		function display_uniqueness_error() {
+			console.log("List name must be unique");
 		}
 	}
 
@@ -488,119 +617,6 @@ function initialize_favorites_lists(favorites_array) {
 		$('li.favorite_list_none').removeClass('current');
 		$('li.favorite_list').each(function() {
 			$(this).removeClass('current');
-		});
-	}
-
-	function bind_delete_list_link() {
-		$('.remove_list').click(function() {
-			var list = $(this).siblings('.list_name').text();
-			var index_for_removal;
-
-			$.each(favorites_array, function(index, value) {
-				if (value.list_name === list) {
-					index_for_removal = index;
-				}
-			});
-			favorites_array.splice(index_for_removal, 1);
-			save_favorites(favorites_array);
-			initialize_favorites_lists(favorites_array);
-		});
-	}
-
-	function bind_edit_list_link() {
-		$('.edit_list').click(function(e) {
-			// stopPropagation in here is to stop us from auto-focusing on the list.
-			e.stopPropagation();
-
-			// If we are not already editing
-			if ($('.edit_list_container').length === 0) {
-				// Get the original name, as well as the list we are focused on.
-				var original_name = $(this).siblings('.list_name').text();
-				var current_focus = $('ul.favorites').find('.current').find('.list_name').text();
-
-			  replace_with_input($(this), original_name);
-			  bind_edit_clicks();
-			}
-
-			function replace_with_input(self, original_name) {
-				self.addClass('hidden_helper');
-				self.siblings('.list_name').addClass('hidden_helper');
-				self.siblings('.remove_list').addClass('hidden_helper');
-
-				self.parent().prepend('<div class="edit_list_container"><input type="text" id="edit_favorite_list" name="favorites" size="30" value="' + original_name + '"><span class="update_list" title="Update list name">Update</span></div>');
-			}
-
-			function bind_edit_clicks() {
-				$('#edit_favorite_list').click(function(e) {
-					e.stopPropagation();
-				})
-
-				$('#edit_favorite_list').keypress(function(e) {
-			    if (e.keyCode == 13) {
-			    	e.stopPropagation();
-			    	update_list();
-			    }
-			  });
-
-			  $('.update_list').click(function(e) {
-			  	e.stopPropagation();
-			  	update_list();
-			  });
-			}
-
-			function update_list() {
-				var new_name = $('#edit_favorite_list').val();
-
-				// If there are changes.
-				if (original_name !== new_name) {
-					var unique = true;
-
-					// Check the uniqueness of the new name.
-					$.each(favorites_array, function(index, value) {
-						var array_name = value.list_name;
-						if (array_name === new_name) {
-							unique = false;
-						} 
-					});
-
-					// Display an error if not unique.
-					if (unique) {
-
-						// Update it in the array.
-						$.each(favorites_array, function(index, value) {
-							if (value.list_name === original_name) {
-								value.list_name = new_name;
-							}
-						});
-						refresh_list(new_name);
-					} else {
-						console.log("List name must be unique");
-					}
-				} else {
-					refresh_list(new_name);
-				}
-			}
-
-			function refresh_list(new_name) {
-				save_favorites(favorites_array);
-				initialize_favorites_lists(favorites_array);
-				// Stay on current list when we reinitialize the lists.
-				if (!current_focus) {
-					show_all_favorites();
-					remove_current();
-					$('.favorite_list_all').addClass('current');
-				} else if (current_focus) {
-					if (current_focus !== new_name) {
-						show_selected_list(new_name, favorites_array);
-						remove_current();
-						$('.favorite_list.' + new_name).addClass('current');
-					} else {
-						show_selected_list(current_focus, favorites_array);
-						remove_current();
-						$('.favorite_list.' + current_focus).addClass('current');
-					}
-				}
-			}
 		});
 	}
 
