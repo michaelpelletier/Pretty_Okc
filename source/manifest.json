@@ -18,7 +18,7 @@
   ],
   "content_scripts": [
     {
-      "matches": ["http://www.okcupid.com/match*", "http://www.okcupid.com/profile/*", "http://www.okcupid.com/favorites*"],
+      "matches": ["http://www.okcupid.com/*"],
       "css": [
         "css/base.css"
       ],

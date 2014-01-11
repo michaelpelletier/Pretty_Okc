@@ -14,11 +14,12 @@ chrome.browserAction.onClicked.addListener(function(tab) {
    open_focus_options();
 });
 
-// Get Settings
+// Requests from Init.js
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   var matches_mode = localStorage["mode"];
   var excerpt_priority = localStorage["priority"];
 
+  // Get Settings
   if (request.retrieve == "settings"){
     sendResponse({ 
       mode: matches_mode, 
@@ -27,12 +28,19 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   }
 });
 
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  // Update Chrome Badge Text.
+  if (request.messages) {
+    chrome.browserAction.setBadgeBackgroundColor({color:[252, 91, 151, 255]});
+    chrome.browserAction.setBadgeText({text: request.messages });
+  }
+});
+
 // Inject CSS file dependent on settings
 chrome.tabs.onCreated.addListener(inject_css);
 chrome.tabs.onUpdated.addListener(function(tabId, info, tab) {
     if (info.status == 'complete') inject_css();
 });
-
 
 function inject_css() {
   var my_settings = localStorage["mode"];
