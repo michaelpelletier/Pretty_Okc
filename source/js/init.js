@@ -354,7 +354,7 @@ function initialize_favorites_lists(favorites_array) {
 
 		// Add each favorite list
 		$.each(favorites_array, function(index, value) {
-			$('ul.favorites').append('<li class="favorite_list"><span class="list_name">' + value.list_name + '</span><span class="remove_list" title="Delete list">Delete List</span><span class="edit_list" title="Edit list name">Edit List Name</span></li>');
+			$('ul.favorites').append('<li class="favorite_list ' + value.list_name + '"><span class="list_name">' + value.list_name + '</span><span class="remove_list" title="Delete list">Delete List</span><span class="edit_list" title="Edit list name">Edit List Name</span></li>');
 		});
 	}
 
@@ -481,14 +481,14 @@ function initialize_favorites_lists(favorites_array) {
 				show_selected_list(list, favorites_array);
 			}
 		});
+	}
 
-		function remove_current() {
-			$('li.favorite_list_all').removeClass('current');
-			$('li.favorite_list_none').removeClass('current');
-			$('li.favorite_list').each(function() {
-				$(this).removeClass('current');
-			});
-		}
+	function remove_current() {
+		$('li.favorite_list_all').removeClass('current');
+		$('li.favorite_list_none').removeClass('current');
+		$('li.favorite_list').each(function() {
+			$(this).removeClass('current');
+		});
 	}
 
 	function bind_delete_list_link() {
@@ -509,46 +509,57 @@ function initialize_favorites_lists(favorites_array) {
 
 	function bind_edit_list_link() {
 		$('.edit_list').click(function(e) {
-			e.stopPropagation();
-			var original_list = $(this).siblings('.list_name').text();
-			var index_to_change;
 
-			// Hide everything and replace it with the content
-			$(this).addClass('hidden_helper');
-			$(this).siblings('.list_name').addClass('hidden_helper');
-			$(this).siblings('.remove_list').addClass('hidden_helper');
-
-			$(this).parent().prepend('<div class="edit_list_container"><input type="text" id="edit_favorite_list" name="favorites" size="30" value="' + original_list + '"><span class="update_list" title="Update list name">Update</span></div>');
-
-			$('#edit_favorite_list').click(function(e) {
+			if ($('.edit_list_container').length === 0) {
 				e.stopPropagation();
-			})
+				var original_list = $(this).siblings('.list_name').text();
+				var index_to_change;
 
-			$('#edit_favorite_list').keypress(function(e) {
-		    if (e.keyCode == 13) {
-		    	e.stopPropagation();
-		    	update_list();
-		    }
-		  });
+				// Hide everything and replace it with the content
+				$(this).addClass('hidden_helper');
+				$(this).siblings('.list_name').addClass('hidden_helper');
+				$(this).siblings('.remove_list').addClass('hidden_helper');
 
-		  $('.update_list').click(function(e) {
-		  	e.stopPropagation();
-		  	update_list();
-		  });
+				$(this).parent().prepend('<div class="edit_list_container"><input type="text" id="edit_favorite_list" name="favorites" size="30" value="' + original_list + '"><span class="update_list" title="Update list name">Update</span></div>');
+
+				$('#edit_favorite_list').click(function(e) {
+					e.stopPropagation();
+				})
+
+				$('#edit_favorite_list').keypress(function(e) {
+			    if (e.keyCode == 13) {
+			    	e.stopPropagation();
+			    	update_list();
+			    }
+			  });
+
+			  $('.update_list').click(function(e) {
+			  	e.stopPropagation();
+			  	update_list();
+			  });
+			}
 
 		  function update_list() {
+		  	var current_list = $('ul.favorites').find('.current').find('.list_name').text();
 				var new_name = $('#edit_favorite_list').val();
 				$.each(favorites_array, function(index, value) {
 					if (value.list_name === original_list) {
 						value.list_name = new_name;
 					}
 				});
-				$(this).parent('.list_name').siblings('.edit_list_container').remove();
-				$(this).parent('.list_name').text(new_name).removeClass('hidden_helper');
-				$(this).parent('.list_name').siblings('.remove_list').removeClass('hidden_helper');
 				save_favorites(favorites_array);
+
 				initialize_favorites_lists(favorites_array);
-				$('.edit_list').removeClass('hidden_helper');
+				// Stay on current list when we reinitialize the lists.
+				if (current_list !== new_name) {
+					show_selected_list(new_name, favorites_array);
+					remove_current();
+					$('.favorite_list.' + new_name).addClass('current');
+				} else {
+					show_selected_list(current_list, favorites_array);
+					remove_current();
+					$('.favorite_list.' + current_list).addClass('current');
+				}
 		  }
 		});
 	}
