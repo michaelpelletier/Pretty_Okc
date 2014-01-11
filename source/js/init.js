@@ -113,8 +113,6 @@ function expand_favorite_options(favorites_array) {
 
 	add_favorite_lists();
 	bind_list_toggle();
-	bind_list_close();
-
 
 	function add_favorite_lists() {
 		$.each(favorites_array, function(index, value) {
@@ -133,7 +131,7 @@ function expand_favorite_options(favorites_array) {
 		if (favorites_button.text() === "Remove Favorite") {
 			favorites_container.addClass("is_favorite");
 			favorites_button.attr('title', 'Remove from Favorites');
-			bind_show_mouseover();
+			bind_favorites_hover();
 		} else {
 			favorites_container.removeClass("is_favorite");
 			favorites_button.attr('title', 'Add to Favorites');
@@ -152,23 +150,17 @@ function expand_favorite_options(favorites_array) {
 			favorites_container.addClass("is_favorite");
 			favorites_button.attr('title', 'Remove from Favorites');
 			favorites_list.removeClass('hidden_helper');
-			bind_show_mouseover();
+			bind_favorites_hover();
 		}
 	}
 
-	function bind_list_close() {
-		$(document).click(function(event) { 
-	    if($(event.target).parents().index($('.action_options')) == -1) {
-	      if(favorites_list.is(":visible")) {
-	         favorites_list.addClass('hidden_helper');
-	      }
-	    }        
-		});
-	}
-
-	function bind_show_mouseover() {
+	function bind_favorites_hover() {
 		favorites_button.mouseover(function() {
 			favorites_list.removeClass('hidden_helper');
+		});
+
+		favorites_list.mouseleave(function() {
+			favorites_list.addClass('hidden_helper');
 		});
 	}
 
@@ -338,7 +330,7 @@ function remove_name_from_list(name, list, favorites_array) {
 
 function populate_favorites_lists(favorites_array) {
 	// Replace "About Favorites" text
-	$('#right_bar').find('.body').html('<h2>About Favorites</h2><p>Use Favorites Lists to save people you like on OkCupid. These lists are private. You can click and drag people to add them to different lists.</p>');
+	$('#right_bar').find('.body').html('<h2>About Favorites</h2><p>Use Favorites Lists to save people you like on OkCupid. These lists are private.</p>');
 
 	// Add container for Favorite Lists
 	$('#right_bar').find('.side_favorites').remove();

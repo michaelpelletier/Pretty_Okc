@@ -229,6 +229,7 @@ Styling Fixes for Favorites Page
 .pretty_okc .side_favorites {
   background: #eee;
   padding: 10px;
+  z-index: 1000;
 }
 
 /* Container for Ajax'ed In Favorites */
