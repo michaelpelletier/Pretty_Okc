@@ -436,10 +436,10 @@ function initialize_favorites_lists(favorites_array) {
 
 	function unbind_list_events() {
 		$('.save_list').unbind("click");
-		$('li.favorite_list').unbind("click");
-		$('li.favorite_list_none').unbind("click");
-		$('li.favorite_list_all').unbind("click");
+		$('ul.favorites li').unbind("click");
 		$('.remove_list').unbind("click");
+		$('#edit_favorite_list').unbind("click");
+		$('.update_list').unbind("click");
 	}
 
 	function bind_new_list_link() {
@@ -509,19 +509,28 @@ function initialize_favorites_lists(favorites_array) {
 
 	function bind_edit_list_link() {
 		$('.edit_list').click(function(e) {
+			// stopPropagation in here is to stop us from auto-focusing on the list.
+			e.stopPropagation();
 
+			// If we are not already editing
 			if ($('.edit_list_container').length === 0) {
-				e.stopPropagation();
-				var original_list = $(this).siblings('.list_name').text();
-				var index_to_change;
+				// Get the original name, as well as the list we are focused on.
+				var original_name = $(this).siblings('.list_name').text();
+				var current_focus = $('ul.favorites').find('.current').find('.list_name').text();
 
-				// Hide everything and replace it with the content
-				$(this).addClass('hidden_helper');
-				$(this).siblings('.list_name').addClass('hidden_helper');
-				$(this).siblings('.remove_list').addClass('hidden_helper');
+			  replace_with_input($(this), original_name);
+			  bind_edit_clicks();
+			}
 
-				$(this).parent().prepend('<div class="edit_list_container"><input type="text" id="edit_favorite_list" name="favorites" size="30" value="' + original_list + '"><span class="update_list" title="Update list name">Update</span></div>');
+			function replace_with_input(self, original_name) {
+				self.addClass('hidden_helper');
+				self.siblings('.list_name').addClass('hidden_helper');
+				self.siblings('.remove_list').addClass('hidden_helper');
 
+				self.parent().prepend('<div class="edit_list_container"><input type="text" id="edit_favorite_list" name="favorites" size="30" value="' + original_name + '"><span class="update_list" title="Update list name">Update</span></div>');
+			}
+
+			function bind_edit_clicks() {
 				$('#edit_favorite_list').click(function(e) {
 					e.stopPropagation();
 				})
@@ -539,28 +548,59 @@ function initialize_favorites_lists(favorites_array) {
 			  });
 			}
 
-		  function update_list() {
-		  	var current_list = $('ul.favorites').find('.current').find('.list_name').text();
+			function update_list() {
 				var new_name = $('#edit_favorite_list').val();
-				$.each(favorites_array, function(index, value) {
-					if (value.list_name === original_list) {
-						value.list_name = new_name;
-					}
-				});
-				save_favorites(favorites_array);
 
+				// If there are changes.
+				if (original_name !== new_name) {
+					var unique = true;
+
+					// Check the uniqueness of the new name.
+					$.each(favorites_array, function(index, value) {
+						var array_name = value.list_name;
+						if (array_name === new_name) {
+							unique = false;
+						} 
+					});
+
+					// Display an error if not unique.
+					if (unique) {
+
+						// Update it in the array.
+						$.each(favorites_array, function(index, value) {
+							if (value.list_name === original_name) {
+								value.list_name = new_name;
+							}
+						});
+						refresh_list(new_name);
+					} else {
+						console.log("List name must be unique");
+					}
+				} else {
+					refresh_list(new_name);
+				}
+			}
+
+			function refresh_list(new_name) {
+				save_favorites(favorites_array);
 				initialize_favorites_lists(favorites_array);
 				// Stay on current list when we reinitialize the lists.
-				if (current_list !== new_name) {
-					show_selected_list(new_name, favorites_array);
+				if (!current_focus) {
+					show_all_favorites();
 					remove_current();
-					$('.favorite_list.' + new_name).addClass('current');
-				} else {
-					show_selected_list(current_list, favorites_array);
-					remove_current();
-					$('.favorite_list.' + current_list).addClass('current');
+					$('.favorite_list_all').addClass('current');
+				} else if (current_focus) {
+					if (current_focus !== new_name) {
+						show_selected_list(new_name, favorites_array);
+						remove_current();
+						$('.favorite_list.' + new_name).addClass('current');
+					} else {
+						show_selected_list(current_focus, favorites_array);
+						remove_current();
+						$('.favorite_list.' + current_focus).addClass('current');
+					}
 				}
-		  }
+			}
 		});
 	}
 
