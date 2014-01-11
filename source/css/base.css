@@ -449,3 +449,12 @@ Styling Fixes for Favorites Page
   position: relative;
   width: 24px;
 }
+
+/* Error Messaging */
+.pretty_okc .favorites_lists .oknotice_error.unique {
+  border: 1px solid #FF1E72;
+  border-radius: 0px;
+  -moz-border-radius: 0px;
+  -webkit-border-radius: 0px;
+  margin: 10px 0px;
+}

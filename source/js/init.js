@@ -588,7 +588,10 @@ function initialize_favorites_lists(favorites_array) {
 		}
 
 		function display_uniqueness_error() {
-			console.log("List name must be unique");
+			$('.favorites_lists').append('<div class="oknotice_error unique">List name must be unique.</div>');
+			setTimeout(function() {
+      $('.favorites_lists').find('.oknotice_error.unique').remove();
+			}, 5000);
 		}
 	}
 
