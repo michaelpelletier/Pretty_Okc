@@ -1,3 +1,7 @@
+.pretty_okc .hidden_helper {
+  display: none!important;
+}
+
 /**************************************
 Styling Fixes for Matches Page 
 ***************************************/
@@ -293,7 +297,6 @@ Styling Fixes for Favorites Page
   color: #2855a2;
 }
 
-.pretty_okc .droppable_hover,
 .favorite_list_none:hover,
 .favorite_list_all:hover,
 .favorite_list:hover {
@@ -302,31 +305,6 @@ Styling Fixes for Favorites Page
   color: #FFF;
   cursor: pointer;
   text-shadow: none;
-}
-
-/* Draggable Elements */
-.pretty_okc .user_row_item.ui-draggable-dragging,
-.pretty_okc .user_row_item:hover {
-  background: #efefef;
-}
-
-.pretty_okc .hidden_helper {
-  display: none!important;
-}
-
-.pretty_okc .user_row_item.ui-draggable-dragging {
-  height: 60px;
-}
-
-.pretty_okc div.user_row_item.ui-draggable-dragging div.user_info {
-  height: 50px;
-}
-
-.pretty_okc div.user_row_item.ui-draggable-dragging .user_image,
-.pretty_okc div.user_row_item.ui-draggable-dragging .user_image a,
-.pretty_okc div.user_row_item.ui-draggable-dragging .user_image img {
-  height: 50px;
-  width: 50px;
 }
 
 /* Individual Favorited Users */
