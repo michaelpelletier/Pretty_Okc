@@ -39,7 +39,6 @@ function save_options() {
 
 function restore_options() {
   // Restore Matches View Mode Settings.
-
   chrome.storage.sync.get("settings", function (obj) {
     // Retrieve settings for Matches View Mode.
     var options_mode = obj['settings']['mode'];
