@@ -14,20 +14,6 @@ chrome.browserAction.onClicked.addListener(function(tab) {
    open_focus_options();
 });
 
-// Requests from Init.js
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  var matches_mode = localStorage["mode"];
-  var excerpt_priority = localStorage["priority"];
-
-  // Get Settings
-  if (request.retrieve == "settings"){
-    sendResponse({ 
-      mode: matches_mode, 
-      priority: excerpt_priority
-    });
-  }
-});
-
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   // Update Chrome Badge Text.
   if (request.messages > 0) {
