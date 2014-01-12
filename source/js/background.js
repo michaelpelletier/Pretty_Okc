@@ -30,9 +30,11 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   // Update Chrome Badge Text.
-  if (request.messages) {
+  if (request.messages > 0) {
     chrome.browserAction.setBadgeBackgroundColor({color:[252, 91, 151, 255]});
     chrome.browserAction.setBadgeText({text: request.messages });
+  } else {
+    chrome.browserAction.setBadgeText({text: '' });
   }
 });
 

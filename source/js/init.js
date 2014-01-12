@@ -3,11 +3,22 @@ add_body_class();
 // Unread Messages Count
 chrome.runtime.sendMessage({retrieve: "settings"}, function(response) {
 	// Update the icon with the current message count
-	var message_count = $('#nav_mailbox_badge').find('span.curr').text();
-	if (message_count) {
+	var message_count;
+	update_count();
+	
+	var observer = new MutationSummary({
+	  callback: update_count,
+	  queries: [{ element: '#nav_mailbox_badge, span.curr, span.rollingnumber' }]
+	});
+
+	function update_count() {
+		message_count = $('#nav_mailbox_badge').find('span.curr').text();
+		if (!message_count) {
+			message_count = 0;
+		}
 		chrome.runtime.sendMessage({ messages: message_count});
 	}
-	
+ 
 	add_body_class();
 
 	// Store our settings in variables.
