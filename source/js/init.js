@@ -1,7 +1,9 @@
 add_body_class();
 
 // Unread Messages Count
-chrome.runtime.sendMessage({retrieve: "settings"}, function(response) {
+chrome.storage.sync.get("settings", function (response) {
+	console.log(response)
+//chrome.runtime.sendMessage({retrieve: "settings"}, function(response) {
 	// Update the icon with the current message count
 	var message_count;
 	update_count();

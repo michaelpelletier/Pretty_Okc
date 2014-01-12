@@ -10,12 +10,13 @@ $(document).ready(function() {
 });
 
 
-// Saves options to localStorage.
+// Saves options to Google Storage.
 function save_options() {
+  var settings = {}
+
   // Save options for Matches View Mode
-  var select = $("select#mode");
-  var chosen_mode = select.val();
-  localStorage["mode"] = chosen_mode;
+  var chosen_mode = $("select#mode").val();
+  settings["mode"] = chosen_mode;
 
   // Store Priority as an Array
   var priority_array = []
@@ -23,16 +24,7 @@ function save_options() {
     var id = $(this).attr('id');
     priority_array.push(id);
   });
-  localStorage["priority"] = priority_array;
-
-  // Store "Add Notes" Setting
-  var add_notes;
-  if ($("#add_notes").is(':checked')) {
-    add_notes = true;
-  } else {
-    add_notes = false;
-  }
-  localStorage["add_notes"] = add_notes;
+  settings["priority"] = priority_array;
 
   // Update status to let user know options were saved.
   var status = $("#status");
@@ -40,30 +32,27 @@ function save_options() {
   setTimeout(function() {
     status.empty();
   }, 1000);
+
+  // Store in Chrome Storage.
+  chrome.storage.sync.set({"settings": settings});
 }
 
 function restore_options() {
   // Restore Matches View Mode Settings.
-  var options_mode = localStorage["mode"];
-  if (options_mode) {
-    $('select#mode').val(options_mode)
-  }
 
-  // Retrieve and split settings for Priority
-  var priority_settings = localStorage["priority"];
-  priority_settings = priority_settings.split(',')
+  chrome.storage.sync.get("settings", function (obj) {
+    // Retrieve settings for Matches View Mode.
+    var options_mode = obj['settings']['mode'];
+    if (options_mode) {
+      $('select#mode').val(options_mode)
+    }
 
-  // Put Priorities into the proper order.
-  for (var i = 0; i < priority_settings.length; i++) {
-    console.log(priority_settings[i])
-    var item = $('li#' + priority_settings[i]);
-    $('#excerpt_priority').append(item);
-  }
-
-  // Load Add_Notes Settings
-  var add_notes = localStorage["add_notes"];
-  if (add_notes === "true") {
-    $('#add_notes').attr('checked', true);
-  }
-
+    // Retrieve settings for Priority and put them into the proper order.
+    var priority_settings = obj['settings']['priority'];
+    for (var i = 0; i < priority_settings.length; i++) {
+      console.log(priority_settings[i])
+      var item = $('li#' + priority_settings[i]);
+      $('#excerpt_priority').append(item);
+    }
+  });
 }
