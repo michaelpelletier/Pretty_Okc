@@ -264,38 +264,54 @@ function add_excerpt_div() {
 		if (self.find('.pretty_okc_profile_excerpt').length < 1) {
 			self.find(".match_card_text").after('<div class="pretty_okc_profile_excerpt"></div>');
 			var username = self.attr('id').replace('usr-', '').replace('-wrapper', '');
-			get_excerpt_by_priority(username, 'first');
+			get_profile_excerpt(username);
 		} 
 	});
 }
 
-function get_excerpt_by_priority(username, essay_number) {
+function get_profile_excerpt(username) {
 	var priority = $('#excerpt_priority').val();
 	priority = priority.split(',');
-
-	if (essay_number === 'first') {
-		get_profile_excerpt(username, priority[0]);
-	} else {
-		get_profile_excerpt(username, priority[essay_number]);
-	}
-}
-
-function get_profile_excerpt(username, essay_section) {
-	var full_url = 'http://www.okcupid.com/profile/' + username;
+	var full_url = 'http://www.okcupid.com/profile/' + username + " #main_column";
 	var excerpt = $('#usr-' + username + '-wrapper').find('.pretty_okc_profile_excerpt');
-	var essay_container = "#essay_" + essay_section
-
-	excerpt.load(full_url + " " + essay_container, function(response) {
-	var check = excerpt.find('.essay.content').attr('id');
-		if (check === "essay_" + essay_section) {
-			// If we found that the content loaded correctly, truncate what we got.
-			truncate_excerpt(excerpt);
-		} else {
-			// Otherwise, get the next level priority and try again.
-			essay_section = parseInt(essay_section)
-			get_excerpt_by_priority(username, essay_section+1)
-		}
+	excerpt.load(full_url, function(response) {
+		parse_excerpt(response);
 	});
+
+	function parse_excerpt(response) {
+		var available_excerpts = [];
+		excerpt.find('.essay').each(function() {
+			available_excerpts.push($(this).attr('id'));
+		});
+
+		// If their profile is empty
+		if (available_excerpts.length === 0) {
+			console.log("No profile yet");
+			excerpt.html('');
+		} else {
+			for ( var index = 0; index < priority.length; ++index ) {
+		    if (check_array(priority[index])) {
+		    	var container = excerpt.find('#essay_' + priority[index]);
+		    	container.siblings().remove();
+		    	truncate_excerpt(container);
+		    	break;
+		    } 
+			}
+
+		}
+
+//		var number = priority[0];
+//		var container = excerpt.find('#essay_' + number);
+
+		function check_array(iteration) {
+			var content = 'essay_' + iteration;
+			if ($.inArray(content, available_excerpts) !== -1) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
 }
 
 function truncate_excerpt(container) {
