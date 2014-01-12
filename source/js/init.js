@@ -28,14 +28,14 @@ chrome.runtime.sendMessage({retrieve: "settings"}, function(response) {
 	// If we're on a user's page.
   if (get_location() === "profile") {
   	var favorites_array = [];
-		chrome.storage.local.get(null, function(obj) {
-			if (!$.isEmptyObject(obj)) {
-				favorites_array = obj.favorites;
-				expand_favorite_options(favorites_array);
-			}
 
-			style_buttons_with_icons();
-		});
+	  chrome.storage.sync.get("favorites", function (obj) {
+			if (!$.isEmptyObject(obj)) {
+	    	favorites_array = obj;
+	    	expand_favorite_options(favorites_array);
+	    }
+	    style_buttons_with_icons();
+	  });
   } else if (get_location() === "matches") {
   	// I really don't like this, but haven't found a better way to pass these settings yet.
   	update_tiles();
@@ -735,9 +735,7 @@ function show_selected_list(searched_list, favorites_array) {
 }
 
 function save_favorites(favorites_array) {
-	chrome.storage.local.set({favorites: favorites_array}, function() {
-	 	console.log("Storage Succesful");
-  });
+  chrome.storage.sync.set({"favorites": favorites_array});
 }
 
 function get_all_favorites(favorites_array) {

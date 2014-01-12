@@ -19,6 +19,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   var matches_mode = localStorage["mode"];
   var excerpt_priority = localStorage["priority"];
 
+  chrome.storage.sync.get("favorites", function (obj) {
+      console.log(obj);
+  });
+
   // Get Settings
   if (request.retrieve == "settings"){
     sendResponse({ 
