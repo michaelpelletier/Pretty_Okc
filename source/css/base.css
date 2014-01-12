@@ -3,51 +3,6 @@
 }
 
 /**************************************
-Styling Fixes for Matches Page 
-***************************************/
-
-/* Changes to overall Match container */
-.pretty_okc .match_card_wrapper .match_card {
-  border: 1px solid #dcdfe6;
-  box-shadow: none;
-  height: 150px;
-  overflow: hidden;
-}
-
-/* Change display of Match Percentages */
-.pretty_okc .match_card_wrapper .match_card_text .percentages {
-  color: #f83265;
-  display: block!important;
-  font-size: 16px;
-  font-weight: bold;
-  height: 25px;
-  left: auto;
-  line-height: 18px;
-  overflow: hidden;
-  right: 5px;
-  text-align: right;
-  top: -4px;
-  width: auto;
-  z-index: 100;
-}
-
-/* Hover Changes */
-.pretty_okc #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .match_card {
-  left: 0px;
-  top: 0px;
-  height: 150px;
-  width: 135px;
-}
-
-.pretty_okc #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .profile_info {
-  top: 0px;
-}
-
-.pretty_okc #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .under_card {
-  bottom: -25px;
-}
-
-/**************************************
 Styling Fixes for Profile Page 
 ***************************************/
 

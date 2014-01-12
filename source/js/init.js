@@ -1,7 +1,11 @@
-add_body_class();
-
 // Unread Messages Count
 chrome.storage.sync.get("settings", function (response) {
+	// Store our settings in variables.
+	var matches_mode = response.mode;
+	var excerpt_priority = response.priority;
+
+	add_body_class(matches_mode);
+
 	// Update the icon with the current message count
 	var message_count;
 	update_count();
@@ -18,15 +22,11 @@ chrome.storage.sync.get("settings", function (response) {
 		}
 		chrome.runtime.sendMessage({ messages: message_count});
 	}
- 
-	add_body_class();
-
-	// Store our settings in variables.
-	var matches_mode = response.mode;
-	var excerpt_priority = response.priority;
 
 	// If we're on a user's page.
-  if (get_location() === "profile") {
+	var current_page = get_location();
+
+  if (current_page === "profile") {
   	var favorites_array = [];
 
 	  chrome.storage.sync.get("favorites", function (obj) {
@@ -36,7 +36,7 @@ chrome.storage.sync.get("settings", function (response) {
 	    }
 	    style_buttons_with_icons();
 	  });
-  } else if (get_location() === "matches") {
+  } else if (current_page === "matches") {
   	// I really don't like this, but haven't found a better way to pass these settings yet.
   	update_tiles();
 
@@ -58,7 +58,7 @@ chrome.storage.sync.get("settings", function (response) {
 			  queries: [{ element: '.match_card_wrapper' }]
 			});
 		} 
-  } else if (get_location() === "favorites") {
+  } else if (current_page === "favorites") {
   	var favorites_array = [];
 		chrome.storage.local.get(null, function(obj) {
 			if (!$.isEmptyObject(obj)) {
@@ -71,8 +71,8 @@ chrome.storage.sync.get("settings", function (response) {
 });
 
 /*** General Functions ***/
-function add_body_class() {
-	$('body').addClass("pretty_okc");
+function add_body_class(matches_mode) {
+	$('body').addClass("pretty_okc").addClass(matches_mode);
 }
 
 function get_location() {
@@ -86,7 +86,6 @@ function get_location() {
 		return "favorites";
 	}
 }
-
 
 /*** Profile View Specific Functions ***/
 function style_buttons_with_icons() {
@@ -796,5 +795,4 @@ function get_all_favorites(favorites_array) {
 			$(this).find('.action_rate').before('<span class="' + classes + '" onclick="' + onclick + '" title="' + title + '">private note</span>');
 		});
 	}
-
 }

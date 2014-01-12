@@ -20,7 +20,8 @@
     {
       "matches": ["http://www.okcupid.com/*"],
       "css": [
-        "css/base.css"
+        "css/base.css",
+        "css/matches.css"
       ],
       "js": [
         "js/jquery-1.10.2.min.js",
