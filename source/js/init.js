@@ -31,7 +31,7 @@ chrome.storage.sync.get("settings", function (response) {
 
 	  chrome.storage.sync.get("favorites", function (obj) {
 			if (!$.isEmptyObject(obj)) {
-	    	favorites_array = obj;
+	    	favorites_array = obj['favorites'];
 	    	expand_favorite_options(favorites_array);
 	    }
 	    style_buttons_with_icons();
