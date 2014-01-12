@@ -1,9 +1,8 @@
 // Unread Messages Count
-chrome.storage.sync.get("settings", function (response) {
+chrome.storage.sync.get("settings", function (obj) {
 	// Store our settings in variables.
-	var matches_mode = response.mode;
-	var excerpt_priority = response.priority;
-
+	var matches_mode = obj['settings']['mode'];
+	var excerpt_priority = obj['settings']['priority'];
 	add_body_class(matches_mode);
 
 	// Update the icon with the current message count
