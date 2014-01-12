@@ -370,7 +370,9 @@ function initialize_favorites_lists(favorites_array) {
 
 		// Add each favorite list
 		$.each(favorites_array, function(index, value) {
-			$('ul.favorites').append('<li class="favorite_list ' + value.list_name + '"><span class="list_name">' + value.list_name + '</span><span class="remove_list" title="Delete list">Delete List</span><span class="edit_list" title="Edit list name">Edit List Name</span></li>');
+			var list = value.list_name;
+			var list_class = list.replace(/\s/g, '');
+			$('ul.favorites').append('<li class="favorite_list ' + list_class + '"><span class="list_name">' + list + '</span><span class="remove_list" title="Delete list">Delete List</span><span class="edit_list" title="Edit list name">Edit List Name</span></li>');
 		});
 	}
 
@@ -384,7 +386,8 @@ function initialize_favorites_lists(favorites_array) {
 		// Populate the hover container with the lists.
 		$.each(favorites_array, function(index, value) {
 			var list = value.list_name;
-			$('ul.favorites_hover').append('<li class="list_' + list + '"><input type="checkbox" name="favorites" value="' + list + '"><span>' + list + '</span></li>');
+			var list_class = list.replace(/\s/g, '');
+			$('ul.favorites_hover').append('<li class="list_' + list_class + '"><input type="checkbox" name="favorites" value="' + list + '"><span>' + list + '</span></li>');
 		});
 
 		set_favorite_mouseover();
@@ -422,11 +425,12 @@ function initialize_favorites_lists(favorites_array) {
 		$.each(favorites_array, function(index, value) {
 			var checked = ($.inArray(username, value.users) > 0);
 			var list = value.list_name;
+			var list_class = list.replace(/\s/g, '');
 
 			if (checked) {
-				$('.list_' + list).find('input').prop('checked', true);
+				$('.list_' + list_class).find('input').prop('checked', true);
 			} else {
-				$('.list_' + list).find('input').prop('checked', false);
+				$('.list_' + list_class).find('input').prop('checked', false);
 			}		
 		});
 
@@ -582,11 +586,13 @@ function initialize_favorites_lists(favorites_array) {
 						if (current_focus !== new_name) {
 							show_selected_list(new_name, favorites_array);
 							remove_current();
-							$('.favorite_list.' + new_name).addClass('current');
+							var list_class = new_name.replace(/\s/g, '');
+							$('.favorite_list.' + list_class).addClass('current');
 						} else {
 							show_selected_list(current_focus, favorites_array);
 							remove_current();
-							$('.favorite_list.' + current_focus).addClass('current');
+							var list_class = current_focus.replace(/\s/g, '');
+							$('.favorite_list.' + list_class).addClass('current');
 						}
 					}
 				}
