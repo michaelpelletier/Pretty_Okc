@@ -286,8 +286,7 @@ function get_profile_excerpt(username) {
 
 		// If their profile is empty
 		if (available_excerpts.length === 0) {
-			console.log("No profile yet");
-			excerpt.html('');
+			excerpt.html('').text('No profile yet');
 		} else {
 			for ( var index = 0; index < priority.length; ++index ) {
 		    if (check_array(priority[index])) {
@@ -297,11 +296,7 @@ function get_profile_excerpt(username) {
 		    	break;
 		    } 
 			}
-
 		}
-
-//		var number = priority[0];
-//		var container = excerpt.find('#essay_' + number);
 
 		function check_array(iteration) {
 			var content = 'essay_' + iteration;
