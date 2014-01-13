@@ -195,7 +195,7 @@ function expand_favorite_options(favorites_array) {
 	}
 }
 
-/*** Tiles View Specific Functions ***/
+/*** Matches View Specific Functions ***/
 function update_tiles() {
 	change_tile_text();
 	add_star_ratings();
@@ -257,7 +257,7 @@ function add_star_ratings() {
 	}
 }
 
-/*** Classic View Specific Functions ***/
+/*** Classic Matches View Specific Functions ***/
 function add_excerpt_div() {
 	$('.match_card_wrapper').each(function() {
 		var self = $(this);
@@ -316,7 +316,7 @@ function truncate_excerpt(container) {
  		fallbackToLetter: true,
  		after		: null,
 		watch		: false,
-		height		: null,
+		height		: 100,
 		tolerance	: 0,
 		callback	: function( isTruncated, orgContent ) {},
  		lastCharacter	: {

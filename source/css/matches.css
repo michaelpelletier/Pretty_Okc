@@ -43,6 +43,62 @@ General Styling Fixes for Matches Page
   bottom: -25px;
 }
 
+/* Ratings Changes */
+.pretty_okc #match_results.not-scrolling .match_card_wrapper.user-not-hidden .percentages.hidden,
+.pretty_okc #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .percentages.hide_on_hover {
+  display: block!important;
+  opacity: 1;
+  filter:alpha(opacity=100);
+  -webkit-transition: none;
+  -moz-transition: none;
+  transition: none;
+}
+
+.pretty_okc ul#personality-rating {
+  top: -5px;
+  left: 0px;
+  margin-left: 0px;
+}
+
+.pretty_okc #personality-rating.match_card_rating {
+  -webkit-transition: none;
+  -moz-transition: none;
+  transition: none;
+}
+
+.pretty_okc #personality-rating.match_card_rating.show {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.pretty_okc #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .match_card_rating {
+  left: 1px;
+  top: -127px;
+  -webkit-transition: none;
+  -moz-transition: none;
+  transition: none;
+}
+
+.pretty_okc #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .star_rating {
+  background-image: none;
+  width: 135px;
+}
+
+.pretty_okc .star_rating {
+  background: #FFF url(http://akcdn.okccdn.com/media/img/icons/user_actions.png) no-repeat;
+  border-left: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  height: 26px;
+  position: absolute;
+  right: 0px;
+  top: -130px;
+  width: 30px;
+}
+
+.pretty_okc .no_rating      { background-position: -60px  -0px; }
+.pretty_okc .partial_rating { background-position: -90px -26px; }
+.pretty_okc .full_rating    { background-position: -60px -26px; }
+
 /***************************************************
 Styling Fixes for Matches Search Page - Tiles View
 ****************************************************/
@@ -93,12 +149,10 @@ Styling Fixes for Matches Search Page - Tiles View
   display: none;
 }
 
-
 /* Move message after having hidden someone's profile */
 .pretty_okc.tiles .match_card_wrapper.user-hidden .user_hidden_overlay {
   padding-top: 20px;
 }
-
 
 /* Replace all hover resizing / changing borders and other such things. */
 .pretty_okc.tiles #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .image_wrapper {
@@ -117,62 +171,6 @@ Styling Fixes for Matches Search Page - Tiles View
 .pretty_okc.tiles #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .image_wrapper img {
   top: -10px;
 }
-
-.pretty_okc.tiles #match_results.not-scrolling .match_card_wrapper.user-not-hidden .percentages.hidden,
-.pretty_okc.tiles #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .percentages.hide_on_hover {
-  display: block!important;
-  opacity: 1;
-  filter:alpha(opacity=100);
-  -webkit-transition: none;
-  -moz-transition: none;
-  transition: none;
-}
-
-/* Fix Rating Section */
-.pretty_okc.tiles ul#personality-rating {
-  top: -5px;
-  left: 0px;
-  margin-left: 0px;
-}
-
-.pretty_okc.tiles #personality-rating.match_card_rating {
-  -webkit-transition: none;
-  -moz-transition: none;
-  transition: none;
-}
-
-.pretty_okc.tiles #personality-rating.match_card_rating.show {
-  opacity: 0;
-  visibility: hidden;
-}
-
-.pretty_okc.tiles #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .match_card_rating {
-  left: 1px;
-  top: -127px;
-  -webkit-transition: none;
-  -moz-transition: none;
-  transition: none;
-}
-
-.pretty_okc.tiles #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .star_rating {
-  background-image: none;
-  width: 135px;
-}
-
-.pretty_okc.tiles .star_rating {
-  background: #FFF url(http://akcdn.okccdn.com/media/img/icons/user_actions.png) no-repeat;
-  border-left: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-  height: 26px;
-  position: absolute;
-  right: 0px;
-  top: -130px;
-  width: 30px;
-}
-
-.pretty_okc.tiles .no_rating      { background-position: -60px  -0px; }
-.pretty_okc.tiles .partial_rating { background-position: -90px -26px; }
-.pretty_okc.tiles .full_rating    { background-position: -60px -26px; }
 
 /***************************************************
 Styling Fixes for Matches Search Page - Classic View
@@ -227,14 +225,18 @@ Styling Fixes for Matches Search Page - Classic View
   text-align: left;
 }
 
+.pretty_okc.classic .contact_bar {
+  display: none;
+}
+
 .pretty_okc.classic .match_card_wrapper .image_wrapper img {
   top: 0px;
 }
 
-
 /* Change display of Match Percentages */
 .pretty_okc.classic .match_card_wrapper .match_card_text .percentages { 
-  top: 5px;
+  right: 5px;
+  top: 3px;
 }
 
 /* Change Display of Online Status */
@@ -283,4 +285,17 @@ Styling Fixes for Matches Search Page - Classic View
   margin: 0px;
   min-height: 0px;
   padding: 0px;
+}
+
+/* Ratings */
+.pretty_okc.classic .star_rating {
+  border-right: 1px solid #ddd;
+  top: 0;
+  right: 50px;
+}
+
+.pretty_okc.classic #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .match_card_rating {
+  left: auto;
+  right: 54px;
+  top: 2px;
 }
