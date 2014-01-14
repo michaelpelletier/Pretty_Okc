@@ -1,8 +1,13 @@
-// Unread Messages Count
 chrome.storage.sync.get("settings", function (obj) {
 	// Store our settings in variables.
-	var matches_mode = obj['settings']['mode'];
-	var excerpt_priority = obj['settings']['priority'];
+	var matches_mode = "tiles";
+	var excerpt_priority = [];
+
+	if (!$.isEmptyObject(obj)) {
+		matches_mode = obj['settings']['mode'];
+		excerpt_priority = obj['settings']['priority'];
+	}
+
 	add_body_class(matches_mode);
 
 	// Update the icon with the current message count
@@ -116,7 +121,7 @@ function style_buttons_with_icons() {
 }
 
 function expand_favorite_options(favorites_array) {
-	$('.action_options').find('.btn.small.white').not('.small_white').not('.hideflag').first().addClass("favorite");
+	$('.action_options').find('.btn.small.white:contains("Favorite")').addClass('favorite');
 	var favorites_container = $('.action_options').find('.btn.favorite');
 	var favorites_button = favorites_container.find('a');
 	var profile_name = $('#basic_info_sn').text();
