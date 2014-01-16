@@ -60,8 +60,13 @@ chrome.storage.sync.get(all_settings, function (obj) {
 		} 
   } else if (current_page === "favorites") {
 		get_all_favorites(favorites_array);
+  } else if (current_page === "likes") {
+  	add_private_notes();
   }
 });
+
+// Who you like, who likes you, visitors. All need Favorites Improved and Notes added.
+
 
 /*** General Functions ***/
 function add_body_class(matches_mode) {
@@ -77,8 +82,36 @@ function get_location() {
 		return "matches";
 	} else if (url.indexOf("favorites") > 0) {
 		return "favorites";
+	} else if (url.indexOf("visitors") > 0) {
+		return "likes";
+	} else if (url.indexOf("who-you-like") > 0) {
+		return "likes";
+	} else if (url.indexOf("who-likes-you") > 0) {
+		return "likes"
 	}
 }
+
+/*** Stuff Used In Multiple Places ***/
+function add_private_notes() {
+	// Adds a link for each user to Add or Edit private notes for them.
+	$('.user_row_item').each(function() {
+		var notes = $(this).find('.note');
+		var onclick = notes.find('a').attr('onclick');
+		var classes;
+		var title;
+
+		if (notes.is(':visible')) {
+			classes = "favorites_action action_add_note has_note";
+			title = "Edit private note";
+		} else {
+			classes = "favorites_action action_add_note";
+			title = "Add private note";
+		}
+
+		$(this).find('.action_rate').before('<span class="' + classes + '" onclick="' + onclick + '" title="' + title + '">private note</span>');
+	});
+}
+
 
 /*** Profile View Specific Functions ***/
 function style_buttons_with_icons(alist) {
@@ -782,26 +815,7 @@ function get_all_favorites(favorites_array) {
 	// of the individual profile containers. 
 	$.when.apply(null, defer_array).done(function() { 
 		initialize_favorites_lists(favorites_array);
-		add_private_notes_to_favorites();
+		add_private_notes();
 	});
 
-	function add_private_notes_to_favorites() {
-		// Adds a link for each user to Add or Edit private notes for them.
-		$('.user_row_item').each(function() {
-			var notes = $(this).find('.note');
-			var onclick = notes.find('a').attr('onclick');
-			var classes;
-			var title;
-
-			if (notes.is(':visible')) {
-				classes = "favorites_action action_add_note has_note";
-				title = "Edit private note";
-			} else {
-				classes = "favorites_action action_add_note";
-				title = "Add private note";
-			}
-
-			$(this).find('.action_rate').before('<span class="' + classes + '" onclick="' + onclick + '" title="' + title + '">private note</span>');
-		});
-	}
 }
