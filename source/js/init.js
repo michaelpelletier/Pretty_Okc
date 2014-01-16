@@ -1,12 +1,14 @@
-chrome.storage.sync.get("settings", function (obj) {
-	// Store our settings in variables.
-	var matches_mode = "tiles";
-	var excerpt_priority = [];
+var all_settings = ["settings", "favorites"];
+var matches_mode = "tiles";
+var excerpt_priority = [];
+var favorites_array = [];
 
+chrome.storage.sync.get(all_settings, function (obj) {
 	if (!$.isEmptyObject(obj)) {
 		matches_mode = obj['settings']['mode'];
 		excerpt_priority = obj['settings']['priority'];
-	}
+		favorites_array = obj['favorites'];
+	}	
 
 	add_body_class(matches_mode);
 
@@ -31,15 +33,8 @@ chrome.storage.sync.get("settings", function (obj) {
 	var current_page = get_location();
 
   if (current_page === "profile") {
-  	var favorites_array = [];
-
-	  chrome.storage.sync.get("favorites", function (obj) {
-			if (!$.isEmptyObject(obj)) {
-	    	favorites_array = obj['favorites'];
-	    	expand_favorite_options(favorites_array);
-	    }
-	    style_buttons_with_icons();
-	  });
+  	expand_favorite_options(favorites_array);
+  	style_buttons_with_icons();
   } else if (current_page === "matches") {
   	// I really don't like this, but haven't found a better way to pass these settings yet.
   	update_tiles();
@@ -63,14 +58,7 @@ chrome.storage.sync.get("settings", function (obj) {
 			});
 		} 
   } else if (current_page === "favorites") {
-  	var favorites_array = [];
-		chrome.storage.local.get(null, function(obj) {
-			if (!$.isEmptyObject(obj)) {
-				favorites_array = obj.favorites;
-			}
-
-			get_all_favorites(favorites_array);
-		});
+		get_all_favorites(favorites_array);
   }
 });
 
