@@ -33,8 +33,9 @@ chrome.storage.sync.get(all_settings, function (obj) {
 	var current_page = get_location();
 
   if (current_page === "profile") {
+  	var alist = $('li#user_menu_upgrade').length === 0;
   	expand_favorite_options(favorites_array);
-  	style_buttons_with_icons();
+  	style_buttons_with_icons(alist);
   } else if (current_page === "matches") {
   	// I really don't like this, but haven't found a better way to pass these settings yet.
   	update_tiles();
@@ -80,11 +81,16 @@ function get_location() {
 }
 
 /*** Profile View Specific Functions ***/
-function style_buttons_with_icons() {
+function style_buttons_with_icons(alist) {
 	$('.action_options').find('#upgrade_form').find('p.btn').addClass('alist').attr('title', 'Buy them A-List');
 	$('.action_options').find('#hide_btn').attr('title', 'Hide this user');
 	$('.action_options').find('#unhide_btn').attr('title', 'Unhide this user');
 	$('.action_options').find('.flag').attr('title', 'Report');
+
+	// A-List Button
+	if (!alist) {
+		 $('#actions').addClass('no_alist');
+	} 
 
 	// Add Note
 	var onclick = "Profile.loadWindow('edit_notes', 244); return false;"

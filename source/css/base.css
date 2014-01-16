@@ -90,11 +90,7 @@ body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.white.f
   background-position: -31px -26px!important;
 }
 
-/* Various Fixes */
-body#p_profile.pretty_okc .tabbed_heading #actions .action_options .hide {
-  float: left;
-}
-
+/* Styles Button Area. */
 body#p_profile.pretty_okc .tabbed_heading #actions {
   padding-left: 20px;
   padding-right: 15px;
@@ -108,6 +104,20 @@ body#p_profile.pretty_okc .tabbed_heading #actions .sign_up_btn {
 
 body#p_profile.pretty_okc .tabbed_heading #actions .action_options {
   width: 160px;
+}
+
+body#p_profile.pretty_okc .tabbed_heading #actions.no_alist .message {
+  width: 123px;
+}
+
+body#p_profile.pretty_okc .tabbed_heading #actions.no_alist,
+body#p_profile.pretty_okc .tabbed_heading #actions.no_alist .action_options {
+  width: 127px;
+}
+
+/* Various Fixes */
+body#p_profile.pretty_okc .tabbed_heading #actions .action_options .hide {
+  float: left;
 }
 
 body#p_profile.pretty_okc .tabbed_heading #actions .action_options .flag { border-right: 1px solid #ddd; }
@@ -250,8 +260,8 @@ Styling Fixes for Favorites Page
 .pretty_okc div.user_row_item p.last_rated, 
 .pretty_okc div.user_row_item p.last_visited,
 .pretty_okc div.user_row_item div.extra_info p.hidden_actions {
-  display: none;
-  visibility: hidden;
+/*  display: none;
+  visibility: hidden; */
 }
 
 /* Notes Text Field */
