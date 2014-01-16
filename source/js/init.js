@@ -62,6 +62,7 @@ chrome.storage.sync.get(all_settings, function (obj) {
 		get_all_favorites(favorites_array);
   } else if (current_page === "likes") {
   	add_private_notes();
+  	create_favorites_hover(favorites_array)
   }
 });
 
@@ -90,28 +91,6 @@ function get_location() {
 		return "likes"
 	}
 }
-
-/*** Stuff Used In Multiple Places ***/
-function add_private_notes() {
-	// Adds a link for each user to Add or Edit private notes for them.
-	$('.user_row_item').each(function() {
-		var notes = $(this).find('.note');
-		var onclick = notes.find('a').attr('onclick');
-		var classes;
-		var title;
-
-		if (notes.is(':visible')) {
-			classes = "favorites_action action_add_note has_note";
-			title = "Edit private note";
-		} else {
-			classes = "favorites_action action_add_note";
-			title = "Add private note";
-		}
-
-		$(this).find('.action_rate').before('<span class="' + classes + '" onclick="' + onclick + '" title="' + title + '">private note</span>');
-	});
-}
-
 
 /*** Profile View Specific Functions ***/
 function style_buttons_with_icons(alist) {
@@ -225,6 +204,26 @@ function expand_favorite_options(favorites_array) {
 			}
 		});
 	}
+}
+
+function add_private_notes() {
+	// Adds a link for each user to Add or Edit private notes for them.
+	$('.user_row_item').each(function() {
+		var notes = $(this).find('.note');
+		var onclick = notes.find('a').attr('onclick');
+		var classes;
+		var title;
+
+		if (notes.is(':visible')) {
+			classes = "favorites_action action_add_note has_note";
+			title = "Edit private note";
+		} else {
+			classes = "favorites_action action_add_note";
+			title = "Add private note";
+		}
+
+		$(this).find('.action_rate').before('<span class="' + classes + '" onclick="' + onclick + '" title="' + title + '">private note</span>');
+	});
 }
 
 /*** Matches View Specific Functions ***/
@@ -392,7 +391,7 @@ function initialize_favorites_lists(favorites_array) {
 	show_all_favorites();
 	unbind_list_events();
 	create_sidebar_html();
-	create_favorites_hover();
+	create_favorites_hover(favorites_array);
 	bind_favorite_list_toggle();
 	bind_list_actions();
 	make_lists_follow();
@@ -415,84 +414,6 @@ function initialize_favorites_lists(favorites_array) {
 			var list_class = list.replace(/\s/g, '');
 			$('ul.favorites').append('<li class="favorite_list ' + list_class + '"><span class="list_name">' + list + '</span><span class="remove_list" title="Delete list">Delete List</span><span class="edit_list" title="Edit list name">Edit List Name</span></li>');
 		});
-	}
-
-	function create_favorites_hover() {
-		// Add one hover container for adding someone to multiple lists.
-		$('.monolith').find('.favorites_list.favorites_page').remove();
-		$('.monolith').append('<div class="favorites_list favorites_page hidden_helper"><span class="title">Add to List</span><ul class="favorites_hover"></ul></div>');
-
-		var favorites_container = $('.favorites_list.favorites_page');
-
-		// Populate the hover container with the lists.
-		$.each(favorites_array, function(index, value) {
-			var list = value.list_name;
-			var list_class = list.replace(/\s/g, '');
-			$('ul.favorites_hover').append('<li class="list_' + list_class + '"><input type="checkbox" name="favorites" value="' + list + '"><span>' + list + '</span></li>');
-		});
-
-		set_favorite_mouseover();
-
-		$('.action_favorite').click(function() {
-			set_favorite_mouseover();
-			if ($(this).hasClass('action_favorited')) {
-				favorites_container.addClass('hidden_helper');
-			}
-		});
-
-		function set_favorite_mouseover() {
-			$('.action_favorite').unbind('mouseover');
-			// Add the mouseover to display the favorite list hover.
-			$('.action_favorite').mouseover(function() {
-				if ($(this).hasClass('action_favorited')) {
-					var username = $(this).attr('id');
-					username = username.replace('action-box-', '').replace('-fav', '');
-					var padding = 124;
-					var offset = $(this).offset().top - padding;
-					favorites_container.css('top', offset).removeClass('hidden_helper');
-					reset_list_checks(username);
-				}
-			});
-
-			favorites_container.mouseleave(function() {
-				favorites_container.addClass('hidden_helper');
-			});
-		}
-	}
-
-	function reset_list_checks(username) {
-		unbind_list_toggle();
-
-		$.each(favorites_array, function(index, value) {
-			var checked = ($.inArray(username, value.users) > 0);
-			var list = value.list_name;
-			var list_class = list.replace(/\s/g, '');
-
-			if (checked) {
-				$('.list_' + list_class).find('input').prop('checked', true);
-			} else {
-				$('.list_' + list_class).find('input').prop('checked', false);
-			}		
-		});
-
-		bind_list_toggle(username)
-
-		function bind_list_toggle(profile_name) {
-			$('ul.favorites_hover').find('input').change(function() {
-				var checked = this.checked;
-				var this_list = $(this).val();
-
-				if (checked) {
-					add_name_to_list(profile_name, this_list, favorites_array);
-				} else {
-					remove_name_from_list(profile_name, this_list, favorites_array);
-				}
-			});
-		}
-
-		function unbind_list_toggle() {
-			$('ul.favorites_hover').find('input').unbind('change');
-		}
 	}
 
 	function unbind_list_events() {
@@ -817,5 +738,83 @@ function get_all_favorites(favorites_array) {
 		initialize_favorites_lists(favorites_array);
 		add_private_notes();
 	});
+}
 
+
+function create_favorites_hover(favorites_array) {
+	// Add one hover container for adding someone to multiple lists.
+	$('.monolith').find('.favorites_list.favorites_page').remove();
+	$('.monolith').append('<div class="favorites_list favorites_page hidden_helper"><span class="title">Add to List</span><ul class="favorites_hover"></ul></div>');
+
+	var favorites_container = $('.favorites_list.favorites_page');
+
+	// Populate the hover container with the lists.
+	$.each(favorites_array, function(index, value) {
+		var list = value.list_name;
+		var list_class = list.replace(/\s/g, '');
+		$('ul.favorites_hover').append('<li class="list_' + list_class + '"><input type="checkbox" name="favorites" value="' + list + '"><span>' + list + '</span></li>');
+	});
+
+	set_favorite_mouseover();
+
+	$('.action_favorite').click(function() {
+		set_favorite_mouseover();
+		if ($(this).hasClass('action_favorited')) {
+			favorites_container.addClass('hidden_helper');
+		}
+	});
+
+	function set_favorite_mouseover() {
+		$('.action_favorite').unbind('mouseover');
+		// Add the mouseover to display the favorite list hover.
+		$('.action_favorite').mouseover(function() {
+			if ($(this).hasClass('action_favorited')) {
+				var username = $(this).attr('id');
+				username = username.replace('action-box-', '').replace('-fav', '');
+				var padding = 124;
+				var offset = $(this).offset().top - padding;
+				favorites_container.css('top', offset).removeClass('hidden_helper');
+				reset_list_checks(username, favorites_array);
+			}
+		});
+
+		favorites_container.mouseleave(function() {
+			favorites_container.addClass('hidden_helper');
+		});
+	}
+}
+
+function reset_list_checks(username, favorites_array) {
+	unbind_list_toggle();
+
+	$.each(favorites_array, function(index, value) {
+		var checked = ($.inArray(username, value.users) > 0);
+		var list = value.list_name;
+		var list_class = list.replace(/\s/g, '');
+
+		if (checked) {
+			$('.list_' + list_class).find('input').prop('checked', true);
+		} else {
+			$('.list_' + list_class).find('input').prop('checked', false);
+		}		
+	});
+
+	bind_list_toggle(username)
+
+	function bind_list_toggle(profile_name) {
+		$('ul.favorites_hover').find('input').change(function() {
+			var checked = this.checked;
+			var this_list = $(this).val();
+
+			if (checked) {
+				add_name_to_list(profile_name, this_list, favorites_array);
+			} else {
+				remove_name_from_list(profile_name, this_list, favorites_array);
+			}
+		});
+	}
+
+	function unbind_list_toggle() {
+		$('ul.favorites_hover').find('input').unbind('change');
+	}
 }

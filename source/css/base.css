@@ -254,14 +254,28 @@ Styling Fixes for Favorites Page
 }
 
 .pretty_okc div.user_row_item div.extra_info {
-  left: 210px;
+  display: block!important;
+  left: 134px;
+  top: 60px;
+  visibility: visible!important;
 }
 
-.pretty_okc div.user_row_item p.last_rated, 
-.pretty_okc div.user_row_item p.last_visited,
+.pretty_okc div.user_row_item:hover div.extra_info .visited_can_hide,
+.pretty_okc div.user_row_item:hover div.extra_info .rated_can_hide {
+  visibility: visible;
+}
+
 .pretty_okc div.user_row_item div.extra_info p.hidden_actions {
-/*  display: none;
-  visibility: hidden; */
+  display: none;
+  visibility: hidden;
+}
+
+.pretty_okc div.user_row_item p.into_you_over {
+  background-color: transparent;
+}
+
+.pretty_okc div.user_row_item div.user_interest {
+  top: 87px;
 }
 
 /* Notes Text Field */
