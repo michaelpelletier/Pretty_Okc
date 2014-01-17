@@ -49,7 +49,6 @@ function restore_options() {
     // Retrieve settings for Priority and put them into the proper order.
     var priority_settings = obj['settings']['priority'];
     for (var i = 0; i < priority_settings.length; i++) {
-      console.log(priority_settings[i])
       var item = $('li#' + priority_settings[i]);
       $('#excerpt_priority').append(item);
     }
