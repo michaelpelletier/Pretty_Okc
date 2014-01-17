@@ -204,6 +204,13 @@ Styling Fixes for Matches Search Page - Tiles View
   top: 100px;
 }
 
+/* Changes to Star Ratings */
+.pretty_okc.tiles #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .match_card_rating {
+  left: auto;
+  right: 5px;
+}
+
+
 /*******************************************************
 Styling Fixes for Matches Search Page - Wide Tiles View
 *******************************************************/
