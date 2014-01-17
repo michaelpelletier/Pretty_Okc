@@ -271,7 +271,7 @@ function add_star_ratings() {
 
 		if (rating_width === 0) {
 			return "no_rating";
-		} else if (rating_width > 70 && rating_width < 100) {
+		} else if (rating_width > 10 && rating_width < 100) {
 			return "partial_rating";
 		} else if (rating_width > 100) {
 			return "full_rating";
@@ -739,7 +739,6 @@ function get_all_favorites(favorites_array) {
 		add_private_notes();
 	});
 }
-
 
 function create_favorites_hover(favorites_array) {
 	// Add one hover container for adding someone to multiple lists.

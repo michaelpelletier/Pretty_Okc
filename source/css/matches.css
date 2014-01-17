@@ -172,6 +172,138 @@ Styling Fixes for Matches Search Page - Tiles View
   top: -10px;
 }
 
+/*******************************************************
+Styling Fixes for Matches Search Page - Wide Tiles View
+*******************************************************/
+
+
+/* Change Styling for Match Containers */
+.pretty_okc.wide_tiles .match_card_wrapper {
+  height: 100px;
+  margin-bottom: 30px;
+  width: 235px;
+}
+
+.pretty_okc.wide_tiles .match_card_wrapper .match_card {
+  height: 100px;
+  width: 235px;
+}
+
+.pretty_okc.wide_tiles .match_card_wrapper .image_wrapper {
+  height: 100px;
+  width: 100px;
+}
+
+.pretty_okc.wide_tiles .match_card_wrapper .match_card_text {
+  top: 0px;
+}
+
+.pretty_okc.wide_tiles .match_card_wrapper .match_card_text .profile_info .username,
+.pretty_okc.wide_tiles .match_card_wrapper .match_card_text .profile_info .userinfo {
+  display: block;
+  font-size: 12px;
+  line-height: 14px;
+  margin-left: 100px;
+  padding: 2px 0px 0px 5px;
+  text-align: left;
+  width: 130px;
+}
+
+.pretty_okc.wide_tiles .match_card_wrapper .match_card_text .profile_info .username {
+  font-size: 14px;
+}
+
+.pretty_okc.wide_tiles .match_card_wrapper .match_card_text .percentages {
+  left: 105px;
+  right: auto;
+  top: 40px;
+}
+
+.pretty_okc.wide_tiles .star_rating {
+  border-right: 1px solid #DDD;
+  border-top: 1px solid #DDD;
+  left: 105px;
+  right: auto;
+  top: 65px; 
+}
+
+/* Change Display of Online Status */
+.pretty_okc.wide_tiles .match_card_wrapper .online_indicator.chat_enabled, 
+.pretty_okc.wide_tiles a.online_indicator.online {
+  background-color: #2855a2;
+  border-radius: 0px;
+  bottom: 1px;
+  font-weight: bold;
+  left: 1px;
+  margin-left: 0px;
+  opacity: .6;
+  top: auto;
+  width: 100px;
+}
+
+/* Hide Reply Frequency and Username */
+.pretty_okc.wide_tiles .match_card .contact_bar {
+  display: none;
+}
+
+/* Move message after having hidden someone's profile */
+.pretty_okc.wide_tiles .match_card_wrapper.user-hidden .user_hidden_overlay {
+  padding-top: 20px;
+}
+
+/* Replace all hover resizing / changing borders and other such things. */
+.pretty_okc.wide_tiles #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .image_wrapper {
+  height: 100px;
+  width: 100px;
+}
+
+.pretty_okc.wide_tiles #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .match_card {
+  height: 100px;
+  width: 235px;
+}
+
+.pretty_okc.wide_tiles #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .online_indicator {
+  bottom: 1px;
+  top: auto;
+}
+
+/* Replace all the mouseover overrides */
+.pretty_okc.wide_tiles #match_results .match_card_wrapper.user-not-hidden .image_wrapper img,
+.pretty_okc.wide_tiles #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .image_wrapper img {
+  top: 0px;
+}
+
+
+
+.pretty_okc.wide_tiles #personality-rating {
+  background: url(http://akcdn.okccdn.com/media/img/icons/user_action_stars.png) left top repeat-x;
+  height: 26px;
+  overflow: hidden;
+  width: 90px;
+}
+
+.pretty_okc.wide_tiles .current-rating {
+  background: url(http://akcdn.okccdn.com/media/img/icons/user_action_stars.png) left bottom repeat-x;
+}
+
+.pretty_okc.wide_tiles #personality-rating.match_card_rating a:hover, 
+.pretty_okc.wide_tiles #personality-rating.match_card_rating a:active {
+  background: url(http://akcdn.okccdn.com/media/img/icons/user_action_stars.png) left center repeat-x;
+}
+
+.pretty_okc.wide_tiles #personality-rating.match_card_rating .current-rating {
+  background: url(http://akcdn.okccdn.com/media/img/icons/user_action_stars.png) left bottom repeat-x;
+}
+
+.pretty_okc.wide_tiles #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .match_card_rating {
+  left: 110px;
+  top: 65px;
+}
+
+.pretty_okc.wide_tiles #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .star_rating {
+  width: 100px;
+}
+
 /***************************************************
 Styling Fixes for Matches Search Page - Classic View
 ****************************************************/
