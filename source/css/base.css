@@ -42,6 +42,7 @@ body#p_profile.pretty_okc .tabbed_heading #actions .action_options .flag
   border: 1px solid #ddd;
   border-right: none;
   display: inline-block!important;
+  float: left;
   height: 27px!important;
   line-height: 27px!important;
   margin-bottom: 0px;
@@ -122,8 +123,9 @@ body#p_profile.pretty_okc .tabbed_heading #actions .action_options .hide {
 
 body#p_profile.pretty_okc .tabbed_heading #actions .action_options .flag { border-right: 1px solid #ddd; }
 
-.pretty_okc #upgrade_form {
+body#p_profile.pretty_okc #upgrade_form {
   display: inline-block;
+  float: left;
 }
 
 body#p_profile.pretty_okc .tabbed_heading #actions .action_options #hide_btn.unhider,
