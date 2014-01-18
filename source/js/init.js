@@ -785,9 +785,10 @@ function create_favorites_hover(favorites_array) {
 
 function reset_list_checks(username, favorites_array) {
 	unbind_list_toggle();
+	var checked;
 
 	$.each(favorites_array, function(index, value) {
-		var checked = ($.inArray(username, value.users) > 0);
+		checked = ($.inArray(username, value.users) > -1);
 		var list = value.list_name;
 		var list_class = list.replace(/\s/g, '');
 
