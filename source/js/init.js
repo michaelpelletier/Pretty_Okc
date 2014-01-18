@@ -4,11 +4,9 @@ var excerpt_priority = [];
 var favorites_array = [];
 
 chrome.storage.sync.get(all_settings, function (obj) {
-	if (!$.isEmptyObject(obj)) {
-		matches_mode = obj['settings']['mode'];
-		excerpt_priority = obj['settings']['priority'];
-		favorites_array = obj['favorites'];
-	}	
+	matches_mode = obj['settings']['mode'] || "tiles";
+	excerpt_priority = obj['settings']['priority'] || ['1', '2', '3', '4'];
+	favorites_array = obj['favorites'] || [];
 
 	add_body_class(matches_mode);
 
