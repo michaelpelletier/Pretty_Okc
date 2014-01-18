@@ -271,9 +271,9 @@ function add_star_ratings() {
 
 		if (rating_width === 0) {
 			return "no_rating";
-		} else if (rating_width > 10 && rating_width < 100) {
+		} else if (rating_width > 10 && rating_width < 78) {
 			return "partial_rating";
-		} else if (rating_width > 100) {
+		} else if (rating_width > 78) {
 			return "full_rating";
 		}
 	}
