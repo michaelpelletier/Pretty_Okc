@@ -1,12 +1,25 @@
 var all_settings = ["settings", "favorites"];
-var matches_mode = "tiles";
-var excerpt_priority = [];
-var favorites_array = [];
 
 chrome.storage.sync.get(all_settings, function (obj) {
-	matches_mode = obj['settings']['mode'] || "tiles";
-	excerpt_priority = obj['settings']['priority'] || ['1', '2', '3', '4'];
-	favorites_array = obj['favorites'] || [];
+	// Set defaults in case the user did not visit the options page first.
+	var matches_mode;
+	var favorites_array;
+  var default_tiles = "tiles";
+  var default_favorites = [];
+
+  // Default Options
+  if (obj && obj['settings'] && obj['settings']['mode']) {
+		matches_mode = obj['settings']['mode'];
+	} else {
+		matches_mode = default_tiles;
+	}
+
+	// Default Favorites
+	if (obj && obj['favorites']) {
+		favorites_array = obj['favorites'];
+	} else {
+		favorites_array = default_favorites;
+	}
 
 	add_body_class(matches_mode);
 
