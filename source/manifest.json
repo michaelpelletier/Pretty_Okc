@@ -1,11 +1,12 @@
 {
   "name": "Pretty OkCupid",
   "short_name": "Pretty_Okc",
-  "version": "0.5",
+  "version": "0.7",
   "manifest_version": 2,
   "description": "UX / Styling improvements for OkCupid.",
   "homepage_url": "http://www.mpelletier.net",
   "options_page": "options.html",
+  "key": "aoffmocnfheflhhambmmdmlpdddpaagc",
   "permissions": ["tabs", "storage", "http://*.okcupid.com/*"],
   "background": {
     "scripts": ["js/background.js"]
