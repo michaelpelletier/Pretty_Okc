@@ -113,11 +113,6 @@ function get_location() {
 	}
 }
 
-function retrieve_default_settings(obj) {
-
-
-}
-
 /*** Profile View Specific Functions ***/
 function style_buttons_with_icons(alist) {
 	$('.action_options').find('#upgrade_form').find('p.btn').addClass('alist').attr('title', 'Buy them A-List');
@@ -256,6 +251,7 @@ function add_private_notes() {
 function update_tiles() {
 	change_tile_text();
 	add_star_ratings();
+	//fetch_all_pictures();
 }
 
 function change_tile_text() {
@@ -313,6 +309,28 @@ function add_star_ratings() {
 		}
 	}
 }
+
+function fetch_all_pictures() {
+	$('.match_card_wrapper').each(function() {
+		var self = $(this);
+
+		// Remove state abbreviation.
+		var username = self.find('.username').text();
+		self.append('<div class="additional_pictures"></div>');
+		var picture_container = self.find('.additional_pictures');
+		var full_url = 'http://www.okcupid.com/profile/' + username + '/photos';
+
+		//picture_container.load(full_url, function(response) {
+		//	console.log(response)
+			//picture_container.html(response);
+		//});
+
+	});
+// http://www.okcupid.com/profile/kat1327/photos
+
+}
+
+
 
 /*** Classic Matches View Specific Functions ***/
 function add_excerpt_div() {
