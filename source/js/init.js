@@ -3,9 +3,11 @@ var all_settings = ["settings", "favorites"];
 chrome.storage.sync.get(all_settings, function (obj) {
 	// Set defaults in case the user did not visit the options page first.
 	var matches_mode;
+	var excerpt_priority;
 	var favorites_array;
   var default_tiles = "tiles";
   var default_favorites = [];
+  var default_priority = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
   // Default Options
   if (obj && obj['settings'] && obj['settings']['mode']) {
@@ -20,6 +22,14 @@ chrome.storage.sync.get(all_settings, function (obj) {
 	} else {
 		favorites_array = default_favorites;
 	}
+
+	// Default Priority
+	if (obj && obj['settings'] && obj['settings']['priority']) {
+		excerpt_priority = obj['settings']['priority'];
+	} else {
+		excerpt_priority = default_priority;	
+	}
+
 
 	add_body_class(matches_mode);
 
@@ -101,6 +111,11 @@ function get_location() {
 	} else if (url.indexOf("who-likes-you") > 0) {
 		return "likes"
 	}
+}
+
+function retrieve_default_settings(obj) {
+
+
 }
 
 /*** Profile View Specific Functions ***/
