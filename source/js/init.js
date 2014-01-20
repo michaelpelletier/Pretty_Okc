@@ -2,6 +2,7 @@ var all_settings = ["settings", "favorites"];
 
 chrome.storage.sync.get(all_settings, function (obj) {
 	// Set defaults in case the user did not visit the options page first.
+	console.log(obj)
 	var matches_mode;
 	var excerpt_priority;
 	var favorites_array;
@@ -166,7 +167,7 @@ function expand_favorite_options(favorites_array) {
 	function add_favorite_lists() {
 		$.each(favorites_array, function(index, value) {
 			var checked = ($.inArray(profile_name, value.users) > 0);
-			var list = value.list_name;
+			var list = JSON.parse(value.list_name);
 
 			if (checked) {
 				$('ul.favorites').append('<li><input type="checkbox" name="favorites" value="' + list + '" checked><span>' + list + '</span></li>');
@@ -412,7 +413,7 @@ function add_name_to_list(name, list, favorites_array) {
 
 	// If the name is unique, add it to the array for this particular list, and then save the list.
 	$.each(favorites_array, function(index, value) {
-		if (value.list_name === list) {
+		if (JSON.parse(value.list_name) === list) {
 			if ($.inArray(name, value.users) < 0) {
 				value.users.push(name);
 				save_favorites(favorites_array);
@@ -426,7 +427,7 @@ function remove_name_from_list(name, list, favorites_array) {
 
 	// Remove the name from this particular list and then save the list.
 	$.each(favorites_array, function(index, value) {
-		if (value.list_name === list) {
+		if (JSON.parse(value.list_name) === list) {
 			if ($.inArray(name, value.users) > -1) {
 				var index_for_removal = value.users.indexOf(name);
 				value.users.splice(index_for_removal, 1);
@@ -459,7 +460,7 @@ function initialize_favorites_lists(favorites_array) {
 
 		// Add each favorite list
 		$.each(favorites_array, function(index, value) {
-			var list = value.list_name;
+			var list = JSON.parse(value.list_name);
 			$('ul.favorites').append('<li class="favorite_list"><span class="list_name">' + list + '</span><span class="remove_list" title="Delete list">Delete List</span><span class="edit_list" title="Edit list name">Edit List Name</span></li>');
 		});
 	}
@@ -490,6 +491,7 @@ function initialize_favorites_lists(favorites_array) {
 
 			function save_new_list() {
 				var new_list_name = $('#new_favorite_list').val();
+				new_list_name = JSON.stringify(new_list_name);
 				var new_list = {list_name: new_list_name, users: []}
 
 				var unique = check_uniqueness(new_list_name);
@@ -509,7 +511,7 @@ function initialize_favorites_lists(favorites_array) {
 				var index_for_removal;
 
 				$.each(favorites_array, function(index, value) {
-					if (value.list_name === list) {
+					if (JSON.parse(value.list_name) === list) {
 						index_for_removal = index;
 					}
 				});
@@ -573,8 +575,8 @@ function initialize_favorites_lists(favorites_array) {
 						} else {
 							// Otherwise, update it in the array.
 							$.each(favorites_array, function(index, value) {
-								if (value.list_name === original_name) {
-									value.list_name = new_name;
+								if (JSON.parse(value.list_name) === original_name) {
+									value.list_name = JSON.stringify(new_name);
 								}
 							});
 							refresh_list(new_name);
@@ -611,7 +613,7 @@ function initialize_favorites_lists(favorites_array) {
 			var unique = true;
 
 			$.each(favorites_array, function(index, value) {
-				if (value.list_name === checked_name) {
+				if (JSON.parse(value.list_name) === checked_name) {
 					unique = false;
 				} 
 			});
@@ -726,7 +728,7 @@ function show_selected_list(searched_list, favorites_array) {
 	// Get all the users on this list	
 	var names = [];
 	$.each(favorites_array, function(index, value) {
-		if (value.list_name === searched_list) {
+		if (JSON.parse(value.list_name) === searched_list) {
 			names = value.users;
 		}
 	});
@@ -795,7 +797,7 @@ function create_favorites_hover(favorites_array) {
 
 	// Populate the hover container with the lists.
 	$.each(favorites_array, function(index, value) {
-		var list = value.list_name;
+		var list = JSON.parse(value.list_name);
 		$('ul.favorites_hover').append('<li class="list"><input type="checkbox" name="favorites" value="' + list + '"><span>' + list + '</span></li>');
 	});
 
@@ -834,16 +836,8 @@ function reset_list_checks(username, favorites_array) {
 
 	$.each(favorites_array, function(index, value) {
 		checked = ($.inArray(username, value.users) > -1);
-		var list = value.list_name;
-		//var list_class = list.replace(/\s/g, '');
-
-		if (checked) {
-			$('li.list:contains(list)').find('input').prop('checked', true);
-		//	$('.list_' + list_class).find('input').prop('checked', true);
-		} else {
-			$('li.list:contains(list)').find('input').prop('checked', false);
-		//	$('.list_' + list_class).find('input').prop('checked', false);
-		}		
+		var parsed_name = JSON.parse(value.list_name);
+		$('.list:contains("' + parsed_name + '")').find('input').prop('checked', checked);
 	});
 
 	bind_list_toggle(username)
