@@ -201,7 +201,7 @@ Styling Fixes for Matches Search Page - Tiles View
 .pretty_okc.tiles .match_card_wrapper .online_indicator.chat_enabled, 
 .pretty_okc.tiles a.online_indicator.online,
 .pretty_okc.tiles #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .online_indicator {
-  top: 100px;
+  top: 102px;
 }
 
 /* Changes to Star Ratings */
