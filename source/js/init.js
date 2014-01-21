@@ -2,7 +2,6 @@ var all_settings = ["settings", "favorites"];
 
 chrome.storage.sync.get(all_settings, function (obj) {
 	// Set defaults in case the user did not visit the options page first.
-	console.log(obj)
 	var matches_mode;
 	var excerpt_priority;
 	var favorites_array;
@@ -123,7 +122,7 @@ function style_buttons_with_icons(alist) {
 
 	// A-List Button
 	if (!alist) {
-		 $('#actions').addClass('no_alist');
+		$('#actions').addClass('no_alist');
 	} 
 
 	// Add Note
@@ -797,7 +796,7 @@ function create_favorites_hover(favorites_array) {
 
 	// Populate the hover container with the lists.
 	$.each(favorites_array, function(index, value) {
-		var list = JSON.parse(value.list_name);
+		var list = JSON.parse(value.list_name).replace(/"/g, '&quot;');
 		$('ul.favorites_hover').append('<li class="list"><input type="checkbox" name="favorites" value="' + list + '"><span>' + list + '</span></li>');
 	});
 
