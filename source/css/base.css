@@ -33,7 +33,7 @@ body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.small_w
 body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.small_white a.flag,
 body#p_profile.pretty_okc .tabbed_heading #actions .action_options #hide_btn,
 body#p_profile.pretty_okc .tabbed_heading #actions .action_options #unhide_btn,
-body#p_profile.pretty_okc .tabbed_heading #actions .action_options .flag
+body#p_profile.pretty_okc .tabbed_heading #actions .action_options #flag_btn
 {
   background-color: #F6F6F6!important;
   background-image: url('chrome-extension://__MSG_@@extension_id__/images/okc_icons.png')!important;
@@ -70,10 +70,10 @@ body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.white.f
 body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.white.notes:hover,
 body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.white.alist:hover,
 body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.small_white a.hide.grey:hover,
-body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.small_white a.flag:hover,
+body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.small_white #flag_btn:hover,
 body#p_profile.pretty_okc .tabbed_heading #actions .action_options #hide_btn:hover,
 body#p_profile.pretty_okc .tabbed_heading #actions .action_options #unhide_btn:hover,
-body#p_profile.pretty_okc .tabbed_heading #actions .action_options .flag:hover {
+body#p_profile.pretty_okc .tabbed_heading #actions .action_options #flag_btn:hover {
   background-color: #FFF!important;
 }
 
@@ -82,7 +82,7 @@ body#p_profile.pretty_okc .tabbed_heading #actions .action_options .flag:hover {
 .pretty_okc .btn.notes.white.has_note { background-position:  -30px -26px!important; }
 .pretty_okc #hide_btn                 { background-position:  -90px -26px!important; }
 .pretty_okc #unhide_btn               { background-position:  -90px   2px!important; }
-.pretty_okc .btn.white .flag          { background-position: -160px -25px!important; }
+.pretty_okc .btn.white #flag_btn      { background-position: -160px -25px!important; }
 
 body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.white.favorite { 
   background: #F6F6F6 url(http://akcdn.okccdn.com/media/img/icons/user_actions.png) -31px 0px no-repeat!important; 
