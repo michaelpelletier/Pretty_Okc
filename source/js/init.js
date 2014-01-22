@@ -115,6 +115,8 @@ function get_location() {
 
 /*** Profile View Specific Functions ***/
 function style_buttons_with_icons(alist) {
+	fix_online_indicator();
+
 	$('.action_options').find('#upgrade_form').find('p.btn').addClass('alist').attr('title', 'Buy them A-List');
 	$('.action_options').find('#hide_btn').attr('title', 'Hide this user');
 	$('.action_options').find('#unhide_btn').attr('title', 'Unhide this user');
@@ -145,6 +147,11 @@ function style_buttons_with_icons(alist) {
 			notes_button.attr('title', 'Add Note');
 		}
 	}
+
+	function fix_online_indicator() {
+		$('#action_bar_interior').find('.online_now').text("Online");
+	}
+
 }
 
 function expand_favorite_options(favorites_array) {

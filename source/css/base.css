@@ -154,6 +154,28 @@ body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.white.f
   vertical-align: top;
 }
 
+/* Online Indicator */
+body#p_profile.pretty_okc #action_bar .image .online_now,
+body#p_profile.pretty_okc #online_now {
+  background-color: #2855a2;
+  border-radius: 0px;
+  bottom: 0px;
+  font-weight: bold;
+  left: 0px;
+  margin-left: 0px;
+  opacity: .6;
+  top: auto;
+  width: 100%;
+}
+
+body#p_profile.pretty_okc #action_bar .image .online_now {
+  color: #FFF;
+  font-size: 10px;
+  font-style: normal;
+  line-height: 12px;
+  text-align: center;
+}
+
 /**************************************
 Styling Fixes for Favorites Page 
 ***************************************/
