@@ -57,6 +57,7 @@ chrome.storage.sync.get(all_settings, function (obj) {
   	var alist = $('li#user_menu_upgrade').length === 0;
   	expand_favorite_options(favorites_array);
   	style_buttons_with_icons(alist);
+  	add_recent_questions_option();
   } else if (current_page === "matches") {
   	// I really don't like this, but haven't found a better way to pass these settings yet.
   	update_tiles();
@@ -151,7 +152,6 @@ function style_buttons_with_icons(alist) {
 	function fix_online_indicator() {
 		$('#action_bar_interior').find('.online_now').text("Online");
 	}
-
 }
 
 function expand_favorite_options(favorites_array) {
@@ -252,6 +252,21 @@ function add_private_notes() {
 
 		$(this).find('.action_rate').before('<span class="' + classes + '" onclick="' + onclick + '" title="' + title + '">private note</span>');
 	});
+}
+
+function add_recent_questions_option() {
+	// Add the Recently Answered option.
+	var container = $('.right ul.bottom_pad');
+	var link = container.find('li a').attr('href').replace('/profile/', '');
+	var name_array = link.split('/');
+	var username = name_array[0];
+	$('.right ul.bottom_pad').append('<li class="recently_added"><a href="/profile/' + username + '/questions?recent=1">Recently answered</a></li>')	
+
+	// If we're on that page, highlight it. 
+	var url = window.location.href;
+	if (url.indexOf("recent") > 0) {
+		$('.recently_added').addClass('active');
+	}
 }
 
 /*** Matches View Specific Functions ***/
