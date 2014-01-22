@@ -1,6 +1,8 @@
 Pretty_Okc
 ==========
 
+Chrome Plugin for styling and functionality improvements to the website Okcupid.com
+
 Current Version: 0.70
 
 
