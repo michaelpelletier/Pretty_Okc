@@ -14,38 +14,15 @@ chrome.browserAction.onClicked.addListener(function(tab) {
    open_focus_options();
 });
 
-// Get Settings
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  var matches_mode = localStorage["mode"];
-  var excerpt_priority = localStorage["priority"];
-
-  if (request.retrieve == "settings"){
-    sendResponse({ 
-      mode: matches_mode, 
-      priority: excerpt_priority
-    });
-  }
-});
-
-// Inject CSS file dependent on settings
-chrome.tabs.onCreated.addListener(inject_css);
-chrome.tabs.onUpdated.addListener(function(tabId, info, tab) {
-    if (info.status == 'complete') inject_css();
-});
-
-
-function inject_css() {
-  var my_settings = localStorage["mode"];
-  var path;
-
-  if (my_settings === "classic") {
-  	path = "css/classic.css"
+  // Update Chrome Badge Text.
+  if (request.messages > 0) {
+    chrome.browserAction.setBadgeBackgroundColor({color:[252, 91, 151, 255]});
+    chrome.browserAction.setBadgeText({text: request.messages });
   } else {
-  	path = "css/tiles.css"
+    chrome.browserAction.setBadgeText({text: '' });
   }
-
-	chrome.tabs.insertCSS(null, {file: path});
-}
+});
 
 function open_focus_options() {
   var options_url = chrome.extension.getURL('options.html'); 
