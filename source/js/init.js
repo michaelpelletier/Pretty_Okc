@@ -30,7 +30,6 @@ chrome.storage.sync.get(all_settings, function (obj) {
 		excerpt_priority = default_priority;	
 	}
 
-
 	add_body_class(matches_mode);
 
 	// Update the icon with the current message count
@@ -42,32 +41,22 @@ chrome.storage.sync.get(all_settings, function (obj) {
 	  queries: [{ element: '#nav_mailbox_badge, span.curr, span.rollingnumber' }]
 	});
 
-	function update_count() {
-		message_count = $('#nav_mailbox_badge').find('span.curr').text();
-		if (!message_count) {
-			message_count = 0;
-		}
-		chrome.runtime.sendMessage({ messages: message_count});
-	}
-
-	// If we're on a user's page.
 	var current_page = get_location();
-
   if (current_page === "profile") {
-  	var alist = $('li#user_menu_upgrade').length === 0;
+  	// If we're on a user's profile page. 
   	expand_favorite_options(favorites_array);
-  	style_buttons_with_icons(alist);
+  	style_buttons_with_icons();
   } else if (current_page === "matches") {
-  	// I really don't like this, but haven't found a better way to pass these settings yet.
-  	update_tiles();
+  	update_matches_page();
 
 		// When more users are added to the page, call the function.
 		var observer = new MutationSummary({
-		  callback: update_tiles,
+		  callback: update_matches_page,
 		  queries: [{ element: '.match_card_wrapper' }]
 		});
 
 		if (matches_mode === "classic") {
+			// I really don't like this, but haven't found a better way to pass these settings yet.
 	  	if (excerpt_priority) {
 	  		$('body').append('<input type="hidden" id="excerpt_priority" value="' + excerpt_priority + '">')
 	  	}
@@ -80,15 +69,20 @@ chrome.storage.sync.get(all_settings, function (obj) {
 			});
 		} 
   } else if (current_page === "favorites") {
-		get_all_favorites(favorites_array);
+		remove_favorite_pagination(favorites_array);
   } else if (current_page === "likes") {
   	add_private_notes();
   	create_favorites_hover(favorites_array)
   }
+
+	function update_count() {
+		message_count = $('#nav_mailbox_badge').find('span.curr').text();
+		if (!message_count) {
+			message_count = 0;
+		}
+		chrome.runtime.sendMessage({ messages: message_count});
+	}
 });
-
-// Who you like, who likes you, visitors. All need Favorites Improved and Notes added.
-
 
 /*** General Functions ***/
 function add_body_class(matches_mode) {
@@ -119,19 +113,153 @@ function arraymove(arr, fromIndex, toIndex) {
   arr.splice(toIndex, 0, element);
 }
 
+// Matches View
+function update_matches_page() {
+	change_tile_text();
+	add_star_ratings();
+
+	function change_tile_text() {
+		$('.match_card_wrapper').each(function() {
+			var self = $(this);
+
+			// Remove state abbreviation.
+			var userinfo = self.find('.userinfo');
+			var location = userinfo.text();
+			location = location.replace('·', ' · ').split(',');
+			userinfo.text(location[0]);	
+
+			// Remove "Match" from Match Percentage.
+			var percents = self.find('.percentages');
+			var match = $.trim(percents.text());
+			match = match.split(' ');
+			percents.text(match[0]);
+		});
+	}
+
+	function add_star_ratings() {
+		$('.match_card_wrapper').each(function() {
+			var self = $(this);
+			var stars = calculate_star_ratings(self);
+			apply_star_ratings(self, stars)
+
+			// If the user changes a rating, adjust accordingly
+			self.find('#personality-rating').find('li').find('a').click(function() {
+				setTimeout(function() {
+					var new_stars = calculate_star_ratings(self);
+					apply_star_ratings(self, new_stars);
+				}, 500);
+			});
+		});
+
+		function calculate_star_ratings(self) {
+			var rating_width = self.find('.current-rating').css('width').replace("px", "");
+			rating_width = parseInt(rating_width);
+
+			if (rating_width === 0) {
+				return "no_rating";
+			} else if (rating_width > 10 && rating_width < 70) {
+				return "partial_rating";
+			} else if (rating_width > 70) {
+				return "full_rating";
+			}
+		}
+
+		function apply_star_ratings(self, stars) {
+			var action_rating = self.find('.star_rating').length === 0;
+			if (action_rating) {
+				self.find('.match_card_text').append('<div class="star_rating ' + stars + '"></div>');
+			} else {
+				self.find('.star_rating').removeClass('no_rating').removeClass('partial_rating').removeClass('full_rating').addClass(stars);
+			}
+		}
+	}
+}
+
+// Classic View - Profile Excerpt
+function add_excerpt_div() {
+	$('.match_card_wrapper').each(function() {
+		var self = $(this);
+		if (self.find('.pretty_okc_profile_excerpt').length < 1) {
+			self.find(".match_card_text").after('<div class="pretty_okc_profile_excerpt"></div>');
+			var username = self.attr('id').replace('usr-', '').replace('-wrapper', '');
+			get_profile_excerpt(username);
+		} 
+	});
+
+	function get_profile_excerpt(username) {
+		var priority = $('#excerpt_priority').val();
+		priority = priority.split(',');
+		var full_url = 'http://www.okcupid.com/profile/' + username + " #main_column";
+		var excerpt = $('#usr-' + username + '-wrapper').find('.pretty_okc_profile_excerpt');
+		excerpt.load(full_url, function(response) {
+			parse_excerpt(response);
+		});
+	}
+
+	function parse_excerpt(response) {
+		var available_excerpts = [];
+		excerpt.find('.essay').each(function() {
+			available_excerpts.push($(this).attr('id'));
+		});
+
+		// If their profile is empty
+		if (available_excerpts.length === 0) {
+			excerpt.html('').text('No profile yet');
+		} else {
+			for ( var index = 0; index < priority.length; ++index ) {
+		    if (check_array(priority[index])) {
+		    	var container = excerpt.find('#essay_' + priority[index]);
+		    	container.siblings().remove();
+		    	truncate_excerpt(container);
+		    	break;
+		    } 
+			}
+		}
+
+		function check_array(iteration) {
+			var content = 'essay_' + iteration;
+			if ($.inArray(content, available_excerpts) !== -1) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
+
+	function truncate_excerpt(container) {
+		container.dotdotdot({
+			ellipsis	: '... ',
+	 		wrap		: 'word',
+	 		fallbackToLetter: true,
+	 		after		: null,
+			watch		: false,
+			height		: 100,
+			tolerance	: 0,
+			callback	: function( isTruncated, orgContent ) {},
+	 		lastCharacter	: {
+	 			remove		: [ ' ', ',', ';', '.', '!', '?' ],
+	 			noEllipsis	: []
+			}
+		});
+	}
+}
+
 /*** Profile View Specific Functions ***/
-function style_buttons_with_icons(alist) {
+function style_buttons_with_icons() {
 	fix_online_indicator();
 
-	$('.action_options').find('#upgrade_form').find('p.btn').addClass('alist').attr('title', 'Buy them A-List');
-	$('.action_options').find('#hide_btn').attr('title', 'Hide this user');
-	$('.action_options').find('#unhide_btn').attr('title', 'Unhide this user');
-	$('.action_options').find('.flag').attr('title', 'Report');
-
 	// A-List Button
+	var alist = $('li#user_menu_upgrade').length === 0;
 	if (!alist) {
 		$('#actions').addClass('no_alist');
-	} 
+	} else {
+		$('.action_options').find('#upgrade_form').find('p.btn').addClass('alist').attr('title', 'Buy them A-List');
+	}
+
+	// Other Buttons
+	$('.action_options').find('#hide_btn').attr('title', 'Hide this user');
+	$('.action_options').find('#unhide_btn').attr('title', 'Unhide this user');
+	$('.action_options').find('#flag_btn').attr('title', 'Report');
 
 	// Add Note
 	var onclick = "Profile.loadWindow('edit_notes', 244); return false;"
@@ -259,137 +387,6 @@ function add_private_notes() {
 	});
 }
 
-/*** Matches View Specific Functions ***/
-function update_tiles() {
-	change_tile_text();
-	add_star_ratings();
-}
-
-function change_tile_text() {
-	$('.match_card_wrapper').each(function() {
-		var self = $(this);
-
-		// Remove state abbreviation.
-		var userinfo = self.find('.userinfo');
-		var location = userinfo.text();
-		location = location.replace('·', ' · ').split(',');
-		userinfo.text(location[0]);	
-
-		// Remove "Match" from Match Percentage.
-		var percents = self.find('.percentages');
-		var match = $.trim(percents.text());
-		match = match.split(' ');
-		percents.text(match[0]);
-	});
-}
-
-function add_star_ratings() {
-	$('.match_card_wrapper').each(function() {
-		var self = $(this);
-		var stars = calculate_star_ratings(self);
-		apply_star_ratings(self, stars)
-
-		// If the user changes a rating, adjust accordingly
-		self.find('#personality-rating').find('li').find('a').click(function() {
-			setTimeout(function() {
-				var new_stars = calculate_star_ratings(self);
-				apply_star_ratings(self, new_stars);
-			}, 500);
-		});
-	});
-
-	function calculate_star_ratings(self) {
-		var rating_width = self.find('.current-rating').css('width').replace("px", "");
-		rating_width = parseInt(rating_width);
-
-		if (rating_width === 0) {
-			return "no_rating";
-		} else if (rating_width > 10 && rating_width < 70) {
-			return "partial_rating";
-		} else if (rating_width > 70) {
-			return "full_rating";
-		}
-	}
-
-	function apply_star_ratings(self, stars) {
-		var action_rating = self.find('.star_rating').length === 0;
-		if (action_rating) {
-			self.find('.match_card_text').append('<div class="star_rating ' + stars + '"></div>');
-		} else {
-			self.find('.star_rating').removeClass('no_rating').removeClass('partial_rating').removeClass('full_rating').addClass(stars);
-		}
-	}
-}
-
-/*** Classic Matches View Specific Functions ***/
-function add_excerpt_div() {
-	$('.match_card_wrapper').each(function() {
-		var self = $(this);
-		if (self.find('.pretty_okc_profile_excerpt').length < 1) {
-			self.find(".match_card_text").after('<div class="pretty_okc_profile_excerpt"></div>');
-			var username = self.attr('id').replace('usr-', '').replace('-wrapper', '');
-			get_profile_excerpt(username);
-		} 
-	});
-}
-
-function get_profile_excerpt(username) {
-	var priority = $('#excerpt_priority').val();
-	priority = priority.split(',');
-	var full_url = 'http://www.okcupid.com/profile/' + username + " #main_column";
-	var excerpt = $('#usr-' + username + '-wrapper').find('.pretty_okc_profile_excerpt');
-	excerpt.load(full_url, function(response) {
-		parse_excerpt(response);
-	});
-
-	function parse_excerpt(response) {
-		var available_excerpts = [];
-		excerpt.find('.essay').each(function() {
-			available_excerpts.push($(this).attr('id'));
-		});
-
-		// If their profile is empty
-		if (available_excerpts.length === 0) {
-			excerpt.html('').text('No profile yet');
-		} else {
-			for ( var index = 0; index < priority.length; ++index ) {
-		    if (check_array(priority[index])) {
-		    	var container = excerpt.find('#essay_' + priority[index]);
-		    	container.siblings().remove();
-		    	truncate_excerpt(container);
-		    	break;
-		    } 
-			}
-		}
-
-		function check_array(iteration) {
-			var content = 'essay_' + iteration;
-			if ($.inArray(content, available_excerpts) !== -1) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-	}
-}
-
-function truncate_excerpt(container) {
-	container.dotdotdot({
-		ellipsis	: '... ',
- 		wrap		: 'word',
- 		fallbackToLetter: true,
- 		after		: null,
-		watch		: false,
-		height		: 100,
-		tolerance	: 0,
-		callback	: function( isTruncated, orgContent ) {},
- 		lastCharacter	: {
- 			remove		: [ ' ', ',', ';', '.', '!', '?' ],
- 			noEllipsis	: []
-		}
-	});
-}
-
 /*** Favorites List Functions ***/
 function add_name_to_list(name, list, favorites_array) {
 	name = name.replace('usr-', '');
@@ -417,6 +414,46 @@ function remove_name_from_list(name, list, favorites_array) {
 				save_favorites(favorites_array);
 			}
 		}
+	});
+}
+
+function remove_favorite_pagination(favorites_array) {
+	var last_page = $('.pages.clearfix');
+	var pages = last_page.find('a.last').text();
+	var pages_array = [];
+	var defer_array = [];
+	// Put all the pages into an array.
+	// Also note that each page will have a defer. More on that later.
+	for (var i = 2; i <= pages; i++) {
+	  pages_array.push(i);
+	 	defer_array.push(new $.Deferred());
+	}
+
+	// Append our new container, and remove the pagination.
+	last_page.before('<div class="additional_pages"></div>');
+	last_page.remove();
+
+	var i = 0;
+	$.each(pages_array, function(index, value) {
+		// Calculate the lowest numbered favorite.
+		var starting_results = ((value - 1) * 25) + 1;
+		$('.additional_pages').append('<div class="page_' + value + '"></div>');
+		var page_container = $('.page_' + value);
+		var url = 'http://www.okcupid.com/favorites?low=' + starting_results + ' #main_column';
+		// Load in the content.
+		page_container.load(url, function(response) {
+			page_container.find('.pages.clearfix').remove();
+			// Resolve the defer.
+			defer_array[i].resolve();
+			i++;
+		});
+	});
+
+	// When all the defers are resolved, run the functions that affect each 
+	// of the individual profile containers. 
+	$.when.apply(null, defer_array).done(function() { 
+		initialize_favorites_lists(favorites_array);
+		add_private_notes();
 	});
 }
 
@@ -717,6 +754,83 @@ function initialize_favorites_lists(favorites_array) {
 	}
 }
 
+function create_favorites_hover(favorites_array) {
+	// Add one hover container for adding someone to multiple lists.
+	$('.monolith').find('.favorites_list.favorites_page').remove();
+	$('.monolith').append('<div class="favorites_list favorites_page hidden_helper"><span class="title">Add to List</span><ul class="favorites_hover"></ul></div>');
+
+	var favorites_container = $('.favorites_list.favorites_page');
+
+	// Populate the hover container with the lists.
+	$.each(favorites_array, function(index, value) {
+		var list = JSON.parse(value.list_name).replace(/"/g, '&quot;');
+		$('ul.favorites_hover').append('<li class="list"><input type="checkbox" name="favorites" value="' + list + '"><span>' + list + '</span></li>');
+	});
+
+	set_favorite_mouseover();
+
+	$('.action_favorite').click(function() {
+		set_favorite_mouseover();
+		if ($(this).hasClass('action_favorited')) {
+			favorites_container.addClass('hidden_helper');
+		}
+	});
+
+	function set_favorite_mouseover() {
+		$('.action_favorite').unbind('mouseover');
+		// Add the mouseover to display the favorite list hover.
+		$('.action_favorite').mouseover(function() {
+			if ($(this).hasClass('action_favorited')) {
+				var username = $(this).attr('id');
+				username = username.replace('action-box-', '').replace('-fav', '');
+				var padding = 124;
+				var offset = $(this).offset().top - padding;
+				favorites_container.css('top', offset).removeClass('hidden_helper');
+				reset_list_checks(username, favorites_array);
+			}
+		});
+
+		favorites_container.mouseleave(function() {
+			favorites_container.addClass('hidden_helper');
+		});
+	}
+
+	function reset_list_checks(username, favorites_array) {
+		unbind_list_toggle();
+		var checked;
+
+		$.each(favorites_array, function(index, value) {
+			checked = ($.inArray(username, value.users) > -1);
+			var parsed_name = JSON.parse(value.list_name);
+			$('.list:contains("' + parsed_name + '")').find('input').prop('checked', checked);
+		});
+
+		bind_list_toggle(username)
+
+		function bind_list_toggle(profile_name) {
+			$('ul.favorites_hover').find('input').change(function() {
+				var checked = this.checked;
+				var this_list = $(this).val();
+
+				if (checked) {
+					add_name_to_list(profile_name, this_list, favorites_array);
+				} else {
+					remove_name_from_list(profile_name, this_list, favorites_array);
+				}
+			});
+		}
+
+		function unbind_list_toggle() {
+			$('ul.favorites_hover').find('input').unbind('change');
+		}
+	}
+}
+
+function save_favorites(favorites_array) {
+  chrome.storage.sync.set({"favorites": favorites_array});
+}
+
+// Specific Favorite List Functions
 function show_all_favorites() {
 	// Show every  user on the favorites list.
 	$('.user_row_item').each(function() {
@@ -775,120 +889,4 @@ function show_selected_list(searched_list, favorites_array) {
 	$('.user_row_item').not('.hidden_helper').each(function() {
 		$(this).find('.action_remove_list').removeClass('hidden_helper');
 	});
-}
-
-function save_favorites(favorites_array) {
-  chrome.storage.sync.set({"favorites": favorites_array});
-}
-
-function get_all_favorites(favorites_array) {
-	var last_page = $('.pages.clearfix');
-	var pages = last_page.find('a.last').text();
-	var pages_array = [];
-	var defer_array = [];
-	// Put all the pages into an array.
-	// Also note that each page will have a defer. More on that later.
-	for (var i = 2; i <= pages; i++) {
-	  pages_array.push(i);
-	 	defer_array.push(new $.Deferred());
-	}
-
-	// Append our new container, and remove the pagination.
-	last_page.before('<div class="additional_pages"></div>');
-	last_page.remove();
-
-	var i = 0;
-	$.each(pages_array, function(index, value) {
-		// Calculate the lowest numbered favorite.
-		var starting_results = ((value - 1) * 25) + 1;
-		$('.additional_pages').append('<div class="page_' + value + '"></div>');
-		var page_container = $('.page_' + value);
-		var url = 'http://www.okcupid.com/favorites?low=' + starting_results + ' #main_column';
-		// Load in the content.
-		page_container.load(url, function(response) {
-			page_container.find('.pages.clearfix').remove();
-			// Resolve the defer.
-			defer_array[i].resolve();
-			i++;
-		});
-	});
-
-	// When all the defers are resolved, run the functions that affect each 
-	// of the individual profile containers. 
-	$.when.apply(null, defer_array).done(function() { 
-		initialize_favorites_lists(favorites_array);
-		add_private_notes();
-	});
-}
-
-function create_favorites_hover(favorites_array) {
-	// Add one hover container for adding someone to multiple lists.
-	$('.monolith').find('.favorites_list.favorites_page').remove();
-	$('.monolith').append('<div class="favorites_list favorites_page hidden_helper"><span class="title">Add to List</span><ul class="favorites_hover"></ul></div>');
-
-	var favorites_container = $('.favorites_list.favorites_page');
-
-	// Populate the hover container with the lists.
-	$.each(favorites_array, function(index, value) {
-		var list = JSON.parse(value.list_name).replace(/"/g, '&quot;');
-		$('ul.favorites_hover').append('<li class="list"><input type="checkbox" name="favorites" value="' + list + '"><span>' + list + '</span></li>');
-	});
-
-	set_favorite_mouseover();
-
-	$('.action_favorite').click(function() {
-		set_favorite_mouseover();
-		if ($(this).hasClass('action_favorited')) {
-			favorites_container.addClass('hidden_helper');
-		}
-	});
-
-	function set_favorite_mouseover() {
-		$('.action_favorite').unbind('mouseover');
-		// Add the mouseover to display the favorite list hover.
-		$('.action_favorite').mouseover(function() {
-			if ($(this).hasClass('action_favorited')) {
-				var username = $(this).attr('id');
-				username = username.replace('action-box-', '').replace('-fav', '');
-				var padding = 124;
-				var offset = $(this).offset().top - padding;
-				favorites_container.css('top', offset).removeClass('hidden_helper');
-				reset_list_checks(username, favorites_array);
-			}
-		});
-
-		favorites_container.mouseleave(function() {
-			favorites_container.addClass('hidden_helper');
-		});
-	}
-}
-
-function reset_list_checks(username, favorites_array) {
-	unbind_list_toggle();
-	var checked;
-
-	$.each(favorites_array, function(index, value) {
-		checked = ($.inArray(username, value.users) > -1);
-		var parsed_name = JSON.parse(value.list_name);
-		$('.list:contains("' + parsed_name + '")').find('input').prop('checked', checked);
-	});
-
-	bind_list_toggle(username)
-
-	function bind_list_toggle(profile_name) {
-		$('ul.favorites_hover').find('input').change(function() {
-			var checked = this.checked;
-			var this_list = $(this).val();
-
-			if (checked) {
-				add_name_to_list(profile_name, this_list, favorites_array);
-			} else {
-				remove_name_from_list(profile_name, this_list, favorites_array);
-			}
-		});
-	}
-
-	function unbind_list_toggle() {
-		$('ul.favorites_hover').find('input').unbind('change');
-	}
 }
