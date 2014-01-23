@@ -113,6 +113,12 @@ function get_location() {
 	}
 }
 
+function arraymove(arr, fromIndex, toIndex) {
+  var element = arr[fromIndex]
+  arr.splice(fromIndex, 1);
+  arr.splice(toIndex, 0, element);
+}
+
 /*** Profile View Specific Functions ***/
 function style_buttons_with_icons(alist) {
 	fix_online_indicator();
@@ -151,7 +157,6 @@ function style_buttons_with_icons(alist) {
 	function fix_online_indicator() {
 		$('#action_bar_interior').find('.online_now').text("Online");
 	}
-
 }
 
 function expand_favorite_options(favorites_array) {
@@ -419,14 +424,54 @@ function initialize_favorites_lists(favorites_array) {
 	show_all_favorites();
 	unbind_list_events();
 	create_sidebar_html();
+
 	create_favorites_hover(favorites_array);
+
+	bind_favorite_list_sortable();
 	bind_favorite_list_toggle();
 	bind_list_actions();
+
 	make_lists_follow();
 	$(window).scroll(make_lists_follow);
 	$(window).scroll(check_scroll_top);
 
 	create_scroll_top();
+
+	function bind_favorite_list_sortable() {
+		$(".favorites.sortable").sortable({
+			helper: "clone",
+			placeholder: "ui-state-highlight",
+			cancel: ".disable-sort",
+			update: function(ev, ui) {
+				reorder_favorites(ui);
+			}
+		});
+		$(".favorites.sortable").disableSelection();
+
+		function reorder_favorites(ui) {
+			var moved_list_name = $(ui.item).find('.list_name').text();
+			moved_list_name = JSON.stringify(moved_list_name)
+			var list_array = [];
+
+			$('.favorites.sortable .list_name').each(function() {
+				list_array.push(JSON.stringify($(this).text()));
+			});
+
+			var old_position;
+			var new_position = $.inArray(moved_list_name, list_array);
+
+			$.each(favorites_array, function(index, value) {
+				if (moved_list_name === value.list_name) {
+					old_position = index;
+				}
+			});
+
+			arraymove(favorites_array, old_position, new_position);
+			save_favorites(favorites_array);
+			bind_favorite_list_toggle();
+			bind_list_actions();
+		}
+	}
 
 	function create_sidebar_html() {
 		// Replace "About Favorites" text
@@ -434,12 +479,12 @@ function initialize_favorites_lists(favorites_array) {
 
 		// Add container for Favorite Lists
 		$('#right_bar').find('.side_favorites').remove();
-		$('#right_bar').append('<div class="side_favorites"><h2>Favorites Lists</h2><div class="favorites_lists"><ul class="favorites"><li class="favorite_list_all current">All</li><li class="favorite_list_none">Ungrouped</li></ul></div><h2>Add New List</h2><div class="add_list"><input type="text" id="new_favorite_list" name="favorites" size="30"><span class="save_list">Save List</span></div></div>');
+		$('#right_bar').append('<div class="side_favorites"><h2>Favorites Lists</h2><div class="favorites_lists"><ul class="favorites"><li class="favorite_list_all current">All</li><li class="favorite_list_none">Ungrouped</li></ul><ul class="favorites sortable"></ul></div><h2>Add New List</h2><div class="add_list"><input type="text" id="new_favorite_list" name="favorites" size="30"><span class="save_list">Save List</span></div></div>');
 
 		// Add each favorite list
 		$.each(favorites_array, function(index, value) {
 			var list = JSON.parse(value.list_name);
-			$('ul.favorites').append('<li class="favorite_list"><span class="list_name">' + list + '</span><span class="remove_list" title="Delete list">Delete List</span><span class="edit_list" title="Edit list name">Edit List Name</span></li>');
+			$('ul.favorites.sortable').append('<li class="favorite_list"><span class="list_name">' + list + '</span><span class="remove_list" title="Delete list">Delete List</span><span class="edit_list" title="Edit list name">Edit List Name</span></li>');
 		});
 	}
 
@@ -504,6 +549,11 @@ function initialize_favorites_lists(favorites_array) {
 				// stopPropagation in here is to stop us from auto-focusing on the list.
 				e.stopPropagation();
 
+				// Disable sorting of lists while editing.
+				$('.favorite_list').each(function() {
+					$(this).addClass("disable-sort");
+				});
+
 				// If we are not already editing
 				if ($('.edit_list_container').length === 0) {
 					// Get the original name, as well as the list we are focused on.
@@ -542,6 +592,11 @@ function initialize_favorites_lists(favorites_array) {
 
 				function update_list() {
 					var new_name = $('#edit_favorite_list').val();
+
+					// Resume sorting.
+					$('.favorite_list').each(function() {
+						$(this).removeClass("disable-sort");
+					});
 
 					// If there are changes.
 					if (original_name !== new_name) {
