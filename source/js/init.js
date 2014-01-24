@@ -2,6 +2,7 @@ var all_settings = ["settings", "favorites"];
 
 chrome.storage.sync.get(all_settings, function (obj) {
 	// Set defaults in case the user did not visit the options page first.
+	var message_count;
 	var matches_mode;
 	var excerpt_priority;
 	var favorites_array;
@@ -9,70 +10,73 @@ chrome.storage.sync.get(all_settings, function (obj) {
   var default_favorites = [];
   var default_priority = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
-  // Default Options
-  if (obj && obj['settings'] && obj['settings']['mode']) {
-		matches_mode = obj['settings']['mode'];
-	} else {
-		matches_mode = default_tiles;
-	}
-
-	// Default Favorites
-	if (obj && obj['favorites']) {
-		favorites_array = obj['favorites'];
-	} else {
-		favorites_array = default_favorites;
-	}
-
-	// Default Priority
-	if (obj && obj['settings'] && obj['settings']['priority']) {
-		excerpt_priority = obj['settings']['priority'];
-	} else {
-		excerpt_priority = default_priority;	
-	}
-
+  set_default_options();
 	add_body_class(matches_mode);
 
-	// Update the icon with the current message count
-	var message_count;
+	// Message Count for Icon.
 	update_count();
-	
 	var observer = new MutationSummary({
 	  callback: update_count,
 	  queries: [{ element: '#nav_mailbox_badge, span.curr, span.rollingnumber' }]
 	});
 
 	var current_page = get_location();
-  if (current_page === "profile") {
-  	// If we're on a user's profile page. 
-  	expand_favorite_options(favorites_array);
-  	style_buttons_with_icons();
-  } else if (current_page === "matches") {
-  	update_matches_page();
 
-		// When more users are added to the page, call the function.
-		var observer = new MutationSummary({
-		  callback: update_matches_page,
-		  queries: [{ element: '.match_card_wrapper' }]
-		});
-
-		if (matches_mode === "classic") {
-			// I really don't like this, but haven't found a better way to pass these settings yet.
-	  	if (excerpt_priority) {
-	  		$('body').append('<input type="hidden" id="excerpt_priority" value="' + excerpt_priority + '">')
-	  	}
-
-			add_excerpt_div();
+	switch(current_page) {
+		case "profile":
+			expand_favorite_options(favorites_array);
+  		style_buttons_with_icons();
+  		break;
+  	case "matches":
+  		update_matches_page();
 
 			var observer = new MutationSummary({
-			  callback: add_excerpt_div,
+			  callback: update_matches_page,
 			  queries: [{ element: '.match_card_wrapper' }]
 			});
-		} 
-  } else if (current_page === "favorites") {
-		remove_favorite_pagination(favorites_array);
-  } else if (current_page === "likes") {
-  	add_private_notes();
-  	create_favorites_hover(favorites_array)
+
+			if (matches_mode === "classic") {
+				// I really don't like this, but haven't found a better way to pass these settings yet.
+	  		$('body').append('<input type="hidden" id="excerpt_priority" value="' + excerpt_priority + '">')
+				
+				add_excerpt_div();
+
+				var observer = new MutationSummary({
+				  callback: add_excerpt_div,
+				  queries: [{ element: '.match_card_wrapper' }]
+				});
+			} 
+			break;
+		case "favorites":
+			remove_favorite_pagination(favorites_array);
+			break;
+		case "likes":
+			add_private_notes();
+  		create_favorites_hover(favorites_array);
+  		break;
+ 	}
+
+  function set_default_options() {
+ 	  // Default Options
+	  if (obj && obj['settings'] && obj['settings']['mode']) {
+			matches_mode = obj['settings']['mode'];
+		} else {
+			matches_mode = default_tiles;
+		}
+
+		// Default Favorites
+		if (obj && obj['favorites']) {
+			favorites_array = obj['favorites'];
+		} else {
+			favorites_array = default_favorites;
+		}
+
+		// Default Priority
+		if (obj && obj['settings'] && obj['settings']['priority']) {
+			excerpt_priority = obj['settings']['priority'];
+		} else {
+			excerpt_priority = default_priority;	
+		}
   }
 
 	function update_count() {
@@ -91,20 +95,16 @@ function add_body_class(matches_mode) {
 
 function get_location() {
 	var url = window.location.href;
+	var page;
 
-	if (url.indexOf("profile") > 0) {
-		return "profile";
-	} else if (url.indexOf("match") > 0) {
-		return "matches";
-	} else if (url.indexOf("favorites") > 0) {
-		return "favorites";
-	} else if (url.indexOf("visitors") > 0) {
-		return "likes";
-	} else if (url.indexOf("who-you-like") > 0) {
-		return "likes";
-	} else if (url.indexOf("who-likes-you") > 0) {
-		return "likes"
-	}
+	if 			(url.indexOf("profile") > 0) 				{	page = "profile";	} 
+	else if (url.indexOf("match") > 0) 					{ page = "matches";	} 
+	else if (url.indexOf("favorites") > 0) 			{ page = "favorites";	} 
+	else if (url.indexOf("visitors") > 0) 			{	page = "likes";	} 
+	else if (url.indexOf("who-you-like") > 0) 	{	page = "likes";	} 
+	else if (url.indexOf("who-likes-you") > 0) 	{ page = "likes"; }
+
+	return page;
 }
 
 function arraymove(arr, fromIndex, toIndex) {
