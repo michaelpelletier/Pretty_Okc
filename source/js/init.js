@@ -608,6 +608,12 @@ function initialize_favorites_lists(favorites_array) {
 
 			function save_new_list() {
 				var new_list_name = $('#new_favorite_list').val();
+				var length = 20;
+
+				if (new_list_name.length > length) {
+					new_list_name = new_list_name.substring(0, length);
+				}
+
 				new_list_name = JSON.stringify(new_list_name);
 				var new_list = {list_name: new_list_name, users: []}
 
@@ -686,6 +692,11 @@ function initialize_favorites_lists(favorites_array) {
 
 				function update_list() {
 					var new_name = $('#edit_favorite_list').val();
+					var length = 20;
+
+					if (new_name.length > length) {
+						new_name = new_name.substring(0, length);
+					}
 
 					// Resume sorting.
 					$('.favorite_list').each(function() {

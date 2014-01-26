@@ -382,8 +382,13 @@ Styling Fixes for Favorites Page
   position: absolute;
   text-indent: 0px;
   top: 104px;
-  width: 275px;
+  width: 230px;
   z-index: 1000;
+}
+
+.pretty_okc .favorites_list input {
+  margin: 0px 5px 3px 0px;
+  vertical-align: bottom;
 }
 
 .pretty_okc .favorites_list .title {
