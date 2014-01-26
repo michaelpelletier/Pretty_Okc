@@ -26,7 +26,11 @@ chrome.storage.sync.get(all_settings, function (obj) {
 		case "profile":
 			expand_favorite_options(favorites_array);
   		style_buttons_with_icons();
-  		add_recent_questions_option();
+
+  		var url = window.location.href;
+  		if (url.indexOf("questions") > 0) {
+  			add_recent_questions_option();
+  		}  		
   		break;
   	case "matches":
   		update_matches_page();
