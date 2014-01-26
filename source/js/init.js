@@ -324,6 +324,10 @@ function expand_favorite_options(favorites_array) {
 				$('ul.favorites').append('<li><input type="checkbox" name="favorites" value="' + list + '"><span>' + list + '</span></li>');
 			}
 		});
+
+		if ($('ul.favorites').find('li').length === 0) {
+			$('ul.favorites').append('<li>You have no custom lists.</li>');
+		}
 	}
 
 	function check_favorite_status_default() {
@@ -819,6 +823,10 @@ function create_favorites_hover(favorites_array) {
 		var list = JSON.parse(value.list_name).replace(/"/g, '&quot;');
 		$('ul.favorites_hover').append('<li class="list"><input type="checkbox" name="favorites" value="' + list + '"><span>' + list + '</span></li>');
 	});
+
+	if ($('ul.favorites_hover').find('li').length === 0) {
+		$('ul.favorites_hover').append('<li>You have no custom lists.</li>');
+	}
 
 	set_favorite_mouseover();
 
