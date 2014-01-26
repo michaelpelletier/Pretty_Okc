@@ -26,6 +26,7 @@ chrome.storage.sync.get(all_settings, function (obj) {
 		case "profile":
 			expand_favorite_options(favorites_array);
   		style_buttons_with_icons();
+  		add_recent_questions_option();
   		break;
   	case "matches":
   		update_matches_page();
@@ -385,6 +386,21 @@ function add_private_notes() {
 
 		$(this).find('.action_rate').before('<span class="' + classes + '" onclick="' + onclick + '" title="' + title + '">private note</span>');
 	});
+}
+
+function add_recent_questions_option() {
+	// Add the Recently Answered option.
+	var container = $('.right ul.bottom_pad');
+	var link = container.find('li a').attr('href').replace('/profile/', '');
+	var name_array = link.split('/');
+	var username = name_array[0];
+	$('.right ul.bottom_pad').append('<li class="recently_added"><a href="/profile/' + username + '/questions?recent=1">Recently answered</a></li>')	
+
+	// If we're on that page, highlight it. 
+	var url = window.location.href;
+	if (url.indexOf("recent") > 0) {
+		$('.recently_added').addClass('active');
+	}
 }
 
 /*** Favorites List Functions ***/
