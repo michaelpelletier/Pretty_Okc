@@ -55,6 +55,11 @@ chrome.storage.sync.get(all_settings, function (obj) {
 			add_private_notes();
   		create_favorites_hover(favorites_array);
   		break;
+  	case "you_like":
+  		add_private_notes();
+  		create_favorites_hover(favorites_array);
+  		add_likes_filters();
+  		break;
  	}
 
   function set_default_options() {
@@ -102,7 +107,7 @@ function get_location() {
 	else if (url.indexOf("match") > 0) 					{ page = "matches";	} 
 	else if (url.indexOf("favorites") > 0) 			{ page = "favorites";	} 
 	else if (url.indexOf("visitors") > 0) 			{	page = "likes";	} 
-	else if (url.indexOf("who-you-like") > 0) 	{	page = "likes";	} 
+	else if (url.indexOf("who-you-like") > 0) 	{	page = "you_like";	} 
 	else if (url.indexOf("who-likes-you") > 0) 	{ page = "likes"; }
 
 	return page;
@@ -400,6 +405,34 @@ function add_recent_questions_option() {
 	var url = window.location.href;
 	if (url.indexOf("recent") > 0) {
 		$('.recently_added').addClass('active');
+	}
+}
+
+/*** Who You Like ***/
+function add_likes_filters() {
+	var HTML = '<div class="your_likes big_dig"><div class="right"><ul><li class="title">Filters</li><li class="default"><a href="/who-you-like?show_min_personality=3&show_max_personality=5">3-5 Star (Default)</a></li><li class="actual_likes"><a href="/who-you-like?show_min_personality=4&show_max_personality=5">4-5 Star (Likes)</a></li><li class="all_rated"><a href="/who-you-like?show_min_personality=1&show_max_personality=5">All Rated Users</a></li><li>&nbsp;</li><li class="only_5"><a href="/who-you-like?show_min_personality=5&show_max_personality=5">5 Star Only</a></li><li class="only_4"><a href="/who-you-like?show_min_personality=4&show_max_personality=4">4 Star Only</a></li><li class="only_3"><a href="/who-you-like?show_min_personality=3&show_max_personality=3">3 Star Only</a></li><li class="only_2"><a href="/who-you-like?show_min_personality=2&show_max_personality=2">2 Star Only</a></li><li class="only_1"><a href="/who-you-like?show_min_personality=1&show_max_personality=1">1 Star Only</a></li><li class="custom"></li></ul></div></div>';
+
+	$('.tab_content_nav').append(HTML);
+
+	var url = window.location.href;
+	if (url.indexOf("show_min_personality=3&show_max_personality=5") > 0) {
+		$('.default').addClass('active');
+	} else if (url.indexOf("show_min_personality=4&show_max_personality=5") > 0) {
+		$('.actual_likes').addClass('active');
+	} else if (url.indexOf("show_min_personality=5&show_max_personality=5") > 0) {
+		$('.only_5').addClass('active');
+	} else if (url.indexOf("show_min_personality=4&show_max_personality=4") > 0) {
+		$('.only_4').addClass('active');
+	} else if (url.indexOf("show_min_personality=3&show_max_personality=3") > 0) {
+		$('.only_3').addClass('active');
+	} else if (url.indexOf("show_min_personality=2&show_max_personality=2") > 0) {
+		$('.only_2').addClass('active');
+	} else if (url.indexOf("show_min_personality=1&show_max_personality=1") > 0) {
+		$('.only_1').addClass('active');
+	} else if (url.indexOf("show_min_personality=1&show_max_personality=5") > 0) {
+		$('.all_rated').addClass('active');
+	} else if (url.indexOf("show_min_personality=3") > 0) {
+		$('.default').addClass('active');
 	}
 }
 
