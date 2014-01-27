@@ -48,6 +48,7 @@ General Styling Fixes for Matches Page
 
 /* Change Display of Online Indicator */
 .pretty_okc .match_card_wrapper .online_indicator.chat_enabled, 
+.pretty_okc .match_card_wrapper .online_indicator.chat_enabled:hover, 
 .pretty_okc a.online_indicator.online {
   background-color: #2855a2;
   border-radius: 0px;
