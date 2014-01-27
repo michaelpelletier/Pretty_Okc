@@ -8,6 +8,9 @@
   "options_page": "options.html",
   "key": "aoffmocnfheflhhambmmdmlpdddpaagc",
   "permissions": ["tabs", "storage", "http://*.okcupid.com/*"],
+  "icons": {
+    "48": "images/icon_48.png"
+    },
   "background": {
     "scripts": ["js/background.js"]
   },
