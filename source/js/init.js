@@ -167,7 +167,9 @@ function update_matches_page() {
 
 			if (rating_width === 0) {
 				return "no_rating";
-			} else if (rating_width > 10 && rating_width < 70) {
+			} else if (rating_width > 10 && rating_width < 40) {
+				return "low_rating";
+			} else if (rating_width > 50 && rating_width < 70) {
 				return "partial_rating";
 			} else if (rating_width > 70) {
 				return "full_rating";
@@ -179,7 +181,7 @@ function update_matches_page() {
 			if (action_rating) {
 				self.find('.match_card_text').append('<div class="star_rating ' + stars + '"></div>');
 			} else {
-				self.find('.star_rating').removeClass('no_rating').removeClass('partial_rating').removeClass('full_rating').addClass(stars);
+				self.find('.star_rating').removeClass('no_rating').removeClass('partial_rating').removeClass('full_rating').removeClass('low_rating').addClass(stars);
 			}
 		}
 	}
