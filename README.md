@@ -3,11 +3,20 @@ Pretty_Okc
 
 Chrome Plugin for styling and functionality improvements to the website Okcupid.com
 
-Current Version: 0.70
+Current Version: 0.80 (Closed Alpha!)
 
 
 Version History
 ==========
+
+0.8
+- Favorites Lists are now sortable.
+- Favorite lists have a character limit.
+- Add "Recently Answered" to Match Questions page.
+- Bring back Filters for Ratings on "Who You Like" page.
+- Fix width of Favorites Hover for longer names.
+- Add message to empty favorites hover.
+
 0.7
 - Add unread messages count to Browser Icon.
 - Add support for special characters and spaces in Favorite List Names.
