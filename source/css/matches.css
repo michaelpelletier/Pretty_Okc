@@ -311,6 +311,7 @@ Styling Fixes for Matches Search Page - Classic View
   font-size: 16px;
   line-height: 20px;
   padding-top: 5px;
+  width: 300px;
 }
 
 .pretty_okc.classic .match_card_wrapper .match_card_text .profile_info .userinfo {

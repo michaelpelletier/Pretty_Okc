@@ -204,11 +204,11 @@ function add_excerpt_div() {
 		var full_url = 'http://www.okcupid.com/profile/' + username + " #main_column";
 		var excerpt = $('#usr-' + username + '-wrapper').find('.pretty_okc_profile_excerpt');
 		excerpt.load(full_url, function(response) {
-			parse_excerpt(response);
+			parse_excerpt(response, excerpt, priority);
 		});
 	}
 
-	function parse_excerpt(response) {
+	function parse_excerpt(response, excerpt, priority) {
 		var available_excerpts = [];
 		excerpt.find('.essay').each(function() {
 			available_excerpts.push($(this).attr('id'));
@@ -220,8 +220,13 @@ function add_excerpt_div() {
 		} else {
 			for ( var index = 0; index < priority.length; ++index ) {
 		    if (check_array(priority[index])) {
+		    	excerpt.find('.sr_message').remove();
 		    	var container = excerpt.find('#essay_' + priority[index]);
-		    	container.siblings().remove();
+		    	console.log(container)
+		    	console.log(container.siblings())
+		    	container.siblings().each(function() {
+		    		$(this).remove();
+		    	});
 		    	truncate_excerpt(container);
 		    	break;
 		    } 
