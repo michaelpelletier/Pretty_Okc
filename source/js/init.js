@@ -312,6 +312,7 @@ function filter_changes(filter_settings) {
 		var position = $('#saved_filters').val();
 		filter_settings.splice(position, 1);
 		$('#saved_filters').html('');
+		save_filters(filter_settings);
 		append_saved_options();
 	}
 
