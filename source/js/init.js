@@ -198,89 +198,137 @@ function update_matches_page() {
 
 function filter_changes(filter_settings) {
 	bind_new_buttons();
-	console.log(filter_settings)
-
-	function save_new_filter() {
-		var new_filter = { filter_name: '', settings: {} }
-
-		new_filter.filter_name = "My Filter";
-
-		//new_filter['settings']['location']		= null;
-
-		// Default Settings
-		var default_settings = [
-			'MATCH_FILTER_GENTATION',
-			'min_age',
-			'max_age',
-			'MATCH_FILTER_LAST_LOGIN'
-		]
-
-		// Advanced Options
-		var advanced_options = [
-			'MATCH_FILTER_JOIN_DATE',
-			'MATCH_FILTER_ETHNICITY',
-			'MATCH_FILTER_LOOKING_FOR',
-			'MATCH_FILTER_SMOKING',
-			'MATCH_FILTER_DRINKING',
-			'MATCH_FILTER_DRUGS',
-			'MATCH_FILTER_RELIGION',
-			'MATCH_FILTER_SIGN',
-			'MATCH_FILTER_EDUCATION',
-			'MATCH_FILTER_JOBTYPE',
-			'MATCH_FILTER_MONEY',
-			'MATCH_FILTER_CHILDREN',
-			'MATCH_FILTER_DIET',
-			'pets',
-			'MATCH_FILTER_LANGUAGES'
-		]
-
-		// Add setting values to the objects
-		$.each(default_settings, function(index, value) {
-			var val_to_save = $('#'+value).val();
-			if (val_to_save !== "") {
-				var array = [value, val_to_save]
-				new_filter.settings[value] = val_to_save;
-			}
-		});
-
-		$.each(advanced_options, function(index, value) {
-			var val_to_save = $('#'+value).val();
-			if (val_to_save !== "") {
-				var array = [value, val_to_save]
-				new_filter.settings[value] = val_to_save;
-			}
-		});
 
 
-		// Save the settings
-		filter_settings.push(new_filter);
-		save_filters(filter_settings)
-	}
-
-	function save_filters(filter_settings) {
-		console.log(filter_settings)
-	  chrome.storage.sync.set({"filters": filter_settings});
-	  console.log(filter_settings)
-	}
 
 	function bind_new_buttons() {
 		var footer = $('.form_footer');
 		footer.find('#clear_button').remove();
 
-		footer.before('<div class="form_section filters"><select id="saved_filters"></select><p id="save_filter" class="btn white button"><a>Save</a></p><p id="load_filter" class="btn white button" onclick="Mc.submit_form();"><a>Load</a></p><p id="delete_filter" class="btn white button"><a>Delete</a></p></div>');
+		footer.before('<div class="form_section filters"><div class="oknotice_error hidden_helper"></div><div class="form_filters load"><h3>Load settings</h3><div class="form_contents"><select id="saved_filters"></select><p id="load_filter" class="btn white button" onclick="Mc.submit_form();"><a>Load</a></p><p id="delete_filter" class="btn white button"><a>Delete</a></p></div></div><div class="form_filters"><h3>Save settings</h3><div class="form_contents"><input type="text" id="new_filter" name="filter" size="20"><p id="save_filter" class="btn white button"><a>Save</a></p></div></div></div>');
 
-		$.each(filter_settings, function(index, value) {
-			$('#saved_filters').append('<option value="' + value.filter_name + '">' + value.filter_name + '</option>')
-		});
+		append_saved_options();
 
-		$('#saved_filters').change(function() {
-			console.log("Update Settings");
-		});
-
+		// Save a new filter.
 		$('#save_filter').click(function() {
 			save_new_filter();
 		});
+
+		// Delete a saved filter.
+		$('#delete_filter').click(function() {
+			reset_saved_filter();
+		});
+
+		// Change Filters
+		$('#saved_filters').change(function() {
+			load_settings();
+		});
 	}
+
+	function append_saved_options() {
+		$.each(filter_settings, function(index, value) {
+			$('#saved_filters').append('<option value="' + index + '" name="' + value.filter_name + '">' + value.filter_name + '</option>')
+		});
+	}
+
+	function save_new_filter() {
+		var message_container = $('.oknotice_error');
+
+		var new_filter = { filter_name: '', settings: {} }
+
+		var new_filter_name = $('#new_filter').val();
+
+		if (new_filter_name === "") {
+			message_container.removeClass('success').removeClass('hidden_helper').text('A name is required.');
+			setTimeout(function() {
+      	message_container.addClass('hidden_helper').text('');
+			}, 5000);
+		} else {
+			new_filter.filter_name = new_filter_name;
+			//new_filter['settings']['location']		= null;
+
+			// Default Settings
+			var default_settings = [
+				'MATCH_FILTER_GENTATION',
+				'min_age',
+				'max_age',
+				'MATCH_FILTER_LAST_LOGIN'
+			]
+
+			// Advanced Options
+			var advanced_options = [
+				'MATCH_FILTER_JOIN_DATE',
+				'MATCH_FILTER_ETHNICITY',
+				'MATCH_FILTER_LOOKING_FOR',
+				'MATCH_FILTER_SMOKING',
+				'MATCH_FILTER_DRINKING',
+				'MATCH_FILTER_DRUGS',
+				'MATCH_FILTER_RELIGION',
+				'MATCH_FILTER_SIGN',
+				'MATCH_FILTER_EDUCATION',
+				'MATCH_FILTER_JOBTYPE',
+				'MATCH_FILTER_MONEY',
+				'MATCH_FILTER_CHILDREN',
+				'MATCH_FILTER_DIET',
+				'pets',
+				'MATCH_FILTER_LANGUAGES'
+			]
+
+			// Add setting values to the objects
+			$.each(default_settings, function(index, value) {
+				var val_to_save = $('#'+value).val();
+				if (val_to_save !== "") {
+					var array = [value, val_to_save]
+					new_filter.settings[value] = val_to_save;
+				}
+			});
+
+			$.each(advanced_options, function(index, value) {
+				var val_to_save = $('#'+value).val();
+				if (val_to_save !== "") {
+					var array = [value, val_to_save]
+					new_filter.settings[value] = val_to_save;
+				}
+			});
+
+			// Save the settings
+			filter_settings.push(new_filter);
+			save_filters(filter_settings);
+			reset_saved_filter();
+			message_container.removeClass('hidden_helper').addClass('success').text('Settings saved!');
+
+			setTimeout(function() {
+      	$('#new_filter').val('');
+      	message_container.addClass('hidden_helper').removeClass('success').text('');
+			}, 5000);
+		}
+	}
+
+	function save_filters(filter_settings) {
+	  chrome.storage.sync.set({"filters": filter_settings});
+	}
+
+	function reset_saved_filter() {
+		var position = $('#saved_filters').val();
+		filter_settings.splice(position, 1);
+		$('#saved_filters').html('');
+		append_saved_options();
+	}
+
+	function load_settings() {
+		var setting = parseInt($('#saved_filters').val());
+
+		// Loads settings into filders.
+		$.each(filter_settings, function(index, value) {
+			if (index === setting) {
+				$.each(value.settings, function(index, value) {
+					$('#'+index).val(value);
+					$('#'+index).removeAttr('disabled');
+				});
+			}
+		});
+	}
+
 
 
 	// A-List

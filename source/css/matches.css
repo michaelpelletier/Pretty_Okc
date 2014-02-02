@@ -190,16 +190,37 @@ General Styling Fixes for Matches Page
 .pretty_okc #save_filter, 
 .pretty_okc #load_filter,
 .pretty_okc #delete_filter {
-  float: left;
+  display: inline-block;
+  float: none;
   margin: 0px 0px 0px 6px;
   width: 118px;  
 }
 
 .pretty_okc .form_section.filters {
   display: block;
+  margin-top: 2px;
 }
 
+.pretty_okc .form_filters {
+  display: inline-block;
+  width: 300px;
+}
 
+.pretty_okc .form_filters.load {
+  width: 440px;
+}
+
+.pretty_okc .form_filters select {
+  margin-top: 7px;
+  vertical-align: top;
+  width: 170px;
+}
+
+.pretty_okc .form_filters input {
+  margin-top: 5px;
+  vertical-align: top;
+  width: 150px;
+}
 
 /***************************************************
 Styling Fixes for Matches Search Page - Tiles View
