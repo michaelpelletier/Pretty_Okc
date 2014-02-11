@@ -176,9 +176,12 @@ chrome.storage.sync.get(all_settings, function (obj) {
 				var match_percent = $(this).find('.percentages').text();
 				match_percent = match_percent.replace('%', '');
 
-				if (match_percent < min_match_percent) {
-					$(this).hide();
+				if (min_match_percent !== 0) {
+					if (match_percent < min_match_percent) {
+						$(this).hide();
+					}
 				}
+
 			});
 		}
 	}
