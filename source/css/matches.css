@@ -186,6 +186,37 @@ General Styling Fixes for Matches Page
   width: 100px;
 }
 
+/* New Option: Minimum Match Percentage */
+.pretty_okc .form_element.min_match_percent,
+.pretty_okc .form_element.min_match_percent .drop_wrap {
+  width: 150px;
+}
+
+.pretty_okc #toggle_matches {
+  cursor: pointer;
+}
+
+.pretty_okc .form_element.min_match_percent .drop_wrap {
+  display: none;
+}
+
+.pretty_okc .form_element.min_match_percent.open .drop_wrap {
+  display: block;
+}
+
+.pretty_okc .form_element.min_match_percent input {
+  border: 1px solid #bed0e4;
+  height: 20px;
+  line-height: 20px;
+  margin-left: 5px;
+  text-align: center;
+  width: 30px; 
+}
+
+
+
+
+
 /***************************************************
 Styling Fixes for Matches Search Page - Tiles View
 ****************************************************/

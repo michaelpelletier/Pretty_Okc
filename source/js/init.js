@@ -1,4 +1,4 @@
-var all_settings = ["settings", "favorites"];
+var all_settings = ["settings", "favorites", "min_match"];
 
 chrome.storage.sync.get(all_settings, function (obj) {
 	// Set defaults in case the user did not visit the options page first.
@@ -6,9 +6,12 @@ chrome.storage.sync.get(all_settings, function (obj) {
 	var matches_mode;
 	var excerpt_priority;
 	var favorites_array;
+	var min_match_percent;
   var default_tiles = "tiles";
   var default_favorites = [];
   var default_priority = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+  var default_min_percent = "0";
+  console.log(obj)
 
   set_default_options();
 	add_body_class(matches_mode);
@@ -34,6 +37,7 @@ chrome.storage.sync.get(all_settings, function (obj) {
   		break;
   	case "matches":
   		update_matches_page();
+  		minimum_percentage_option(min_match_percent);
 
 			var observer = new MutationSummary({
 			  callback: update_matches_page,
@@ -87,6 +91,13 @@ chrome.storage.sync.get(all_settings, function (obj) {
 		} else {
 			excerpt_priority = default_priority;	
 		}
+
+		// Default Min Priority
+		if (obj && obj['min_match']) {
+			min_match_percent = obj['min_match'];
+		} else {
+			min_match_percent = default_min_percent;
+		}
   }
 
 	function update_count() {
@@ -96,6 +107,83 @@ chrome.storage.sync.get(all_settings, function (obj) {
 		}
 		chrome.runtime.sendMessage({ messages: message_count});
 	}
+
+	// Matches Page Functions
+	function update_matches_page() {
+		change_tile_text();
+		add_star_ratings();
+		filter_minimum_percentage();
+
+		function change_tile_text() {
+			$('.match_card_wrapper').each(function() {
+				var self = $(this);
+
+				// Remove state abbreviation.
+				var userinfo = self.find('.userinfo');
+				var location = userinfo.text();
+				location = location.replace('·', ' · ').split(',');
+				userinfo.text(location[0]);	
+
+				// Remove "Match" from Match Percentage.
+				var percents = self.find('.percentages');
+				var match = $.trim(percents.text());
+				match = match.split(' ');
+				percents.text(match[0]);
+			});
+		}
+
+		function add_star_ratings() {
+			$('.match_card_wrapper').each(function() {
+				var self = $(this);
+				var stars = calculate_star_ratings(self);
+				apply_star_ratings(self, stars)
+
+				// If the user changes a rating, adjust accordingly
+				self.find('#personality-rating').find('li').find('a').click(function() {
+					setTimeout(function() {
+						var new_stars = calculate_star_ratings(self);
+						apply_star_ratings(self, new_stars);
+					}, 500);
+				});
+			});
+
+			function calculate_star_ratings(self) {
+				var rating_width = self.find('.current-rating').css('width').replace("px", "");
+				rating_width = parseInt(rating_width);
+
+				if (rating_width === 0) {
+					return "no_rating";
+				} else if (rating_width > 10 && rating_width < 40) {
+					return "low_rating";
+				} else if (rating_width > 50 && rating_width < 70) {
+					return "partial_rating";
+				} else if (rating_width > 70) {
+					return "full_rating";
+				}
+			}
+
+			function apply_star_ratings(self, stars) {
+				var action_rating = self.find('.star_rating').length === 0;
+				if (action_rating) {
+					self.find('.match_card_text').append('<div class="star_rating ' + stars + '"></div>');
+				} else {
+					self.find('.star_rating').removeClass('no_rating').removeClass('partial_rating').removeClass('full_rating').removeClass('low_rating').addClass(stars);
+				}
+			}
+		}
+
+		function filter_minimum_percentage() {
+			$('.match_card_wrapper').each(function() {
+				var match_percent = $(this).find('.percentages').text();
+				match_percent = match_percent.replace('%', '');
+
+				if (match_percent < min_match_percent) {
+					$(this).hide();
+				}
+			});
+		}
+	}
+
 });
 
 /*** General Functions ***/
@@ -124,67 +212,39 @@ function arraymove(arr, fromIndex, toIndex) {
 }
 
 // Matches View
-function update_matches_page() {
-	change_tile_text();
-	add_star_ratings();
+function minimum_percentage_option(min_match_percent) {
+	// Add New Option.
+	$('#add_filter').before('<div class="form_element selector min_match_percent"><p class="button"><a id="toggle_matches"><span class="arrow"></span>Matches above <span id="current_match"></span>%</a></p><div class="drop_wrap"><ul><li>Matches above: <input id="min_match" name="matchmin" maxlength="2" value=""></li></ul></div></div>');
 
-	function change_tile_text() {
-		$('.match_card_wrapper').each(function() {
-			var self = $(this);
+	// Set Default Values.
+	console.log(min_match_percent)
+	$('#current_match').text(min_match_percent);
+	$('#min_match').val(min_match_percent);
 
-			// Remove state abbreviation.
-			var userinfo = self.find('.userinfo');
-			var location = userinfo.text();
-			location = location.replace('·', ' · ').split(',');
-			userinfo.text(location[0]);	
+	// Bind open / close of Option Menu.
+	$('#toggle_matches').click(function(e) {
+		e.preventDefault();
+		$(this).parent('.button').toggleClass('active');
+		$(this).parents('.min_match_percent').toggleClass('open');
+	});
 
-			// Remove "Match" from Match Percentage.
-			var percents = self.find('.percentages');
-			var match = $.trim(percents.text());
-			match = match.split(' ');
-			percents.text(match[0]);
-		});
-	}
+	// Close on Body Click.
+	$(document).mouseup(function (event) {
+    var container = $(".form_element.min_match_percent");
 
-	function add_star_ratings() {
-		$('.match_card_wrapper').each(function() {
-			var self = $(this);
-			var stars = calculate_star_ratings(self);
-			apply_star_ratings(self, stars)
+    if (!container.is(event.target) && container.has(event.target).length === 0) {
+    	container.removeClass('open');
+    	container.find('.button').removeClass('active');
+    }
+	});
 
-			// If the user changes a rating, adjust accordingly
-			self.find('#personality-rating').find('li').find('a').click(function() {
-				setTimeout(function() {
-					var new_stars = calculate_star_ratings(self);
-					apply_star_ratings(self, new_stars);
-				}, 500);
-			});
-		});
+	// Update Values on Change.
+	$('#min_match').change(function() {
+		var new_percent = $(this).val();
 
-		function calculate_star_ratings(self) {
-			var rating_width = self.find('.current-rating').css('width').replace("px", "");
-			rating_width = parseInt(rating_width);
-
-			if (rating_width === 0) {
-				return "no_rating";
-			} else if (rating_width > 10 && rating_width < 40) {
-				return "low_rating";
-			} else if (rating_width > 50 && rating_width < 70) {
-				return "partial_rating";
-			} else if (rating_width > 70) {
-				return "full_rating";
-			}
-		}
-
-		function apply_star_ratings(self, stars) {
-			var action_rating = self.find('.star_rating').length === 0;
-			if (action_rating) {
-				self.find('.match_card_text').append('<div class="star_rating ' + stars + '"></div>');
-			} else {
-				self.find('.star_rating').removeClass('no_rating').removeClass('partial_rating').removeClass('full_rating').removeClass('low_rating').addClass(stars);
-			}
-		}
-	}
+		$('#current_match').text(new_percent);
+		chrome.storage.sync.set({"min_match": new_percent});
+	});
 }
 
 // Classic View - Profile Excerpt
