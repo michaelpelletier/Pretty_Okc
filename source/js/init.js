@@ -11,7 +11,6 @@ chrome.storage.sync.get(all_settings, function (obj) {
   var default_favorites = [];
   var default_priority = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
   var default_min_percent = "0";
-  console.log(obj)
 
   set_default_options();
 	add_body_class(matches_mode);
@@ -217,7 +216,6 @@ function minimum_percentage_option(min_match_percent) {
 	$('#add_filter').before('<div class="form_element selector min_match_percent"><p class="button"><a id="toggle_matches"><span class="arrow"></span>Matches above <span id="current_match"></span>%</a></p><div class="drop_wrap"><ul><li>Matches above: <input id="min_match" name="matchmin" maxlength="2" value=""></li></ul></div></div>');
 
 	// Set Default Values.
-	console.log(min_match_percent)
 	$('#current_match').text(min_match_percent);
 	$('#min_match').val(min_match_percent);
 
@@ -230,7 +228,7 @@ function minimum_percentage_option(min_match_percent) {
 
 	// Close on Body Click.
 	$(document).mouseup(function (event) {
-    var container = $(".form_element.min_match_percent");
+		var container = $(".form_element.min_match_percent");
 
     if (!container.is(event.target) && container.has(event.target).length === 0) {
     	container.removeClass('open');
@@ -282,8 +280,6 @@ function add_excerpt_div() {
 		    if (check_array(priority[index])) {
 		    	excerpt.find('.sr_message').remove();
 		    	var container = excerpt.find('#essay_' + priority[index]);
-		    	console.log(container)
-		    	console.log(container.siblings())
 		    	container.siblings().each(function() {
 		    		$(this).remove();
 		    	});
