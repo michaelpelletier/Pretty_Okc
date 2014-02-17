@@ -240,9 +240,27 @@ function minimum_percentage_option(min_match_percent) {
     }
 	});
 
+	// Only allow numbers in the input.
+	$("#min_match").keydown(function (e) {
+    // Allow: backspace, delete, tab, escape, enter and period.
+    // Allow: Ctrl+A
+    // Allow: home, end, left, right.
+    if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 190]) !== -1 || (e.keyCode == 65 && e.ctrlKey === true) || (e.keyCode >= 35 && e.keyCode <= 39)) {
+      return;
+    }
+
+    if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+       e.preventDefault();
+    }
+  });
+
 	// Update Values on Change.
 	$('#min_match').change(function() {
 		var new_percent = $(this).val();
+		if (new_percent === "") {
+			$(this).val(0);
+			new_percent = 0;
+		}
 
 		$('#current_match').text(new_percent);
 		chrome.storage.sync.set({"min_match": new_percent});
