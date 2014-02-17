@@ -761,7 +761,7 @@ function initialize_favorites_lists(favorites_array) {
 			var unique = true;
 
 			$.each(favorites_array, function(index, value) {
-				if (JSON.parse(value.list_name) === checked_name) {
+				if (value.list_name === checked_name) {
 					unique = false;
 				} 
 			});
