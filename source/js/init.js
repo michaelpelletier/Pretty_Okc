@@ -617,20 +617,23 @@ function initialize_favorites_lists(favorites_array) {
 				var new_list_name = $('#new_favorite_list').val();
 				var length = 20;
 
-				if (new_list_name.length > length) {
-					new_list_name = new_list_name.substring(0, length);
-				}
-
-				new_list_name = JSON.stringify(new_list_name);
-				var new_list = {list_name: new_list_name, users: []}
-
-				var unique = check_uniqueness(new_list_name);
-				if (!unique) {
-					display_uniqueness_error();
+				if (new_list_name === "") {
+					display_error('blank');
 				} else {
-					favorites_array.push(new_list);
-					save_favorites(favorites_array);
-					initialize_favorites_lists(favorites_array);
+					if (new_list_name.length > length) {
+						new_list_name = new_list_name.substring(0, length);
+					}
+					new_list_name = JSON.stringify(new_list_name);
+					var new_list = {list_name: new_list_name, users: []}
+
+					var unique = check_uniqueness(new_list_name);
+					if (!unique) {
+						display_error('unique');
+					} else {
+						favorites_array.push(new_list);
+						save_favorites(favorites_array);
+						initialize_favorites_lists(favorites_array);
+					}
 				}
 			}
 		}
@@ -766,12 +769,21 @@ function initialize_favorites_lists(favorites_array) {
 			return unique;
 		}
 
-		function display_uniqueness_error() {
-			$('.favorites_lists').append('<div class="oknotice_error unique">List name must be unique.</div>');
+		function display_error(type) {
+			var message;
+
+			if (type === "unique") {
+				message = "List name must be unique";
+			} else if (type === "blank") {
+				message = "List name cannot be blank.";
+			}
+
+			$('.favorites_lists').append('<div class="oknotice_error unique">' + message + '</div>');
 			setTimeout(function() {
       $('.favorites_lists').find('.oknotice_error.unique').remove();
 			}, 5000);
 		}
+
 	}
 
 	function bind_favorite_list_toggle() {
