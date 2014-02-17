@@ -105,6 +105,7 @@ chrome.storage.sync.get(all_settings, function (obj) {
 			message_count = 0;
 		}
 		chrome.runtime.sendMessage({ messages: message_count});
+		chrome.storage.sync.set({"messages": message_count});
 	}
 
 	// Matches Page Functions

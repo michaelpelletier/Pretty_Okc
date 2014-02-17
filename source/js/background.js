@@ -24,6 +24,13 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   }
 });
 
+chrome.storage.onChanged.addListener(function(changes, namespace) {
+  if (changes['messages']) {
+    var new_count = "" + changes['messages']['newValue'] + "";
+    chrome.browserAction.setBadgeText({text: new_count });
+  }
+});
+
 function open_focus_options() {
   var options_url = chrome.extension.getURL('options.html'); 
   chrome.tabs.query({}, function(extensionTabs) {
