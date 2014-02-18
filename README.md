@@ -9,6 +9,9 @@ Current Version: 0.80 (Closed Alpha!)
 Version History
 ==========
 
+0.85
+- Bug Fixes for Favorites List Name Validation.
+
 0.8
 - Favorites Lists are now sortable.
 - Favorite lists have a character limit.
