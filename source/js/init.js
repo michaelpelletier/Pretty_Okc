@@ -127,6 +127,7 @@ function arraymove(arr, fromIndex, toIndex) {
 function update_matches_page() {
 	change_tile_text();
 	add_star_ratings();
+	fetch_all_pictures();
 
 	function change_tile_text() {
 		$('.match_card_wrapper').each(function() {
@@ -222,8 +223,6 @@ function add_excerpt_div() {
 		    if (check_array(priority[index])) {
 		    	excerpt.find('.sr_message').remove();
 		    	var container = excerpt.find('#essay_' + priority[index]);
-		    	console.log(container)
-		    	console.log(container.siblings())
 		    	container.siblings().each(function() {
 		    		$(this).remove();
 		    	});
@@ -409,12 +408,6 @@ function add_private_notes() {
 }
 
 /*** Matches View Specific Functions ***/
-function update_tiles() {
-	change_tile_text();
-	add_star_ratings();
-	fetch_all_pictures();
-}
-
 function change_tile_text() {
 	$('.match_card_wrapper').each(function() {
 		var self = $(this);
@@ -465,25 +458,32 @@ function add_recent_questions_option() {
 }
 
 function fetch_all_pictures() {
-	$('.match_card_wrapper').mouseover(function() {
+	$('.match_card_wrapper').each(function() {
 		var self = $(this);
+		var picture_container = self.find('.additional_pictures');
 
-		if (self.find('.additional_pictures').length === 0) {
-			// Remove state abbreviation.
-			var username = $.trim(self.find('.username').text());
-			self.append('<div class="additional_pictures"></div>');
-			var picture_container = self.find('.additional_pictures');
-			var full_url = 'http://www.okcupid.com/profile/' + username + '/photos #full_albums';
-
-			console.log(full_url)
-			picture_container.load(full_url, function(response) {
-				//console.log(response)
-				console.log(picture_container)
-				//picture_container.html(response);
-			});
+		if (picture_container.length === 0) {
+			self.append('<div class="additional_pictures hidden_helper"></div>');
+			picture_container = self.find('.additional_pictures');
 		}
+
+		self.find('.image_wrapper').mouseover(function() {
+			if (picture_container.is(':empty')) {
+				var username = $.trim(self.find('.username').text());
+				var full_url = 'http://www.okcupid.com/profile/' + username + '/photos #full_albums';
+				picture_container.load(full_url, function(response) {
+					picture_container.find('.text').remove();
+					picture_container.find('.photo_data').remove();
+					picture_container.find('.photo.saved').removeClass('clearfix');
+					picture_container.removeClass('hidden_helper');
+				});
+			} else {
+				picture_container.removeClass('hidden_helper');
+			}
+		}).mouseout(function() {
+			picture_container.addClass('hidden_helper');
+		});
 	});
-// http://www.okcupid.com/profile/kat1327/photos
 }
 
 /*** Who You Like ***/

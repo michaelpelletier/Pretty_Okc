@@ -202,6 +202,9 @@ General Styling Fixes for Matches Page
   width: 100px;
 }
 
+.pretty_okc .additional_pictures .photo.saved {
+  display: inline-block;
+}
 
 
 
