@@ -532,10 +532,7 @@ function initialize_favorites_lists(favorites_array) {
 	bind_favorite_list_toggle();
 	bind_list_actions();
 
-	make_lists_follow();
-	$(window).scroll(make_lists_follow);
 	$(window).scroll(check_scroll_top);
-
 	create_scroll_top();
 
 	function bind_favorite_list_sortable() {
@@ -824,19 +821,6 @@ function initialize_favorites_lists(favorites_array) {
 		$('li.favorite_list').each(function() {
 			$(this).removeClass('current');
 		});
-	}
-
-	function make_lists_follow() {
-		var lists_container = $('.side_favorites'); 
-		// Offset between the favorites list and top of the page.
-		// Change this to be calculated in a way that the changing offset
-		// won't change the variable.
-		var offset = 315;		
-  	if ($(window).scrollTop() > offset) {
-   		lists_container.css({'position': 'fixed', 'top': '10px'}); 
-  	} else {
-    	lists_container.css({'position': 'relative', 'top': 'auto'});
-		}
 	}
 
 	function create_scroll_top() {
