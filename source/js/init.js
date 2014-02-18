@@ -613,12 +613,20 @@ function initialize_favorites_lists(favorites_array) {
 				save_new_list();
 			});
 
+			$('input#new_favorite_list').keyup(function() {
+				if ($(this).val().length > 20) {
+					display_error('length');
+				}
+			});
+
 			function save_new_list() {
 				var new_list_name = $('#new_favorite_list').val();
 				var length = 20;
 
 				if (new_list_name === "") {
 					display_error('blank');
+				} else if (new_list_name.length > 20) {
+					display_error('length');
 				} else {
 					if (new_list_name.length > length) {
 						new_list_name = new_list_name.substring(0, length);
@@ -771,19 +779,23 @@ function initialize_favorites_lists(favorites_array) {
 
 		function display_error(type) {
 			var message;
+			var favorites_lists = $('.favorites_lists');
 
 			if (type === "unique") {
 				message = "List name must be unique";
 			} else if (type === "blank") {
 				message = "List name cannot be blank.";
+			} else if (type === "length") {
+				message = "List name must be less than 20 characters.";
 			}
 
-			$('.favorites_lists').append('<div class="oknotice_error unique">' + message + '</div>');
-			setTimeout(function() {
-      $('.favorites_lists').find('.oknotice_error.unique').remove();
-			}, 5000);
+			if (favorites_lists.find('.oknotice_error').length === 0) {
+				favorites_lists.append('<div class="oknotice_error unique">' + message + '</div>');
+				setTimeout(function() {
+      		favorites_lists.find('.oknotice_error.unique').remove();
+				}, 5000);
+			}
 		}
-
 	}
 
 	function bind_favorite_list_toggle() {
