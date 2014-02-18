@@ -48,6 +48,7 @@ General Styling Fixes for Matches Page
 
 /* Change Display of Online Indicator */
 .pretty_okc .match_card_wrapper .online_indicator.chat_enabled, 
+.pretty_okc .match_card_wrapper .online_indicator.chat_enabled:hover, 
 .pretty_okc a.online_indicator.online {
   background-color: #2855a2;
   border-radius: 0px;
@@ -114,9 +115,11 @@ General Styling Fixes for Matches Page
   width: 30px;
 }
 
-.pretty_okc .no_rating      { background-position: -60px  -0px; }
+.pretty_okc .no_rating      { background-position: -60px   0px; }
+.pretty_okc .low_rating     { background-position: -90px   0px; }
 .pretty_okc .partial_rating { background-position: -90px -26px; }
 .pretty_okc .full_rating    { background-position: -60px -26px; }
+
 
 
 /* Restyle Star Images */
@@ -330,6 +333,7 @@ Styling Fixes for Matches Search Page - Classic View
   font-size: 16px;
   line-height: 20px;
   padding-top: 5px;
+  width: 300px;
 }
 
 .pretty_okc.classic .match_card_wrapper .match_card_text .profile_info .userinfo {
