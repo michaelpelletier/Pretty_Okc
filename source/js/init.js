@@ -625,7 +625,7 @@ function initialize_favorites_lists(favorites_array) {
 
 				if (new_list_name === "") {
 					display_error('blank');
-				} else if (new_list_name.length > 20) {
+				} else if (new_list_name.length > 25) {
 					display_error('length');
 				} else {
 					if (new_list_name.length > length) {
@@ -786,7 +786,7 @@ function initialize_favorites_lists(favorites_array) {
 			} else if (type === "blank") {
 				message = "List name cannot be blank.";
 			} else if (type === "length") {
-				message = "List name must be less than 20 characters.";
+				message = "List name must be less than 25 characters.";
 			}
 
 			if (favorites_lists.find('.oknotice_error').length === 0) {
