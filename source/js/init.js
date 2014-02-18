@@ -532,10 +532,7 @@ function initialize_favorites_lists(favorites_array) {
 	bind_favorite_list_toggle();
 	bind_list_actions();
 
-	make_lists_follow();
-	$(window).scroll(make_lists_follow);
 	$(window).scroll(check_scroll_top);
-
 	create_scroll_top();
 
 	function bind_favorite_list_sortable() {
@@ -613,24 +610,35 @@ function initialize_favorites_lists(favorites_array) {
 				save_new_list();
 			});
 
+			$('input#new_favorite_list').keyup(function() {
+				if ($(this).val().length > 20) {
+					display_error('length');
+				}
+			});
+
 			function save_new_list() {
 				var new_list_name = $('#new_favorite_list').val();
 				var length = 20;
 
-				if (new_list_name.length > length) {
-					new_list_name = new_list_name.substring(0, length);
-				}
-
-				new_list_name = JSON.stringify(new_list_name);
-				var new_list = {list_name: new_list_name, users: []}
-
-				var unique = check_uniqueness(new_list_name);
-				if (!unique) {
-					display_uniqueness_error();
+				if (new_list_name === "") {
+					display_error('blank');
+				} else if (new_list_name.length > 25) {
+					display_error('length');
 				} else {
-					favorites_array.push(new_list);
-					save_favorites(favorites_array);
-					initialize_favorites_lists(favorites_array);
+					if (new_list_name.length > length) {
+						new_list_name = new_list_name.substring(0, length);
+					}
+					new_list_name = JSON.stringify(new_list_name);
+					var new_list = {list_name: new_list_name, users: []}
+
+					var unique = check_uniqueness(new_list_name);
+					if (!unique) {
+						display_error('unique');
+					} else {
+						favorites_array.push(new_list);
+						save_favorites(favorites_array);
+						initialize_favorites_lists(favorites_array);
+					}
 				}
 			}
 		}
@@ -758,7 +766,7 @@ function initialize_favorites_lists(favorites_array) {
 			var unique = true;
 
 			$.each(favorites_array, function(index, value) {
-				if (JSON.parse(value.list_name) === checked_name) {
+				if (value.list_name === checked_name) {
 					unique = false;
 				} 
 			});
@@ -766,11 +774,24 @@ function initialize_favorites_lists(favorites_array) {
 			return unique;
 		}
 
-		function display_uniqueness_error() {
-			$('.favorites_lists').append('<div class="oknotice_error unique">List name must be unique.</div>');
-			setTimeout(function() {
-      $('.favorites_lists').find('.oknotice_error.unique').remove();
-			}, 5000);
+		function display_error(type) {
+			var message;
+			var favorites_lists = $('.favorites_lists');
+
+			if (type === "unique") {
+				message = "List name must be unique";
+			} else if (type === "blank") {
+				message = "List name cannot be blank.";
+			} else if (type === "length") {
+				message = "List name must be less than 25 characters.";
+			}
+
+			if (favorites_lists.find('.oknotice_error').length === 0) {
+				favorites_lists.append('<div class="oknotice_error unique">' + message + '</div>');
+				setTimeout(function() {
+      		favorites_lists.find('.oknotice_error.unique').remove();
+				}, 5000);
+			}
 		}
 	}
 
@@ -800,19 +821,6 @@ function initialize_favorites_lists(favorites_array) {
 		$('li.favorite_list').each(function() {
 			$(this).removeClass('current');
 		});
-	}
-
-	function make_lists_follow() {
-		var lists_container = $('.side_favorites'); 
-		// Offset between the favorites list and top of the page.
-		// Change this to be calculated in a way that the changing offset
-		// won't change the variable.
-		var offset = 315;		
-  	if ($(window).scrollTop() > offset) {
-   		lists_container.css({'position': 'fixed', 'top': '10px'}); 
-  	} else {
-    	lists_container.css({'position': 'relative', 'top': 'auto'});
-		}
 	}
 
 	function create_scroll_top() {
