@@ -186,6 +186,31 @@ General Styling Fixes for Matches Page
   width: 100px;
 }
 
+/* Additional Pictures */
+.pretty_okc .additional_pictures {
+  background: #FFF;
+  left: 135px;
+  padding: 10px;
+  position: absolute;
+  top: 0px;
+  width: 300px;
+  z-index: 10;
+}
+
+.pretty_okc .additional_pictures img {
+  height: 100px;
+  width: 100px;
+}
+
+.pretty_okc .additional_pictures .photo.saved {
+  display: inline-block;
+}
+
+
+
+
+
+
 /***************************************************
 Styling Fixes for Matches Search Page - Tiles View
 ****************************************************/

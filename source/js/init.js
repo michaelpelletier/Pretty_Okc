@@ -127,6 +127,7 @@ function arraymove(arr, fromIndex, toIndex) {
 function update_matches_page() {
 	change_tile_text();
 	add_star_ratings();
+	fetch_all_pictures();
 
 	function change_tile_text() {
 		$('.match_card_wrapper').each(function() {
@@ -222,8 +223,6 @@ function add_excerpt_div() {
 		    if (check_array(priority[index])) {
 		    	excerpt.find('.sr_message').remove();
 		    	var container = excerpt.find('#essay_' + priority[index]);
-		    	console.log(container)
-		    	console.log(container.siblings())
 		    	container.siblings().each(function() {
 		    		$(this).remove();
 		    	});
@@ -408,6 +407,41 @@ function add_private_notes() {
 	});
 }
 
+/*** Matches View Specific Functions ***/
+function change_tile_text() {
+	$('.match_card_wrapper').each(function() {
+		var self = $(this);
+
+		// Remove state abbreviation.
+		var userinfo = self.find('.userinfo');
+		var location = userinfo.text();
+		location = location.replace('·', ' · ').split(',');
+		userinfo.text(location[0]);	
+
+		// Remove "Match" from Match Percentage.
+		var percents = self.find('.percentages');
+		var match = $.trim(percents.text());
+		match = match.split(' ');
+		percents.text(match[0]);
+	});
+}
+
+function add_star_ratings() {
+	$('.match_card_wrapper').each(function() {
+		var self = $(this);
+		var stars = calculate_star_ratings(self);
+		apply_star_ratings(self, stars)
+
+		// If the user changes a rating, adjust accordingly
+		self.find('#personality-rating').find('li').find('a').click(function() {
+			setTimeout(function() {
+				var new_stars = calculate_star_ratings(self);
+				apply_star_ratings(self, new_stars);
+			}, 500);
+		});
+	});
+}
+
 function add_recent_questions_option() {
 	// Add the Recently Answered option.
 	var container = $('.right ul.bottom_pad');
@@ -423,10 +457,39 @@ function add_recent_questions_option() {
 	}
 }
 
+function fetch_all_pictures() {
+	$('.match_card_wrapper').each(function() {
+		var self = $(this);
+		var picture_container = self.find('.additional_pictures');
+
+		if (picture_container.length === 0) {
+			self.append('<div class="additional_pictures hidden_helper"></div>');
+			picture_container = self.find('.additional_pictures');
+		}
+
+		self.find('.image_wrapper').mouseover(function() {
+			if (picture_container.is(':empty')) {
+				var username = $.trim(self.find('.username').text());
+				var full_url = 'http://www.okcupid.com/profile/' + username + '/photos #full_albums';
+				picture_container.load(full_url, function(response) {
+					picture_container.find('.text').remove();
+					picture_container.find('.photo_data').remove();
+					picture_container.find('.photo.saved').removeClass('clearfix');
+					picture_container.removeClass('hidden_helper');
+					$('.photo.saved').find('img').resizable({ aspectRatio:true, maxHeight:100 });					
+				});
+			} else {
+				picture_container.removeClass('hidden_helper');
+			}
+		}).mouseout(function() {
+			picture_container.addClass('hidden_helper');
+		});
+	});
+}
+
 /*** Who You Like ***/
 function add_likes_filters() {
 	var HTML = '<div class="your_likes big_dig"><div class="right"><ul><li class="title">Filters</li><li class="default"><a href="/who-you-like?show_min_personality=3&show_max_personality=5">3-5 Star (Default)</a></li><li class="actual_likes"><a href="/who-you-like?show_min_personality=4&show_max_personality=5">4-5 Star (Likes)</a></li><li class="all_rated"><a href="/who-you-like?show_min_personality=1&show_max_personality=5">All Rated Users</a></li><li>&nbsp;</li><li class="only_5"><a href="/who-you-like?show_min_personality=5&show_max_personality=5">5 Star Only</a></li><li class="only_4"><a href="/who-you-like?show_min_personality=4&show_max_personality=4">4 Star Only</a></li><li class="only_3"><a href="/who-you-like?show_min_personality=3&show_max_personality=3">3 Star Only</a></li><li class="only_2"><a href="/who-you-like?show_min_personality=2&show_max_personality=2">2 Star Only</a></li><li class="only_1"><a href="/who-you-like?show_min_personality=1&show_max_personality=1">1 Star Only</a></li><li class="custom"></li></ul></div></div>';
-
 	$('.tab_content_nav').append(HTML);
 
 	var url = window.location.href;
