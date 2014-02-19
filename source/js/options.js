@@ -8,9 +8,41 @@ $(document).ready(function() {
 
   $('#save').click(function() {
     save_options();
-  })
+  });
+
+  var all_settings = ["settings", "favorites"];
+  chrome.storage.sync.get(all_settings, function (obj) {
+    var link = document.createElement("a");
+    link.textContent = "Export settings";
+    link.download = "okc.txt";
+    link.href = "data:text," + JSON.stringify(obj) + ""
+    $('.setting_controls').append(link);
+  });
+
+  $('#settings_import').click(function(e) {
+    e.preventDefault();
+    import_settings();
+  });
+
 });
 
+function import_settings() {
+  var new_settings = $('#import_field').val();
+
+  if (new_settings !== "") {
+    new_settings = JSON.parse(new_settings)
+    chrome.storage.sync.set({"settings": new_settings['settings']});
+    chrome.storage.sync.set({"favorites": new_settings['favorites']});
+    
+    // Update status to let user know settings were imported.
+    var status = $("#status");
+    status.html("Settings Imported.");
+    setTimeout(function() {
+      status.empty();
+      $('#import_field').val('');
+    }, 1000);
+  }
+}
 
 // Saves options to Google Storage.
 function save_options() {
@@ -44,6 +76,8 @@ function restore_options() {
   chrome.storage.sync.get("settings", function (obj) {
     var default_tiles = "tiles";
     var default_priority = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+    console.log(obj)
 
     var options_mode;
     var priority_settings;

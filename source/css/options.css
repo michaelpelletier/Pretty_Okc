@@ -78,3 +78,33 @@ li.draggable {
 li.draggable.ui-sortable-helper {
 	border-top: 1px solid #dddddd;
 }
+
+.setting_controls {
+	margin-top: 10px;
+}
+
+#import_field {
+	max-width: 345px;
+	width: 345px;
+}
+
+
+.setting_controls a {
+	display: inline-block;
+	border: 2px outset buttonface;
+	color: #000;
+	cursor: default;
+	font: -webkit-small-control;
+	font-size: 13px;
+	line-height: 16px;
+	margin: 2px;
+	padding: 1px 6px;
+	text-align: center;
+	text-decoration: none;
+	-webkit-appearance: button;
+	button-style: inset;
+}
+
+#settings_import {
+	float: right;
+}
