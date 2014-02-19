@@ -476,6 +476,7 @@ function fetch_all_pictures() {
 					picture_container.find('.photo_data').remove();
 					picture_container.find('.photo.saved').removeClass('clearfix');
 					picture_container.removeClass('hidden_helper');
+					$('.photo.saved').find('img').resizable({ aspectRatio:true, maxHeight:100 });					
 				});
 			} else {
 				picture_container.removeClass('hidden_helper');
