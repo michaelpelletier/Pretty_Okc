@@ -19,21 +19,22 @@ body#p_profile.pretty_okc .tabbed_heading #actions .action_options {
 
 /* Change Buttons to be Icons */
 body#p_profile.pretty_okc .tabbed_heading #actions .action_options .btn.white a {
+  background: transparent!important;
   border: none!important;
 }
 
-body#p_profile.pretty_okc .tabbed_heading #actions .action_options .btn.white a.flag {
+body#p_profile.pretty_okc .tabbed_heading #actions .action_options .btn.white.report {
   border: 1px solid #ddd!important;
+  width: 29px;
 }
 
 body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.white.favorite,
 body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.white.notes,
 body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.white.alist,
+body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.white.report,
 body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.small_white a.hide.grey,
-body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.small_white a.flag,
 body#p_profile.pretty_okc .tabbed_heading #actions .action_options #hide_btn,
-body#p_profile.pretty_okc .tabbed_heading #actions .action_options #unhide_btn,
-body#p_profile.pretty_okc .tabbed_heading #actions .action_options #flag_btn
+body#p_profile.pretty_okc .tabbed_heading #actions .action_options #unhide_btn
 {
   background-color: #F6F6F6!important;
   background-image: url('chrome-extension://__MSG_@@extension_id__/images/okc_icons.png')!important;
@@ -69,11 +70,10 @@ body#p_profile.pretty_okc .tabbed_heading #actions .action_options .btn.small_wh
 body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.white.favorite:hover,
 body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.white.notes:hover,
 body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.white.alist:hover,
+body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.white.report:hover,
 body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.small_white a.hide.grey:hover,
-body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.small_white #flag_btn:hover,
 body#p_profile.pretty_okc .tabbed_heading #actions .action_options #hide_btn:hover,
-body#p_profile.pretty_okc .tabbed_heading #actions .action_options #unhide_btn:hover,
-body#p_profile.pretty_okc .tabbed_heading #actions .action_options #flag_btn:hover {
+body#p_profile.pretty_okc .tabbed_heading #actions .action_options #unhide_btn:hover {
   background-color: #FFF!important;
 }
 
