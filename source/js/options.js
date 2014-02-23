@@ -4,10 +4,6 @@ $(document).ready(function() {
 
   restore_options();
   bind_import_settings();
-
-  $('#save').click(function() {
-    save_options();
-  });
 });
 
 
@@ -55,12 +51,11 @@ function bind_import_settings() {
 }
 
 // Saves options to Google Storage.
-function save_options() {
+function save_options(favorites_array) {
   var settings = {}
 
-  // Save options for Matches View Mode, and Favorites Lists.
+  // Save options for Matches View Mode.
   var chosen_mode = $("select#mode").val();
-  var favorites_array = $('#favorites_array').val();
 
   settings["mode"] = chosen_mode;
 
@@ -110,7 +105,6 @@ function restore_options() {
 
     // Adjust page settings with values.
     $('select#mode').val(options_mode);
-    $('#favorites_array').val(favorites_array);
 
     // Set priority order.
     for (var i = 0; i < priority_settings.length; i++) {
@@ -119,7 +113,11 @@ function restore_options() {
     }
 
     generate_export_link();
-    save_options();
+    save_options(favorites_array);
+
+    $('#save').click(function() {
+      save_options(favorites_array);
+    });
 
     function generate_export_link() {
       $('.setting_controls').find('a').remove();
