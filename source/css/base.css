@@ -82,7 +82,7 @@ body#p_profile.pretty_okc .tabbed_heading #actions .action_options #unhide_btn:h
 .pretty_okc .btn.notes.white.has_note { background-position:  -30px -26px!important; }
 .pretty_okc #hide_btn                 { background-position:  -90px -26px!important; }
 .pretty_okc #unhide_btn               { background-position:  -90px   2px!important; }
-.pretty_okc .btn.white #flag_btn      { background-position: -160px -25px!important; }
+.pretty_okc .btn.white.report         { background-position: -160px -25px!important; }
 
 body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.white.favorite { 
   background: #F6F6F6 url(http://akcdn.okccdn.com/media/img/icons/user_actions.png) -31px 0px no-repeat!important; 
@@ -95,25 +95,17 @@ body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.white.f
 body#p_profile.pretty_okc .tabbed_heading #actions {
   padding-left: 20px;
   padding-right: 15px;
-  width: 160px;
+  width: 150px;
 }
 
 body#p_profile.pretty_okc .tabbed_heading #actions .message, 
 body#p_profile.pretty_okc .tabbed_heading #actions .sign_up_btn {
-  width: 156px;
+  width: 150px;
 }
 
 body#p_profile.pretty_okc .tabbed_heading #actions .action_options {
-  width: 160px;
-}
-
-body#p_profile.pretty_okc .tabbed_heading #actions.no_alist .message {
-  width: 123px;
-}
-
-body#p_profile.pretty_okc .tabbed_heading #actions.no_alist,
-body#p_profile.pretty_okc .tabbed_heading #actions.no_alist .action_options {
-  width: 127px;
+  padding: 5px 13px;
+  width: 125px;
 }
 
 /* Various Fixes */
