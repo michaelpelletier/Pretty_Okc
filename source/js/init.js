@@ -1,7 +1,6 @@
 var all_settings = ["settings", "favorites"];
 
 chrome.storage.sync.get(all_settings, function (obj) {
-	console.log(obj)
 	// Set defaults in case the user did not visit the options page first.
 	var message_count;
 	var matches_mode;
