@@ -3,44 +3,54 @@ $(document).ready(function() {
   $("#excerpt_priority").disableSelection();
 
   restore_options();
-  // In the case of setting the defaults, we should still save.
-  save_options();
+  bind_import_settings();
 
   $('#save').click(function() {
     save_options();
   });
-
-  var all_settings = ["settings", "favorites"];
-  chrome.storage.sync.get(all_settings, function (obj) {
-    var link = document.createElement("a");
-    link.textContent = "Export settings";
-    link.download = "okc.txt";
-    link.href = "data:text," + JSON.stringify(obj) + ""
-    $('.setting_controls').append(link);
-  });
-
-  $('#settings_import').click(function(e) {
-    e.preventDefault();
-    import_settings();
-  });
-
 });
 
-function import_settings() {
-  var new_settings = $('#import_field').val();
 
-  if (new_settings !== "") {
-    new_settings = JSON.parse(new_settings)
-    chrome.storage.sync.set({"settings": new_settings['settings']});
-    chrome.storage.sync.set({"favorites": new_settings['favorites']});
-    
-    // Update status to let user know settings were imported.
-    var status = $("#status");
-    status.html("Settings Imported.");
-    setTimeout(function() {
-      status.empty();
-      $('#import_field').val('');
-    }, 1000);
+function bind_import_settings() {
+  $('#import_field').change(function() {
+    read_file();
+  })
+
+  function read_file() {
+    var files = document.getElementById('import_field').files;
+    if (!files.length) {
+      alert('Please select a file');
+      return;
+    }
+
+    var file = files[0];
+    var reader = new FileReader();
+    var file_data;
+
+    // If we use onloadend, we need to check the readyState.
+    reader.onloadend = function(evt) {
+      if (evt.target.readyState == FileReader.DONE) { 
+        file_data = evt.target.result;
+        //$('#file_content').text(file_data);
+
+        if (file_data !== "") {
+          file_data = JSON.parse(file_data);
+          chrome.storage.sync.set({"settings": file_data['settings']});
+          chrome.storage.sync.set({"favorites": file_data['favorites']});
+
+          // Update status to let user know settings were imported.
+          var status = $("#status");
+          status.html("Settings Imported.");
+          setTimeout(function() {
+            status.empty();
+            restore_options();
+            $('#import_field').val('');
+          }, 1000);
+        }
+      }
+    };
+
+    reader.readAsBinaryString(file);
   }
 }
 
@@ -48,8 +58,10 @@ function import_settings() {
 function save_options() {
   var settings = {}
 
-  // Save options for Matches View Mode
+  // Save options for Matches View Mode, and Favorites Lists.
   var chosen_mode = $("select#mode").val();
+  var favorites_array = $('#favorites_array').val();
+
   settings["mode"] = chosen_mode;
 
   // Store Priority as an Array
@@ -69,39 +81,53 @@ function save_options() {
 
   // Store in Chrome Storage.
   chrome.storage.sync.set({"settings": settings});
+  chrome.storage.sync.set({"favorites": favorites_array});
 }
 
 function restore_options() {
   // Restore Matches View Mode Settings.
-  chrome.storage.sync.get("settings", function (obj) {
-    var default_tiles = "tiles";
-    var default_priority = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+  var all_settings = ["settings", "favorites"];
+  chrome.storage.sync.get(all_settings, function (obj) {
 
-    console.log(obj)
+    var options_mode = "tiles";
+    var priority_settings = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    var favorites_array = [];
 
-    var options_mode;
-    var priority_settings;
-
-    if (obj && obj['settings']) {
-      // Retrieve settings for Matches View Mode.
-      if (obj['settings']['mode']) {
+    if (obj) {
+      if (obj['settings'] && obj['settings']['mode']) {
+        // Retrieve settings for Matches View Mode.
         options_mode = obj['settings']['mode'];
       }
-      // Retrieve settings for Priority.
-      if (obj['settings']['priority']) {
+
+      if (obj['settings'] && obj['settings']['priority']) {
         priority_settings = obj['settings']['priority'];
       }
 
-    } else {
-      options_mode = default_tiles;
-      priority_settings = default_priority;
+      if (obj['favorites']) {
+        favorites_array = obj['favorites'];
+      }
     }
-    // Set default Mode.
-    $('select#mode').val(options_mode)
+
+    // Adjust page settings with values.
+    $('select#mode').val(options_mode);
+    $('#favorites_array').val(favorites_array);
+
     // Set priority order.
     for (var i = 0; i < priority_settings.length; i++) {
       var item = $('li#' + priority_settings[i]);
       $('#excerpt_priority').append(item);
+    }
+
+    generate_export_link();
+    save_options();
+
+    function generate_export_link() {
+      $('.setting_controls').find('a').remove();
+      var link = document.createElement("a");
+      link.textContent = "Export settings";
+      link.download = "okc.txt";
+      link.href = "data:text," + JSON.stringify(obj) + ""
+      $('.setting_controls').prepend(link);
     }
   });
 }

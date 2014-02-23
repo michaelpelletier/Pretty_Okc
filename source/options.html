@@ -15,6 +15,7 @@
       <option value="classic">Classic</option>
       <option value="wide_tiles">Wide Tiles</option>
     </select>
+    <input type="hidden" id="favorites_array" value="">
   </div>
 
   <div class="options">
@@ -39,13 +40,11 @@
 
   <div class="options">
     <h3>Settings Control</h3>
-    <div class="description">The plugin should ordinarily sync with your Google Account automatically, but for backups, reinstallations, and possibly upgrades, you can save and restore your settings. Simply click the export link to download a txt file containing the information. To import, open the txt file, copy the information, and paste it into the text field.</div>
+    <div class="description">The plugin should ordinarily sync with your Google Account automatically, but for backups, reinstallations, and possibly upgrades, you can save and restore your settings. Simply click the export link to download a txt file containing the information, or use the File Uploader to import settings that you have already saved.</div>
 
     <div class="setting_controls">
-      <textarea id="import_field" name="settings" cols="40" rows="5"></textarea>
-      <button id="settings_import" class="import">Import Settings</button>
+      <input type="file" id="import_field" name="file" />
     </div>
-
   </div>
 
   <div class="save_changes">
