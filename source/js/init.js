@@ -265,18 +265,11 @@ function add_excerpt_div() {
 function style_buttons_with_icons() {
 	fix_online_indicator();
 
-	// A-List Button
-	var alist = $('li#user_menu_upgrade').length === 0;
-	if (!alist) {
-		$('#actions').addClass('no_alist');
-	} else {
-		$('.action_options').find('#upgrade_form').find('p.btn').addClass('alist').attr('title', 'Buy them A-List');
-	}
-
 	// Other Buttons
 	$('.action_options').find('#hide_btn').attr('title', 'Hide this user');
 	$('.action_options').find('#unhide_btn').attr('title', 'Unhide this user');
 	$('.action_options').find('#flag_btn').attr('title', 'Report');
+	$('.action_options').find('#flag_btn').parent('p').addClass('report');
 
 	// Add Note
 	var onclick = "Profile.loadWindow('edit_notes', 244); return false;"
