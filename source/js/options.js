@@ -123,7 +123,7 @@ function restore_options() {
       $('.setting_controls').find('a').remove();
       var link = document.createElement("a");
       link.textContent = "Export settings";
-      link.download = "okc.txt";
+      link.download = "pretty_okc_settings.txt";
       link.href = "data:text," + JSON.stringify(obj) + ""
       $('.setting_controls').prepend(link);
     }
