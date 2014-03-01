@@ -9,8 +9,27 @@ $(document).ready(function() {
 
 function bind_import_settings() {
   $('#import_field').change(function() {
-    read_file();
-  })
+    var status = $("#status");
+    status.empty();
+    
+    if (check_valid_type()) {
+      read_file();
+    } else {
+      status.html("<div class='oknotice_error'>File must be a txt document.</div>");
+    }
+  });
+
+  function check_valid_type() {
+    var files = document.getElementById('import_field').files;
+    var filename = files[0].name;
+    var filetype = filename.substring(filename.lastIndexOf("."));
+
+    if (filetype === '.txt') {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   function read_file() {
     var files = document.getElementById('import_field').files;
@@ -118,7 +137,6 @@ function restore_options() {
     $('[data-js-link="import_link"]').click(function() {
       $(this).siblings('.file_uploader').removeClass('hidden_helper');
     });
-
 
 
     $('#save').click(function() {
