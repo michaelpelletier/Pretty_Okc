@@ -115,17 +115,23 @@ function restore_options() {
     generate_export_link();
     save_options(favorites_array);
 
+    $('[data-js-link="import_link"]').click(function() {
+      $(this).siblings('.file_uploader').removeClass('hidden_helper');
+    });
+
+
+
     $('#save').click(function() {
       save_options(favorites_array);
     });
 
     function generate_export_link() {
-      $('.setting_controls').find('a').remove();
+      $('.export').find('a').remove();
       var link = document.createElement("a");
       link.textContent = "Export settings";
       link.download = "pretty_okc_settings.txt";
       link.href = "data:text," + JSON.stringify(obj) + ""
-      $('.setting_controls').prepend(link);
+      $('.export').prepend(link);
     }
   });
 }
