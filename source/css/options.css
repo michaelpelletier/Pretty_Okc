@@ -86,6 +86,7 @@ li.draggable.ui-sortable-helper {
 /* Setting Controls */
 .setting_controls {
 	margin-top: 10px;
+	padding-bottom: 20px;
 }
 
 .import {
@@ -97,36 +98,13 @@ li.draggable.ui-sortable-helper {
 	margin: 0px;
 }
 
-#save {
-	background: #3872b3;
-	border: 0px;
-	-webkit-border-radius: 2px;
-	border-radius: 2px;
-	color: white;
-	cursor: pointer;
-	display: block;
-	font-size: 12px;
-	font-weight: bold;
-	height: 32px;
-	line-height: 32px;
-	font-family: verdana,sans-serif;
-	margin: 0px;
-	padding: 0 3px;
-	text-align: center;
-	text-transform: none;
-	width: 120px;
-}
-
-#save:hover {
-	background: #397dc8;
-}
-
 .file_uploader {
 	display: inline-block;
 	margin-left: 10px;
 }
 
-.setting_controls a {
+.setting_controls a,
+.setting_controls button {
 	background: #f7f7f7;
 	border: 1px solid #dddddd;
 	border-radius: 2px;
@@ -134,14 +112,31 @@ li.draggable.ui-sortable-helper {
 	cursor: pointer;
 	display: inline-block;
 	font-family: verdana,sans-serif;
+	font-size: 12px;
 	height: 30px;
 	line-height: 30px;
-	padding: 0 3px;
+	margin: 0px;
+	padding: 0px;
 	text-align: center;
 	text-decoration: none;
 	text-transform: none;
-	width: 150px;
+	width: 120px;
 }
+
+.setting_controls button#save {
+	background: #3872b3;
+	border: 0px;
+	color: white;
+	font-weight: bold;
+	width: 122px;
+}
+
+.setting_controls button#save:hover {
+	background: #397dc8;
+}
+
+
+
 
 .save_changes {
 	margin-top: 10px;
