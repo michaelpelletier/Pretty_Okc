@@ -147,11 +147,8 @@ li.draggable.ui-sortable-helper {
 	margin-top: 10px;
 }
 
-.oknotice_error {
-	background: #feeaef;
-  border: 1px solid #FF1E72;
-  border-radius: 0px;
-  color: #ff1e72;
+.oknotice {
+	border-radius: 0px;
   display: inline-block;
   font-size: 13px;
   line-height: 16px;
@@ -159,4 +156,16 @@ li.draggable.ui-sortable-helper {
   padding: 13px 17px;
   text-align: center;
   width: 280px;
+}
+
+.oknotice.error {
+	background: #feeaef;
+  border: 1px solid #FF1E72;
+  color: #ff1e72;
+}
+
+.oknotice.success { 
+	background: #e7eef5;
+	border: 1px solid #2855a2;
+	color: #2855a2;
 }

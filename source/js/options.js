@@ -11,11 +11,11 @@ function bind_import_settings() {
   $('#import_field').change(function() {
     var status = $("#status");
     status.empty();
-    
+
     if (check_valid_type()) {
       read_file();
     } else {
-      status.html("<div class='oknotice_error'>File must be a txt document.</div>");
+      status.html("<div class='oknotice error'>File must be a txt document.</div>");
     }
   });
 
@@ -55,7 +55,7 @@ function bind_import_settings() {
 
           // Update status to let user know settings were imported.
           var status = $("#status");
-          status.html("Settings Imported.");
+          status.html("<div class='oknotice success'>Settings Imported.</div>");
           setTimeout(function() {
             status.empty();
             restore_options();
@@ -70,7 +70,7 @@ function bind_import_settings() {
 }
 
 // Saves options to Google Storage.
-function save_options(favorites_array) {
+function save_options(favorites_array, message) {
   var settings = {}
 
   // Save options for Matches View Mode.
@@ -86,12 +86,14 @@ function save_options(favorites_array) {
   });
   settings["priority"] = priority_array;
 
-  // Update status to let user know options were saved.
-  var status = $("#status");
-  status.html("Options Saved.");
-  setTimeout(function() {
-    status.empty();
-  }, 1000);
+  if (message === true) {
+    // Update status to let user know options were saved.
+    var status = $("#status");
+    status.html("<div class='oknotice success'>Options Saved.</div>");
+    setTimeout(function() {
+      status.empty();
+    }, 1000);
+  }
 
   // Store in Chrome Storage.
   chrome.storage.sync.set({"settings": settings});
@@ -132,7 +134,7 @@ function restore_options() {
     }
 
     generate_export_link();
-    save_options(favorites_array);
+    save_options(favorites_array, false);
 
     $('[data-js-link="import_link"]').click(function() {
       $(this).siblings('.file_uploader').removeClass('hidden_helper');
@@ -140,7 +142,7 @@ function restore_options() {
 
 
     $('#save').click(function() {
-      save_options(favorites_array);
+      save_options(favorites_array, true);
     });
 
     function generate_export_link() {
