@@ -1,4 +1,4 @@
-var all_settings = ["settings", "favorites"];
+var all_settings = ["settings", "favorites", "filters"];
 
 chrome.storage.sync.get(all_settings, function (obj) {
 	// Set defaults in case the user did not visit the options page first.
@@ -9,6 +9,7 @@ chrome.storage.sync.get(all_settings, function (obj) {
   var default_tiles = "tiles";
   var default_favorites = [];
   var default_priority = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+  var default_filters = [];
 
   set_default_options();
 	add_body_class(matches_mode);
@@ -36,6 +37,7 @@ chrome.storage.sync.get(all_settings, function (obj) {
   		}
   		break;
   	case "matches":
+  		filter_changes(filter_settings);
   		update_matches_page();
 
 			var observer = new MutationSummary({
@@ -89,6 +91,13 @@ chrome.storage.sync.get(all_settings, function (obj) {
 			excerpt_priority = obj['settings']['priority'];
 		} else {
 			excerpt_priority = default_priority;	
+		}
+
+		// Default Filters
+		if (obj && obj['filters']) {
+			filter_settings = obj['filters'];
+		} else {
+			filter_settings = default_filters;
 		}
   }
 
@@ -189,6 +198,177 @@ function update_matches_page() {
 		}
 	}
 }
+
+function filter_changes(filter_settings) {
+	bind_new_buttons();
+
+
+
+	function bind_new_buttons() {
+		var footer = $('.form_footer');
+		footer.find('#clear_button').remove();
+
+		footer.before('<div class="form_section filters"><div class="oknotice_error hidden_helper"></div><div class="form_filters load"><h3>Load settings</h3><div class="form_contents"><select id="saved_filters"></select><p id="load_filter" class="btn white button" onclick="Mc.submit_form();"><a>Load</a></p><p id="delete_filter" class="btn white button"><a>Delete</a></p></div></div><div class="form_filters"><h3>Save settings</h3><div class="form_contents"><input type="text" id="new_filter" name="filter" size="20"><p id="save_filter" class="btn white button"><a>Save</a></p></div></div></div>');
+
+		append_saved_options();
+
+		// Save a new filter.
+		$('#save_filter').click(function() {
+			save_new_filter();
+		});
+
+		// Delete a saved filter.
+		$('#delete_filter').click(function() {
+			reset_saved_filter();
+		});
+
+		// Change Filters
+		$('#saved_filters').change(function() {
+			load_settings();
+		});
+	}
+
+	function append_saved_options() {
+		$.each(filter_settings, function(index, value) {
+			$('#saved_filters').append('<option value="' + index + '" name="' + value.filter_name + '">' + value.filter_name + '</option>')
+		});
+	}
+
+	function save_new_filter() {
+		var message_container = $('.oknotice_error');
+
+		var new_filter = { filter_name: '', settings: {} }
+
+		var new_filter_name = $('#new_filter').val();
+
+		if (new_filter_name === "") {
+			message_container.removeClass('success').removeClass('hidden_helper').text('A name is required.');
+			setTimeout(function() {
+      	message_container.addClass('hidden_helper').text('');
+			}, 5000);
+		} else {
+			new_filter.filter_name = new_filter_name;
+			//new_filter['settings']['location']		= null;
+
+			// Default Settings
+			var default_settings = [
+				'MATCH_FILTER_GENTATION',
+				'min_age',
+				'max_age',
+				'MATCH_FILTER_LAST_LOGIN'
+			]
+
+			// Advanced Options
+			var advanced_options = [
+				'MATCH_FILTER_JOIN_DATE',
+				'MATCH_FILTER_ETHNICITY',
+				'MATCH_FILTER_LOOKING_FOR',
+				'MATCH_FILTER_SMOKING',
+				'MATCH_FILTER_DRINKING',
+				'MATCH_FILTER_DRUGS',
+				'MATCH_FILTER_RELIGION',
+				'MATCH_FILTER_SIGN',
+				'MATCH_FILTER_EDUCATION',
+				'MATCH_FILTER_JOBTYPE',
+				'MATCH_FILTER_MONEY',
+				'MATCH_FILTER_CHILDREN',
+				'MATCH_FILTER_DIET',
+				'pets',
+				'MATCH_FILTER_LANGUAGES'
+			]
+
+			// Add setting values to the objects
+			$.each(default_settings, function(index, value) {
+				var val_to_save = $('#'+value).val();
+				if (val_to_save !== "") {
+					var array = [value, val_to_save]
+					new_filter.settings[value] = val_to_save;
+				}
+			});
+
+			$.each(advanced_options, function(index, value) {
+				var val_to_save = $('#'+value).val();
+				if (val_to_save !== "") {
+					var array = [value, val_to_save]
+					new_filter.settings[value] = val_to_save;
+				}
+			});
+
+			// Save the settings
+			filter_settings.push(new_filter);
+			save_filters(filter_settings);
+			reset_saved_filter();
+			message_container.removeClass('hidden_helper').addClass('success').text('Settings saved!');
+
+			setTimeout(function() {
+      	$('#new_filter').val('');
+      	message_container.addClass('hidden_helper').removeClass('success').text('');
+			}, 5000);
+		}
+	}
+
+	function save_filters(filter_settings) {
+	  chrome.storage.sync.set({"filters": filter_settings});
+	}
+
+	function reset_saved_filter() {
+		var position = $('#saved_filters').val();
+		filter_settings.splice(position, 1);
+		$('#saved_filters').html('');
+		save_filters(filter_settings);
+		append_saved_options();
+	}
+
+	function load_settings() {
+		var setting = parseInt($('#saved_filters').val());
+
+		// Loads settings into filders.
+		$.each(filter_settings, function(index, value) {
+			if (index === setting) {
+				$.each(value.settings, function(index, value) {
+					$('#'+index).val(value);
+					$('#'+index).removeAttr('disabled');
+				});
+			}
+		});
+	}
+
+
+
+	// A-List
+	//filter['body_type']			= $('#MATCH_FILTER_BODY_TYPE').val();
+	//filter['avg_rating']		= $('#MATCH_FILTER_V_PERSONALITY').val();
+	//filter['questions']			= $('#MATCH_FILTER_NUM_QUES_ANS').val();
+
+/*
+	console.log(filter)
+
+	var min_sex = 2
+	var max_sex = 18;
+	// and the formula is:
+	var random_sex = Math.floor(Math.random() * (max_sex - min_sex + 1)) + min_sex;
+
+	var min_age = 18;
+	var max_age = 27;
+	var random_age = Math.floor(Math.random() * (max_age - min_age + 1)) + min_age;
+
+	$('#MATCH_FILTER_GENTATION').val(random_sex);
+	//$('#min_age').val('25');
+	$('#max_age').val(random_age);
+	//console.log($('#min_age'))
+
+	//$('.ages').find('#min_age').remove();
+	//$('.ages').prepend('<input id="min_age" name="agemin" maxlength="2" value="25">');
+
+*/
+
+	//$('#load_button').click(function() {
+		//$('#matchform').submit();
+		//Mc.submit_form();
+	//});
+
+}
+
 
 // Classic View - Profile Excerpt
 function add_excerpt_div() {

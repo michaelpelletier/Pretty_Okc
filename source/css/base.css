@@ -480,7 +480,14 @@ Styling Fixes for Favorites Page
   width: 24px;
 }
 
-/* Error Messaging */
+/* Sortable Lists */
+.pretty_okc .ui-state-highlight {
+  background: #eee;
+  height: 38px;
+}
+
+/* Success and Error Messaging */
+.pretty_okc .form_section .oknotice_error,
 .pretty_okc .favorites_lists .oknotice_error.unique {
   border: 1px solid #FF1E72;
   border-radius: 0px;
@@ -489,8 +496,13 @@ Styling Fixes for Favorites Page
   margin: 10px 0px;
 }
 
-/* Sortable Lists */
-.pretty_okc .ui-state-highlight {
-  background: #eee;
-  height: 38px;
+.pretty_okc .form_section .oknotice_error {
+  margin: 10px;
+}
+
+.pretty_okc .form_section .oknotice_error.success {
+  background: #e8f2e0;
+  border: 1px solid #e8f2e0;
+  color: #539722;
+  width: auto;
 }
