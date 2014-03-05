@@ -273,7 +273,7 @@ function style_buttons_with_icons() {
 
 	// Add Note
 	var onclick = "Profile.loadWindow('edit_notes', 244); return false;"
-	$('.action_options').prepend('<p class="btn small white notes"><a onclick="' + onclick + '">Add Note</a></p>');
+	$('.action_options .btn.favorite').after('<p class="btn small white notes"><a onclick="' + onclick + '">Add Note</a></p>');
 	var notes_container = $('.action_options').find('.btn.notes');
 	var notes_button = notes_container.find('a');
 
