@@ -403,17 +403,11 @@ function add_private_notes() {
 
 function add_recent_questions_option() {
 	// Add the Recently Answered option.
-	var container = $('.right ul.bottom_pad');
-	var link = container.find('li a').attr('href').replace('/profile/', '');
+	var container = $('#question_search_suggestions');
+	var link = container.find('.category a').attr('href').replace('/profile/', '');
 	var name_array = link.split('/');
 	var username = name_array[0];
-	$('.right ul.bottom_pad').append('<li class="recently_added"><a href="/profile/' + username + '/questions?recent=1">Recently answered</a></li>')	
-
-	// If we're on that page, highlight it. 
-	var url = window.location.href;
-	if (url.indexOf("recent") > 0) {
-		$('.recently_added').addClass('active');
-	}
+	container.append('<li class="category" id="category_recently_answered"><a href="/profile/' + username + '/questions?recent=1">Recently Answered</a></li>');
 }
 
 /*** Who You Like ***/

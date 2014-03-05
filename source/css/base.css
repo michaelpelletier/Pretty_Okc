@@ -168,6 +168,13 @@ body#p_profile.pretty_okc #action_bar .image .online_now {
   text-align: center;
 }
 
+/* Questions Page */
+body#p_profile.pretty_okc div.big_dig > div.header #search_container #question_search_suggestions.show {
+  height: 520px;
+}
+
+
+
 /**************************************
 Styling Fixes for Favorites Page 
 ***************************************/
