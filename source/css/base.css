@@ -140,6 +140,12 @@ body#p_profile.pretty_okc .tabbed_heading #actions .action_options #unhide_btn.u
   background: transparent!important;
 }
 
+body#p_profile.pretty_okc #message_form {
+  cursor: pointer;
+}
+
+
+
 /* Enhanced Options for Favoriting from the Profile Page. */
 body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.white.favorite {
   overflow: visible;
