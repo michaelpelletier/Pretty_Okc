@@ -5,6 +5,10 @@ body {
 	margin: 20px;
 }
 
+.hidden_helper {
+	display: none!important;
+}
+
 /* Headers */
 h3 {
 	color: #FF1E72;
@@ -20,7 +24,7 @@ h3 {
 
 .options {
 	margin-bottom: 15px;
-	width: 350px;
+	width: 410px;
 }
 
 .option {
@@ -77,4 +81,86 @@ li.draggable {
 
 li.draggable.ui-sortable-helper {
 	border-top: 1px solid #dddddd;
+}
+
+/* Setting Controls */
+.setting_controls {
+	margin-top: 10px;
+	padding-bottom: 20px;
+}
+
+.import {
+	margin-top: 10px;
+}
+
+#import_field {
+	display: inline-block;
+	margin: 0px;
+}
+
+.file_uploader {
+	display: inline-block;
+	margin-left: 10px;
+}
+
+.setting_controls a,
+.setting_controls button {
+	background: #f7f7f7;
+	border: 1px solid #dddddd;
+	border-radius: 2px;
+	color: #555555;
+	cursor: pointer;
+	display: inline-block;
+	font-family: verdana,sans-serif;
+	font-size: 12px;
+	height: 30px;
+	line-height: 30px;
+	margin: 0px;
+	padding: 0px;
+	text-align: center;
+	text-decoration: none;
+	text-transform: none;
+	width: 120px;
+}
+
+.setting_controls button#save {
+	background: #3872b3;
+	border: 0px;
+	color: white;
+	font-weight: bold;
+	width: 122px;
+}
+
+.setting_controls button#save:hover {
+	background: #397dc8;
+}
+
+
+
+
+.save_changes {
+	margin-top: 10px;
+}
+
+.oknotice {
+	border-radius: 0px;
+  display: inline-block;
+  font-size: 13px;
+  line-height: 16px;
+  margin: 10px 0px;
+  padding: 13px 17px;
+  text-align: center;
+  width: 280px;
+}
+
+.oknotice.error {
+	background: #feeaef;
+  border: 1px solid #FF1E72;
+  color: #ff1e72;
+}
+
+.oknotice.success { 
+	background: #e7eef5;
+	border: 1px solid #2855a2;
+	color: #2855a2;
 }

@@ -35,18 +35,31 @@
       <li class="draggable" id="8">"The most private thing I'm willing to admit."</li>
       <li class="draggable" id="9">"You should message me if"</li>
     </ul>
-
   </div>
 
-  <div class="save_changes">
+  <div class="options">
+    <h3>Settings Control</h3>
+    <div class="description">The plugin should ordinarily sync with your Google Account automatically, but for backups, reinstallations, and possibly upgrades, you can save and restore your settings.<br><br> Simply click the export link to download a txt file containing the information, or use the File Uploader to import settings that you have already saved.</div>
+
     <div id="status"></div>
-    <button id="save">Save</button>
+
+    <div class="setting_controls description">
+      <div class="export">
+      </div>
+      <div class="import">
+        <a data-js-link="import_link">Import Settings</a>
+        <div class="file_uploader hidden_helper">
+          <input type="file" id="import_field" name="file" accept=".txt"/>
+        </div>
+      </div>
+      <div class="save_changes">
+        <button id="save">Save Settings</button>
+      </div>
+    </div>
   </div>
-
-  </body>
-
+  
   <script src="js/jquery-1.10.2.min.js"></script>
   <script src="js/jquery-ui-1.10.3.custom.min.js"></script>
   <script src="js/options.js"></script>
-
+  </body>
 </html>
