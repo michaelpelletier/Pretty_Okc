@@ -168,6 +168,30 @@ body#p_profile.pretty_okc #action_bar .image .online_now {
   text-align: center;
 }
 
+/* Questions Page */
+body#p_profile.pretty_okc div.big_dig > div.header #search_container #question_search_suggestions.show {
+  height: 416px;
+}
+
+body#p_profile.pretty_okc div.big_dig > div.header #search_container #question_search_suggestions li a, 
+body#p_profile.pretty_okc div.big_dig > div.header #search_container #question_search_suggestions li.section span {
+  padding: 5px 8px 5px 50px;
+}
+
+body#p_profile.pretty_okc div.big_dig > div.header #search_container #question_search_suggestions li.category a {
+  background-position: 22px 9px;
+}
+
+body#p_profile.pretty_okc div.big_dig > div.header #search_container #question_search_suggestions li.category a:hover, div.big_dig > div.header #search_container #question_search_suggestions li.category a:active {
+  background-position: 22px -31px;
+}
+
+body#p_profile.pretty_okc div.big_dig > div.header #search_container #question_search_suggestions li.section span {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+
 /**************************************
 Styling Fixes for Favorites Page 
 ***************************************/
