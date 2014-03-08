@@ -11,6 +11,10 @@ Version History
 
 0.85
 - Bug Fixes for Favorites List Name Validation.
+- Fix inconsistencies with Add Note icon placement.
+- Adjust plugin changes to the Questions page after OkC updated it.
+- Add functionality for importing / exporting plugin settings.
+- Make the popup modal for sending someone a message be draggable. 
 
 0.8
 - Favorites Lists are now sortable.
