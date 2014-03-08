@@ -32,7 +32,8 @@
         "js/jquery-ui-1.10.3.custom.min.js",
         "js/mutation-summary.min.js",
         "js/jquery.dotdotdot.min.js",
-        "js/init.js"
+        "js/init.js",
+        "js/matches.js"
         ],
       "run_at": "document_end"
     }
