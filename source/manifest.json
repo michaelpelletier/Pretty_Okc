@@ -33,7 +33,8 @@
         "js/mutation-summary.min.js",
         "js/jquery.dotdotdot.min.js",
         "js/init.js",
-        "js/matches.js"
+        "js/matches.js",
+        "js/profile.js"
         ],
       "run_at": "document_end"
     }

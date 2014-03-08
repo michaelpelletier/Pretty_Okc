@@ -1,12 +1,9 @@
 var PrettyOkc = PrettyOkc || {};
 var all_settings = ["settings", "favorites"];
-var favorites_array;
-var matches_mode;
-var excerpt_priority;
+var favorites_array, matches_mode, excerpt_priority, message_count;
 
 chrome.storage.sync.get(all_settings, function (obj) {
 	// Set defaults in case the user did not visit the options page first.
-	var message_count;
   var default_tiles = "tiles";
   var default_favorites = [];
   var default_priority = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
@@ -21,20 +18,16 @@ chrome.storage.sync.get(all_settings, function (obj) {
 	  queries: [{ element: '#nav_mailbox_badge, span.curr, span.rollingnumber' }]
 	});
 
+
+
 	var current_page = get_location();
 
+
+
 	switch(current_page) {
-		case "profile":
-  		expand_favorite_options(favorites_array);
-  		style_buttons_with_icons();
-
-  		// Makes the Message Modal draggable.
-  		$("#message_modal").draggable();
-
-  		var url = window.location.href;
-  		if (url.indexOf("questions") > 0) {
-  			add_recent_questions_option();
-  		}
+		case "Profile":
+			eval("PrettyOkc." + current_page + ".init()");
+		//	PrettyOkc.current_page.init();
   		break;
   	case "matches":
   		PrettyOkc.Matches.init();
@@ -47,15 +40,19 @@ chrome.storage.sync.get(all_settings, function (obj) {
 			remove_favorite_pagination(favorites_array);
 			break;
 		case "likes":
-			add_private_notes();
+			PrettyOkc.Common.add_private_notes();
   		create_favorites_hover(favorites_array);
   		break;
   	case "you_like":
-  		add_private_notes();
+  		PrettyOkc.Common.add_private_notes();
   		create_favorites_hover(favorites_array);
-  		add_likes_filters();
+  		PrettyOkc.Social.add_likes_filters();
   		break;
  	}
+
+
+
+
 
   function set_default_options() {
  	  // Default Options
@@ -98,7 +95,7 @@ function get_location() {
 	var url = window.location.href;
 	var page;
 
-	if 			(url.indexOf("profile") > 0) 				{	page = "profile";	} 
+	if 			(url.indexOf("profile") > 0) 				{	page = "Profile";	} 
 	else if (url.indexOf("match") > 0) 					{ page = "matches";	} 
 	else if (url.indexOf("favorites") > 0) 			{ page = "favorites";	} 
 	else if (url.indexOf("visitors") > 0) 			{	page = "likes";	} 
@@ -112,183 +109,6 @@ function arraymove(arr, fromIndex, toIndex) {
   var element = arr[fromIndex]
   arr.splice(fromIndex, 1);
   arr.splice(toIndex, 0, element);
-}
-
-/*** Profile View Specific Functions ***/
-function style_buttons_with_icons() {
-	fix_online_indicator();
-
-	// Other Buttons
-	$('.action_options').find('#hide_btn').attr('title', 'Hide this user');
-	$('.action_options').find('#unhide_btn').attr('title', 'Unhide this user');
-	$('.action_options').find('#flag_btn').attr('title', 'Report');
-	$('.action_options').find('#flag_btn').parent('p').addClass('report');
-
-	// Add Note
-	var onclick = "Profile.loadWindow('edit_notes', 244); return false;"
-	$('.action_options .btn.favorite').after('<p class="btn small white notes"><a onclick="' + onclick + '">Add Note</a></p>');
-	var notes_container = $('.action_options').find('.btn.notes');
-	var notes_button = notes_container.find('a');
-
-	check_notes_status();
-	$('#edit_notes_form').find('#save_a').click(function() {
-		check_notes_status();
-	});
-
-	function check_notes_status() {
-		if ($('#inline_notes').is(':visible')) {
-			notes_container.addClass('has_note');
-			notes_button.attr('title', 'Edit Note');
-		} else {
-			notes_container.removeClass('has_note');
-			notes_button.attr('title', 'Add Note');
-		}
-	}
-
-	function fix_online_indicator() {
-		$('#action_bar_interior').find('.online_now').text("Online");
-	}
-}
-
-function expand_favorite_options(favorites_array) {
-	$('.action_options').find('.btn.small.white:contains("Favorite")').addClass('favorite');
-	var favorites_container = $('.action_options').find('.btn.favorite');
-	var favorites_button = favorites_container.find('a');
-	var profile_name = $('#basic_info_sn').text();
-	$('#actions').append('<div class="favorites_list hidden_helper"><span class="title">Add to List</span><ul class="favorites"></ul></div>');
-	var favorites_list = $('.favorites_list');
-
-	check_favorite_status_default();
-	favorites_button.click(function() {
-		check_favorite_status();
-	});
-
-	add_favorite_lists();
-	bind_list_toggle();
-
-	function add_favorite_lists() {
-		$.each(favorites_array, function(index, value) {
-			var checked = ($.inArray(profile_name, value.users) > 0);
-			var list = JSON.parse(value.list_name);
-
-			if (checked) {
-				$('ul.favorites').append('<li><input type="checkbox" name="favorites" value="' + list + '" checked><span>' + list + '</span></li>');
-			} else {
-				$('ul.favorites').append('<li><input type="checkbox" name="favorites" value="' + list + '"><span>' + list + '</span></li>');
-			}
-		});
-
-		if ($('ul.favorites').find('li').length === 0) {
-			$('ul.favorites').append('<li>You have no custom lists.</li>');
-		}
-	}
-
-	function check_favorite_status_default() {
-		if (favorites_button.text() === "Remove Favorite") {
-			favorites_container.addClass("is_favorite");
-			favorites_button.attr('title', 'Remove from Favorites');
-			bind_favorites_hover();
-		} else {
-			favorites_container.removeClass("is_favorite");
-			favorites_button.attr('title', 'Add to Favorites');
-			favorites_list.addClass('hidden_helper');
-			favorites_button.unbind('mouseover');
-		}
-	}
-
-	function check_favorite_status() {
-		if (favorites_container.hasClass('is_favorite')) {
-			favorites_container.removeClass("is_favorite");
-			favorites_button.attr('title', 'Add to Favorites');
-			favorites_list.addClass('hidden_helper');
-			favorites_button.unbind('mouseover');
-		} else {
-			favorites_container.addClass("is_favorite");
-			favorites_button.attr('title', 'Remove from Favorites');
-			favorites_list.removeClass('hidden_helper');
-			bind_favorites_hover();
-		}
-	}
-
-	function bind_favorites_hover() {
-		favorites_button.mouseover(function() {
-			favorites_list.removeClass('hidden_helper');
-		});
-
-		favorites_list.mouseleave(function() {
-			favorites_list.addClass('hidden_helper');
-		});
-	}
-
-	function bind_list_toggle() {
-		$('ul.favorites').find('input').change(function() {
-			var checked = this.checked;
-			var this_list = $(this).val();
-
-			if (checked) {
-				add_name_to_list(profile_name, this_list, favorites_array);
-			} else {
-				remove_name_from_list(profile_name, this_list, favorites_array);
-			}
-		});
-	}
-}
-
-function add_private_notes() {
-	// Adds a link for each user to Add or Edit private notes for them.
-	$('.user_row_item').each(function() {
-		var notes = $(this).find('.note');
-		var onclick = notes.find('a').attr('onclick');
-		var classes;
-		var title;
-
-		if (notes.is(':visible')) {
-			classes = "favorites_action action_add_note has_note";
-			title = "Edit private note";
-		} else {
-			classes = "favorites_action action_add_note";
-			title = "Add private note";
-		}
-
-		$(this).find('.action_rate').before('<span class="' + classes + '" onclick="' + onclick + '" title="' + title + '">private note</span>');
-	});
-}
-
-function add_recent_questions_option() {
-	// Add the Recently Answered option.
-	var container = $('#question_search_suggestions');
-	var link = container.find('.category a').attr('href').replace('/profile/', '');
-	var name_array = link.split('/');
-	var username = name_array[0];
-	container.append('<li class="category" id="category_recently_answered"><a href="/profile/' + username + '/questions?recent=1">Recently Answered</a></li>');
-}
-
-/*** Who You Like ***/
-function add_likes_filters() {
-	var HTML = '<div class="your_likes big_dig"><div class="right"><ul><li class="title">Filters</li><li class="default"><a href="/who-you-like?show_min_personality=3&show_max_personality=5">3-5 Star (Default)</a></li><li class="actual_likes"><a href="/who-you-like?show_min_personality=4&show_max_personality=5">4-5 Star (Likes)</a></li><li class="all_rated"><a href="/who-you-like?show_min_personality=1&show_max_personality=5">All Rated Users</a></li><li>&nbsp;</li><li class="only_5"><a href="/who-you-like?show_min_personality=5&show_max_personality=5">5 Star Only</a></li><li class="only_4"><a href="/who-you-like?show_min_personality=4&show_max_personality=4">4 Star Only</a></li><li class="only_3"><a href="/who-you-like?show_min_personality=3&show_max_personality=3">3 Star Only</a></li><li class="only_2"><a href="/who-you-like?show_min_personality=2&show_max_personality=2">2 Star Only</a></li><li class="only_1"><a href="/who-you-like?show_min_personality=1&show_max_personality=1">1 Star Only</a></li><li class="custom"></li></ul></div></div>';
-
-	$('.tab_content_nav').append(HTML);
-
-	var url = window.location.href;
-	if (url.indexOf("show_min_personality=3&show_max_personality=5") > 0) {
-		$('.default').addClass('active');
-	} else if (url.indexOf("show_min_personality=4&show_max_personality=5") > 0) {
-		$('.actual_likes').addClass('active');
-	} else if (url.indexOf("show_min_personality=5&show_max_personality=5") > 0) {
-		$('.only_5').addClass('active');
-	} else if (url.indexOf("show_min_personality=4&show_max_personality=4") > 0) {
-		$('.only_4').addClass('active');
-	} else if (url.indexOf("show_min_personality=3&show_max_personality=3") > 0) {
-		$('.only_3').addClass('active');
-	} else if (url.indexOf("show_min_personality=2&show_max_personality=2") > 0) {
-		$('.only_2').addClass('active');
-	} else if (url.indexOf("show_min_personality=1&show_max_personality=1") > 0) {
-		$('.only_1').addClass('active');
-	} else if (url.indexOf("show_min_personality=1&show_max_personality=5") > 0) {
-		$('.all_rated').addClass('active');
-	} else if (url.indexOf("show_min_personality=3") > 0) {
-		$('.default').addClass('active');
-	}
 }
 
 /*** Favorites List Functions ***/
@@ -357,7 +177,7 @@ function remove_favorite_pagination(favorites_array) {
 	// of the individual profile containers. 
 	$.when.apply(null, defer_array).done(function() { 
 		initialize_favorites_lists(favorites_array);
-		add_private_notes();
+		PrettyOkc.Common.add_private_notes();
 	});
 }
 
@@ -817,3 +637,70 @@ function show_selected_list(searched_list, favorites_array) {
 		$(this).find('.action_remove_list').removeClass('hidden_helper');
 	});
 }
+
+
+
+
+
+
+
+PrettyOkc.Common = (function() {
+	function add_private_notes() {
+		// Adds a link for each user to Add or Edit private notes for them.
+		$('.user_row_item').each(function() {
+			var notes = $(this).find('.note');
+			var onclick = notes.find('a').attr('onclick');
+			var classes;
+			var title;
+
+			if (notes.is(':visible')) {
+				classes = "favorites_action action_add_note has_note";
+				title = "Edit private note";
+			} else {
+				classes = "favorites_action action_add_note";
+				title = "Add private note";
+			}
+
+			$(this).find('.action_rate').before('<span class="' + classes + '" onclick="' + onclick + '" title="' + title + '">private note</span>');
+		});
+	}
+
+	return {
+    add_private_notes: add_private_notes
+  }
+
+})();
+
+
+PrettyOkc.Social = (function() {
+  function add_likes_filters() {
+    var HTML = '<div class="your_likes big_dig"><div class="right"><ul><li class="title">Filters</li><li class="default"><a href="/who-you-like?show_min_personality=3&show_max_personality=5">3-5 Star (Default)</a></li><li class="actual_likes"><a href="/who-you-like?show_min_personality=4&show_max_personality=5">4-5 Star (Likes)</a></li><li class="all_rated"><a href="/who-you-like?show_min_personality=1&show_max_personality=5">All Rated Users</a></li><li>&nbsp;</li><li class="only_5"><a href="/who-you-like?show_min_personality=5&show_max_personality=5">5 Star Only</a></li><li class="only_4"><a href="/who-you-like?show_min_personality=4&show_max_personality=4">4 Star Only</a></li><li class="only_3"><a href="/who-you-like?show_min_personality=3&show_max_personality=3">3 Star Only</a></li><li class="only_2"><a href="/who-you-like?show_min_personality=2&show_max_personality=2">2 Star Only</a></li><li class="only_1"><a href="/who-you-like?show_min_personality=1&show_max_personality=1">1 Star Only</a></li><li class="custom"></li></ul></div></div>';
+
+    $('.tab_content_nav').append(HTML);
+
+    var url = window.location.href;
+    if (url.indexOf("show_min_personality=3&show_max_personality=5") > 0) {
+      $('.default').addClass('active');
+    } else if (url.indexOf("show_min_personality=4&show_max_personality=5") > 0) {
+      $('.actual_likes').addClass('active');
+    } else if (url.indexOf("show_min_personality=5&show_max_personality=5") > 0) {
+      $('.only_5').addClass('active');
+    } else if (url.indexOf("show_min_personality=4&show_max_personality=4") > 0) {
+      $('.only_4').addClass('active');
+    } else if (url.indexOf("show_min_personality=3&show_max_personality=3") > 0) {
+      $('.only_3').addClass('active');
+    } else if (url.indexOf("show_min_personality=2&show_max_personality=2") > 0) {
+      $('.only_2').addClass('active');
+    } else if (url.indexOf("show_min_personality=1&show_max_personality=1") > 0) {
+      $('.only_1').addClass('active');
+    } else if (url.indexOf("show_min_personality=1&show_max_personality=5") > 0) {
+      $('.all_rated').addClass('active');
+    } else if (url.indexOf("show_min_personality=3") > 0) {
+      $('.default').addClass('active');
+    }
+  }
+
+  return {
+    add_likes_filters: add_likes_filters
+  }
+})();

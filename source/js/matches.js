@@ -74,9 +74,7 @@ PrettyOkc.Matches = (function() {
   return {
     init: init
   }
-
 })();
-
 
 PrettyOkc.ClassicMatches = (function() {
   function init() {   
