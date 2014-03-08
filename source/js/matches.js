@@ -2,10 +2,6 @@ PrettyOkc.Matches = (function() {
   function init() {
     update_matches_page();
 
-    if (matches_mode === "classic") {
-      PrettyOkc.ClassicMatches.init();
-    }
-
     var observer = new MutationSummary({
       callback: update_matches_page,
       queries: [{ element: '.match_card_wrapper' }]
@@ -93,7 +89,7 @@ PrettyOkc.ClassicMatches = (function() {
   function add_excerpt_div() {
     $('.match_card_wrapper').each(function() {
       var self = $(this);
-      if (self.find('.pretty_okc_profile_excerpt').length < 1) {
+      if (self.find('.pretty_okc_profile_excerpt').length === 0) {
         self.find(".match_card_text").after('<div class="pretty_okc_profile_excerpt"></div>');
         var username = self.attr('id').replace('usr-', '').replace('-wrapper', '');
         get_profile_excerpt(username);
@@ -110,6 +106,8 @@ PrettyOkc.ClassicMatches = (function() {
 
     function parse_excerpt(response, excerpt) {
       var available_excerpts = [];
+      var priority = excerpt_priority;
+      
       excerpt.find('.essay').each(function() {
         available_excerpts.push($(this).attr('id'));
       });
@@ -118,10 +116,10 @@ PrettyOkc.ClassicMatches = (function() {
       if (available_excerpts.length === 0) {
         excerpt.html('').text('No profile yet');
       } else {
-        for ( var index = 0; index < excerpt_priority.length; ++index ) {
-          if (check_array(excerpt_priority[index])) {
+        for ( var index = 0; index < priority.length; ++index ) {
+          if (check_array(priority[index])) {
             excerpt.find('.sr_message').remove();
-            var container = excerpt.find('#essay_' + excerpt_priority[index]);
+            var container = excerpt.find('#essay_' + priority[index]);
             container.siblings().each(function() {
               $(this).remove();
             });

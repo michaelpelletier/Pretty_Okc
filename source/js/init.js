@@ -8,16 +8,22 @@ chrome.storage.sync.get(all_settings, function (obj) {
   var default_favorites = [];
   var default_priority = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
-  PrettyOkc.Common.init();  
+  var current_page = PrettyOkc.Common.get_location();
+
+  PrettyOkc.Common.set_default_options(obj);
+  PrettyOkc.Common.init_body_classes();  
 	PrettyOkc.Social.init_message_icon();
 
-	var current_page = get_location();
 	switch(current_page) {
-		case "Profile":
-			PrettyOkc.current_page.init();
+		case "profile":
+			PrettyOkc.Profile.init();
   		break;
   	case "matches":
   		PrettyOkc.Matches.init();
+
+  		if (matches_mode === "classic") {
+      	PrettyOkc.ClassicMatches.init();
+    	}
 			break;
 		case "favorites":
 			PrettyOkc.Favorites.init();
@@ -33,9 +39,7 @@ chrome.storage.sync.get(all_settings, function (obj) {
 });
 
 PrettyOkc.Common = (function() {
-	function init() {
-		set_default_options();
-
+	function init_body_classes() {
 		// Add Body Class
 		$('body').addClass("pretty_okc").addClass(matches_mode);
 	}
@@ -70,7 +74,7 @@ PrettyOkc.Common = (function() {
 		var url = window.location.href;
 		var page;
 
-		if 			(url.indexOf("profile") > 0) 				{	page = "Profile";	} 
+		if 			(url.indexOf("profile") > 0) 				{	page = "profile";	} 
 		else if (url.indexOf("match") > 0) 					{ page = "matches";	} 
 		else if (url.indexOf("favorites") > 0) 			{ page = "favorites";	} 
 		else if (url.indexOf("visitors") > 0) 			{	page = "likes";	} 
@@ -80,7 +84,7 @@ PrettyOkc.Common = (function() {
 		return page;
 	}
 
-  function set_default_options() {
+  function set_default_options(obj) {
  	  // Default Options
 	  if (obj && obj['settings'] && obj['settings']['mode']) {
 			matches_mode = obj['settings']['mode'];
@@ -104,10 +108,11 @@ PrettyOkc.Common = (function() {
   }
 
 	return {
-		init: init,
+		init_body_classes: init_body_classes,
     add_private_notes: add_private_notes,
     array_move: array_move,
-    get_location: get_location
+    get_location: get_location,
+    set_default_options: set_default_options
   }
 })();
 
