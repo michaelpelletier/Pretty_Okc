@@ -2,6 +2,10 @@ PrettyOkc.Matches = (function() {
   function init() {
     update_matches_page();
 
+    if (matches_mode === "classic") {
+      PrettyOkc.ClassicMatches.init();
+    }
+
     var observer = new MutationSummary({
       callback: update_matches_page,
       queries: [{ element: '.match_card_wrapper' }]
