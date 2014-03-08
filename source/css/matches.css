@@ -186,20 +186,28 @@ General Styling Fixes for Matches Page
   width: 100px;
 }
 
-/* New Option: Minimum Match Percentage */
+/* New Options */
 .pretty_okc .form_element.min_match_percent,
 .pretty_okc .form_element.min_match_percent .drop_wrap {
   width: 150px;
 }
 
+.pretty_okc .form_element.relationship,
+.pretty_okc .form_element.relationship .drop_wrap {
+  width: 135px;
+}
+
+.pretty_okc #toggle_relationships,
 .pretty_okc #toggle_matches {
   cursor: pointer;
 }
 
+.pretty_okc .form_element.relationship .drop_wrap,
 .pretty_okc .form_element.min_match_percent .drop_wrap {
   display: none;
 }
 
+.pretty_okc .form_element.relationship.open .drop_wrap,
 .pretty_okc .form_element.min_match_percent.open .drop_wrap {
   display: block;
 }
@@ -212,6 +220,9 @@ General Styling Fixes for Matches Page
   text-align: center;
   width: 30px; 
 }
+
+
+
 
 
 

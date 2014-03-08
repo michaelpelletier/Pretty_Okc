@@ -1,7 +1,7 @@
 var PrettyOkc = PrettyOkc || {};
-var all_settings = ["settings", "favorites", "min_match"];
-var favorites_array, matches_mode, excerpt_priority, message_count, min_match_percent;
-var default_tiles, default_favorites, default_priority, default_min_percent;
+var all_settings = ["settings", "favorites", "min_match", "relationship"];
+var favorites_array, matches_mode, excerpt_priority, message_count, min_match_percent, relationship_type;
+var default_tiles, default_favorites, default_priority, default_min_percent, default_relationship_type;
 
 chrome.storage.sync.get(all_settings, function (obj) {
 	// Set defaults in case the user did not visit the options page first.
@@ -9,6 +9,7 @@ chrome.storage.sync.get(all_settings, function (obj) {
   default_favorites = [];
   default_priority = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
   default_min_percent = "0";
+  default_relationship_type = "Any Relationship";
 
   var current_page = PrettyOkc.Common.get_location();
 
@@ -108,11 +109,18 @@ PrettyOkc.Common = (function() {
 			excerpt_priority = default_priority;	
 		}
 
-		// Default Min Priority
+		// Default Minimum Match
 		if (obj && obj['min_match']) {
 			min_match_percent = obj['min_match'];
 		} else {
 			min_match_percent = default_min_percent;
+		}
+
+		// Default Relationship Type
+		if (obj && obj['relationship']) {
+			relationship_type = obj['relationship'];
+		} else {
+			relationship_type = default_min_percent;
 		}
   }
 

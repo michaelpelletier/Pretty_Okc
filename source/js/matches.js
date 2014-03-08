@@ -2,6 +2,7 @@ PrettyOkc.Matches = (function() {
   function init() {
     update_matches_page();
     minimum_percentage_option();
+    relationship_type_option();
 
     var observer = new MutationSummary({
       callback: update_matches_page,
@@ -13,8 +14,13 @@ PrettyOkc.Matches = (function() {
     change_tile_text();
     add_star_ratings();
     filter_minimum_percentage();
+
+    if (relationship_type !== "Any Relationship"); {
+      filter_relationship_type();
+    }
   }
 
+  /* General Tile Change Functions */
   function change_tile_text() {
     $('.match_card_wrapper').each(function() {
       var self = $(this);
@@ -73,6 +79,7 @@ PrettyOkc.Matches = (function() {
     }
   }
 
+  /* Minimum Percent Functions */
   function minimum_percentage_option() {
     // Add New Option.
     $('#add_filter').before('<div class="form_element selector min_match_percent"><p class="button"><a id="toggle_matches"><span class="arrow"></span>Matches above <span id="current_match"></span>%</a></p><div class="drop_wrap"><ul><li>Matches above: <input id="min_match" name="matchmin" maxlength="2" value=""></li></ul></div></div>');
@@ -139,7 +146,58 @@ PrettyOkc.Matches = (function() {
     });
   }
 
+  /* Relationship Type Functions */
+  function relationship_type_option() {
+    // Add New Option.
+    $('#add_filter').before('<div class="form_element selector relationship"><p class="button"><a id="toggle_relationships"><span class="arrow"></span><span id="current_relationship"></span></a></p><div class="drop_wrap"><ul><li>Any Relationship</li><li>Polygamous</li><li>Monogamous</li></ul></div></div>');
 
+    // Set Default Values.
+    $('#current_relationship').text(relationship_type);
+
+    // Bind open / close of Option Menu.
+    $('#toggle_relationships').click(function(e) {
+      e.preventDefault();
+      $(this).parent('.button').toggleClass('active');
+      $(this).parents('.relationship').toggleClass('open');
+    });
+
+    var container = $(".form_element.relationship");
+
+    // Close on Body Click.
+    $(document).mouseup(function (event) {
+      if (!container.is(event.target) && container.has(event.target).length === 0) {
+        container.removeClass('open');
+        container.find('.button').removeClass('active');
+      }
+    });
+
+    // Update Values on Change.
+    $('.relationship li').click(function() {
+      var new_relationship = $(this).text();
+      $('#current_relationship').text(new_relationship);
+      container.removeClass('open');
+      container.find('.button').removeClass('active');
+      chrome.storage.sync.set({"relationship": new_relationship});
+    });
+  }
+
+  function filter_relationship_type() {
+    $('.match_card_wrapper').each(function() {
+      var self = $(this);
+      if (self.find('.relationship_type').length === 0) {
+        self.find(".match_card_text").after('<div class="relationship_type hidden_helper"></div>');
+        var username = self.attr('id').replace('usr-', '').replace('-wrapper', '');
+        var full_url = 'http://www.okcupid.com/profile/' + username + " #ajax_monogamous";
+        var excerpt = $('#usr-' + username + '-wrapper').find('.relationship_type');
+        excerpt.load(full_url, function(response) {
+          if ($('.relationship_type').text() !== relationship_type) {
+            console.log("Not a match");
+            self.remove();
+          }
+        });
+      } 
+    });
+  }
 
   return {
     init: init
