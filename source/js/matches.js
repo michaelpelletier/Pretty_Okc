@@ -1,8 +1,8 @@
 PrettyOkc.Matches = (function() {
   function init() {
-    update_matches_page();
     minimum_percentage_option();
     relationship_type_option();
+    update_matches_page();
 
     var observer = new MutationSummary({
       callback: update_matches_page,
@@ -13,7 +13,10 @@ PrettyOkc.Matches = (function() {
   function update_matches_page() {
     change_tile_text();
     add_star_ratings();
-    filter_minimum_percentage();
+    
+    if (min_match_percent !== 0) {
+      filter_minimum_percentage();
+    }
 
     if (relationship_type !== "Any Relationship"); {
       filter_relationship_type();
@@ -134,15 +137,10 @@ PrettyOkc.Matches = (function() {
 
   function filter_minimum_percentage() {
     $('.match_card_wrapper').each(function() {
-      var match_percent = $(this).find('.percentages').text();
-      match_percent = match_percent.replace('%', '');
-
-      if (min_match_percent !== 0) {
-        if (match_percent < min_match_percent) {
-          $(this).hide();
-        }
+      var match_percent = $(this).find('.percentages').text().replace('%', '');
+      if (match_percent < min_match_percent) {
+        $(this).remove();
       }
-
     });
   }
 
@@ -153,6 +151,12 @@ PrettyOkc.Matches = (function() {
 
     // Set Default Values.
     $('#current_relationship').text(relationship_type);
+
+    $('.relationship').find('li').each(function() {
+      if ($(this).text() === relationship_type) {
+        $(this).addClass('selected');
+      }
+    });
 
     // Bind open / close of Option Menu.
     $('#toggle_relationships').click(function(e) {
@@ -175,6 +179,8 @@ PrettyOkc.Matches = (function() {
     $('.relationship li').click(function() {
       var new_relationship = $(this).text();
       $('#current_relationship').text(new_relationship);
+      $('.relationship li').removeClass('selected');
+      $(this).addClass('selected');
       container.removeClass('open');
       container.find('.button').removeClass('active');
       chrome.storage.sync.set({"relationship": new_relationship});
@@ -187,7 +193,7 @@ PrettyOkc.Matches = (function() {
       if (self.find('.relationship_type').length === 0) {
         self.find(".match_card_text").after('<div class="relationship_type hidden_helper"></div>');
         var username = self.attr('id').replace('usr-', '').replace('-wrapper', '');
-        var full_url = 'http://www.okcupid.com/profile/' + username + " #ajax_monogamous";
+        var full_url = 'http://www.okcupid.com/profile/' + username + ' #ajax_monogamous';
         var excerpt = $('#usr-' + username + '-wrapper').find('.relationship_type');
         excerpt.load(full_url, function(response) {
           if ($('.relationship_type').text() !== relationship_type) {

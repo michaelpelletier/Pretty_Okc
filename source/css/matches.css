@@ -221,11 +221,15 @@ General Styling Fixes for Matches Page
   width: 30px; 
 }
 
+.pretty_okc .form_element.relationship li:hover {
+  background: #f8fafc;
+  color: #628cbc;
+}
 
-
-
-
-
+.pretty_okc .form_element.relationship li.selected {
+  background: #e7eef5;
+  opacity: 0.3;
+}
 
 
 /***************************************************
