@@ -12,6 +12,7 @@ PrettyOkc.Matches = (function() {
   function update_matches_page() {
     change_tile_text();
     add_star_ratings();
+    filter_minimum_percentage();
   }
 
   function change_tile_text() {

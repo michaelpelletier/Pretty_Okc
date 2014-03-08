@@ -1,13 +1,14 @@
 var PrettyOkc = PrettyOkc || {};
 var all_settings = ["settings", "favorites", "min_match"];
 var favorites_array, matches_mode, excerpt_priority, message_count, min_match_percent;
+var default_tiles, default_favorites, default_priority, default_min_percent;
 
 chrome.storage.sync.get(all_settings, function (obj) {
 	// Set defaults in case the user did not visit the options page first.
-  var default_tiles = "tiles";
-  var default_favorites = [];
-  var default_priority = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-  var default_min_percent = "0";
+  default_tiles = "tiles";
+  default_favorites = [];
+  default_priority = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+  default_min_percent = "0";
 
   var current_page = PrettyOkc.Common.get_location();
 
