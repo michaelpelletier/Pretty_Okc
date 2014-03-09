@@ -18,7 +18,7 @@ PrettyOkc.Matches = (function() {
       filter_minimum_percentage();
     }
 
-    if (relationship_type !== "Any Relationship"); {
+    if (relationship_type !== "Any Relationship") {
       filter_relationship_type();
     }
   }
