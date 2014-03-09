@@ -1,4 +1,4 @@
-.pretty_okc .hidden_helper {
+.hidden_helper {
   display: none!important;
 }
 
@@ -144,8 +144,6 @@ body#p_profile.pretty_okc #message_form {
   cursor: pointer;
 }
 
-
-
 /* Enhanced Options for Favoriting from the Profile Page. */
 body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.white.favorite {
   overflow: visible;
@@ -196,7 +194,6 @@ body#p_profile.pretty_okc div.big_dig > div.header #search_container #question_s
   padding-top: 5px;
   padding-bottom: 5px;
 }
-
 
 /**************************************
 Styling Fixes for Favorites Page 

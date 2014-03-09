@@ -186,6 +186,52 @@ General Styling Fixes for Matches Page
   width: 100px;
 }
 
+/* New Options */
+.pretty_okc .form_element.min_match_percent,
+.pretty_okc .form_element.min_match_percent .drop_wrap {
+  width: 150px;
+}
+
+.pretty_okc .form_element.relationship,
+.pretty_okc .form_element.relationship .drop_wrap {
+  width: 135px;
+}
+
+.pretty_okc #toggle_relationships,
+.pretty_okc #toggle_matches {
+  cursor: pointer;
+}
+
+.pretty_okc .form_element.relationship .drop_wrap,
+.pretty_okc .form_element.min_match_percent .drop_wrap {
+  display: none;
+}
+
+.pretty_okc .form_element.relationship.open .drop_wrap,
+.pretty_okc .form_element.min_match_percent.open .drop_wrap {
+  display: block;
+}
+
+.pretty_okc .form_element.min_match_percent input {
+  border: 1px solid #bed0e4;
+  height: 20px;
+  line-height: 20px;
+  margin-left: 5px;
+  text-align: center;
+  width: 30px; 
+}
+
+.pretty_okc .form_element.relationship li:hover {
+  background: #f8fafc;
+  color: #628cbc;
+}
+
+.pretty_okc .form_element.relationship li.selected {
+  background: #e7eef5;
+  opacity: 0.3;
+}
+
+
 /***************************************************
 Styling Fixes for Matches Search Page - Tiles View
 ****************************************************/

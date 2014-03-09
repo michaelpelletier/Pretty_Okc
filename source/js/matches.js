@@ -1,5 +1,7 @@
 PrettyOkc.Matches = (function() {
   function init() {
+    minimum_percentage_option();
+    relationship_type_option();
     update_matches_page();
 
     var observer = new MutationSummary({
@@ -11,8 +13,17 @@ PrettyOkc.Matches = (function() {
   function update_matches_page() {
     change_tile_text();
     add_star_ratings();
+    
+    if (min_match_percent !== 0) {
+      filter_minimum_percentage();
+    }
+
+    if (relationship_type !== "Any Relationship") {
+      filter_relationship_type();
+    }
   }
 
+  /* General Tile Change Functions */
   function change_tile_text() {
     $('.match_card_wrapper').each(function() {
       var self = $(this);
@@ -69,6 +80,129 @@ PrettyOkc.Matches = (function() {
         self.find('.star_rating').removeClass('no_rating').removeClass('partial_rating').removeClass('full_rating').removeClass('low_rating').addClass(stars);
       }
     }
+  }
+
+  /* Minimum Percent Functions */
+  function minimum_percentage_option() {
+    // Add New Option.
+    $('#add_filter').before('<div class="form_element selector min_match_percent"><p class="button"><a id="toggle_matches"><span class="arrow"></span>Matches above <span id="current_match"></span>%</a></p><div class="drop_wrap"><ul><li>Matches above: <input id="min_match" name="matchmin" maxlength="2" value=""></li></ul></div></div>');
+
+    // Set Default Values.
+    $('#current_match').text(min_match_percent);
+    $('#min_match').val(min_match_percent);
+
+    // Bind open / close of Option Menu.
+    $('#toggle_matches').click(function(e) {
+      e.preventDefault();
+      $(this).parent('.button').toggleClass('active');
+      $(this).parents('.min_match_percent').toggleClass('open');
+    });
+
+    // Close on Body Click.
+    $(document).mouseup(function (event) {
+      var container = $(".form_element.min_match_percent");
+
+      if (!container.is(event.target) && container.has(event.target).length === 0) {
+        container.removeClass('open');
+        container.find('.button').removeClass('active');
+      }
+    });
+
+    // Only allow numbers in the input.
+    $("#min_match").keydown(function (e) {
+      // Allow: backspace, delete, tab, escape, enter and period.
+      // Allow: Ctrl+A
+      // Allow: home, end, left, right.
+      if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 190]) !== -1 || (e.keyCode == 65 && e.ctrlKey === true) || (e.keyCode >= 35 && e.keyCode <= 39)) {
+        return;
+      }
+
+      if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+         e.preventDefault();
+      }
+    });
+
+    // Update Values on Change.
+    $('#min_match').change(function() {
+      var new_percent = $(this).val();
+      if (new_percent === "") {
+        $(this).val(0);
+        new_percent = 0;
+      }
+
+      $('#current_match').text(new_percent);
+      chrome.storage.sync.set({"min_match": new_percent});
+    });
+  }
+
+  function filter_minimum_percentage() {
+    $('.match_card_wrapper').each(function() {
+      var match_percent = $(this).find('.percentages').text().replace('%', '');
+      if (match_percent < min_match_percent) {
+        $(this).remove();
+      }
+    });
+  }
+
+  /* Relationship Type Functions */
+  function relationship_type_option() {
+    // Add New Option.
+    $('#add_filter').before('<div class="form_element selector relationship"><p class="button"><a id="toggle_relationships"><span class="arrow"></span><span id="current_relationship"></span></a></p><div class="drop_wrap"><ul><li>Any Relationship</li><li>Polygamous</li><li>Monogamous</li></ul></div></div>');
+
+    // Set Default Values.
+    $('#current_relationship').text(relationship_type);
+
+    $('.relationship').find('li').each(function() {
+      if ($(this).text() === relationship_type) {
+        $(this).addClass('selected');
+      }
+    });
+
+    // Bind open / close of Option Menu.
+    $('#toggle_relationships').click(function(e) {
+      e.preventDefault();
+      $(this).parent('.button').toggleClass('active');
+      $(this).parents('.relationship').toggleClass('open');
+    });
+
+    var container = $(".form_element.relationship");
+
+    // Close on Body Click.
+    $(document).mouseup(function (event) {
+      if (!container.is(event.target) && container.has(event.target).length === 0) {
+        container.removeClass('open');
+        container.find('.button').removeClass('active');
+      }
+    });
+
+    // Update Values on Change.
+    $('.relationship li').click(function() {
+      var new_relationship = $(this).text();
+      $('#current_relationship').text(new_relationship);
+      $('.relationship li').removeClass('selected');
+      $(this).addClass('selected');
+      container.removeClass('open');
+      container.find('.button').removeClass('active');
+      chrome.storage.sync.set({"relationship": new_relationship});
+    });
+  }
+
+  function filter_relationship_type() {
+    $('.match_card_wrapper').each(function() {
+      var self = $(this);
+      if (self.find('.relationship_type').length === 0) {
+        self.find(".match_card_text").after('<div class="relationship_type hidden_helper"></div>');
+        var username = self.attr('id').replace('usr-', '').replace('-wrapper', '');
+        var full_url = 'http://www.okcupid.com/profile/' + username + ' #ajax_monogamous';
+        var excerpt = $('#usr-' + username + '-wrapper').find('.relationship_type');
+        excerpt.load(full_url, function(response) {
+          if ($('.relationship_type').text() !== relationship_type) {
+            console.log("Not a match");
+            self.remove();
+          }
+        });
+      } 
+    });
   }
 
   return {
