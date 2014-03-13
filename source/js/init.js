@@ -36,7 +36,7 @@ chrome.storage.sync.get(all_settings, function (obj) {
   		PrettyOkc.Social.add_likes_filters();
   		break;
   	case "hidden":
-  		PrettyOkc.Social.get_hidden_images();
+  		PrettyOkc.Social.fix_hidden_users();
   		break;
  	}
 });
@@ -169,8 +169,7 @@ PrettyOkc.Social = (function() {
 		chrome.runtime.sendMessage({ messages: message_count});
   }
 
-  function get_hidden_images() {
-  	console.log("Test")
+  function fix_hidden_users() {
   	$('.dead').each(function() {
   		var self = $(this)
 
@@ -181,37 +180,26 @@ PrettyOkc.Social = (function() {
 
   			var pic_url = link + " #thumb0_a";
   			self.prepend('<div class="profile_pic"></div>');
-  			self.find('.profile_pic').load(pic_url, function(response) {
-  				console.log("Loaded")
-        });
-
-  			var online = link + " #profile_details";
-  			self.append('<div class="details"></div>');
-  			self.find('.details').load(online, function(response) {
-	 				var date_text = self.find('.details').find('.fancydate').text();
-	 				self.find('.details').text(date_text);
-  			});
+  			self.find('.profile_pic').load(pic_url);
 
   			var location = link + " #ajax_location";
   			self.append('<div class="location"></div>');
-  			self.find('.location').load(location, function(response) {
-  				console.log("Located")
+  			self.find('.location').load(location);
+
+  			var online_info = link + " #profile_details";
+  			self.append('<div class="details"></div>');
+  			self.find('.details').load(online_info, function(response) {
+	 				var date_text = self.find('.details').find('.fancydate').text();
+	 				self.find('.details').text("Last Online: " + date_text);
   			});
-
   		}
-
   	});
-
-
   }
-
-
-
 
   return {
     init: init,
     init_message_icon: init_message_icon,
     add_likes_filters: add_likes_filters,
-    get_hidden_images: get_hidden_images
+    fix_hidden_users: fix_hidden_users
   }
 })();
