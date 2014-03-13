@@ -494,3 +494,38 @@ Styling Fixes for Favorites Page
   background: #eee;
   height: 38px;
 }
+
+
+
+
+
+
+
+
+
+
+
+.pretty_okc .dead {
+  height: 70px;
+}
+
+.pretty_okc .dead .profile_pic {
+  float: left;
+  height: 75px;
+  width: 75px;
+}
+
+.pretty_okc .dead .profile_pic img {
+  height: 70px;
+  width: 70px;
+}
+
+
+
+
+
+
+
+
+
+

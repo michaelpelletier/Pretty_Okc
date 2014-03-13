@@ -22,7 +22,7 @@
   ],
   "content_scripts": [
     {
-      "matches": ["http://www.okcupid.com/*"],
+      "matches": ["http://www.okcupid.com/*", "https://www.okcupid.com/*"],
       "css": [
         "css/base.css",
         "css/matches.css"
