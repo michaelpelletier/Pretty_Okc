@@ -1,12 +1,16 @@
 var PrettyOkc = PrettyOkc || {};
-var all_settings = ["settings", "favorites"];
-var favorites_array, matches_mode, excerpt_priority, message_count;
+var all_settings = ["settings", "favorites", "hidden_users"];
+var favorites_array, matches_mode, excerpt_priority, message_count, hidden_users;
 
 chrome.storage.sync.get(all_settings, function (obj) {
 	// Set defaults in case the user did not visit the options page first.
   var default_tiles = "tiles";
   var default_favorites = [];
   var default_priority = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+  var default_hidden_users = {
+  	"hidden_users_inactive": false, 
+  	"hidden_users_older": false
+  };
 
   var current_page = PrettyOkc.Common.get_location();
 
@@ -96,6 +100,13 @@ PrettyOkc.Common = (function() {
 			matches_mode = default_tiles;
 		}
 
+		// Default Priority
+		if (obj && obj['settings'] && obj['settings']['priority']) {
+			excerpt_priority = obj['settings']['priority'];
+		} else {
+			excerpt_priority = default_priority;	
+		}
+
 		// Default Favorites
 		if (obj && obj['favorites']) {
 			favorites_array = obj['favorites'];
@@ -103,12 +114,12 @@ PrettyOkc.Common = (function() {
 			favorites_array = default_favorites;
 		}
 
-		// Default Priority
-		if (obj && obj['settings'] && obj['settings']['priority']) {
-			excerpt_priority = obj['settings']['priority'];
-		} else {
-			excerpt_priority = default_priority;	
-		}
+		// Hidden User Settings
+    if (obj && obj['hidden_users']) {
+      hidden_users = obj['hidden_users'];
+    } else {
+    	hidden_users = default_hidden_users;
+    }
   }
 
 	return {
@@ -170,30 +181,80 @@ PrettyOkc.Social = (function() {
   }
 
   function fix_hidden_users() {
+    var settings_display_inactive = hidden_users['hidden_users_inactive'];
+    var settings_display_older = hidden_users['hidden_users_older'];
+
   	$('.dead').each(function() {
   		var self = $(this)
 
-  		if (self.find('.aso').text() === 'inactive') {
-  			self.remove();
+			if (($(this).find('.aso').text() === 'inactive') && (!settings_display_inactive)) {
+  			$(this).remove();
   		} else {
-  			var link = self.find('.user_name').find('a').attr('href');
+  			var link = $(this).find('.user_name a').attr('href');
+  			var secure_link = "https://www.okcupid.com" + link;
 
-  			var pic_url = link + " #thumb0_a";
-  			self.prepend('<div class="profile_pic"></div>');
-  			self.find('.profile_pic').load(pic_url);
+  			// Load Last Online information.
+	 			var online_info = secure_link + " #profile_details";
+  			$(this).append('<div class="details"></div>');
+  			var details_container = $(this).find('.details');
 
-  			var location = link + " #ajax_location";
-  			self.append('<div class="location"></div>');
-  			self.find('.location').load(location);
+  			$(this).find('.details').load(online_info, function(response) {
+	 				var date_text = $(this).find('.fancydate').text();
 
-  			var online_info = link + " #profile_details";
-  			self.append('<div class="details"></div>');
-  			self.find('.details').load(online_info, function(response) {
-	 				var date_text = self.find('.details').find('.fancydate').text();
-	 				self.find('.details').text("Last Online: " + date_text);
+
+
+
+
+	 				if ((date_text === "") || (date_text === undefined)) {
+						if (self.find('.aso').text() === 'inactive') {
+		 					$(this).text('');
+		 				}	else {
+		 					$(this).text("Last Online: Online now!");
+		 				}
+	 					load_picture_and_location(self, secure_link);
+	 				} else {
+	 					var render_date;
+
+	 					if (settings_display_older) {
+	 						render_date = true;
+	 					} else {
+	 						render_date = filter_by_year(date_text);
+	 					}
+
+		 				if (render_date === true) {
+		 					$(this).text("Last Online: " + date_text);
+		 					load_picture_and_location(self, secure_link);
+		 				} else {
+		 					self.remove();
+		 				}
+	 				}
   			});
   		}
   	});
+
+		function load_picture_and_location(self, secure_link) {
+			var pic_url = secure_link + " #thumb0_a";
+			self.prepend('<div class="profile_pic"></div>');
+			self.find('.profile_pic').load(pic_url);
+
+			var location = secure_link + " #ajax_location";
+			self.append('<div class="location"></div>');
+			self.find('.location').load(location);
+		}
+  }
+
+  function filter_by_year(year) {
+  	var date = new Date();	
+		var this_year = date.getFullYear();
+		var date_array = year.split(', ');
+		var online_year = parseInt(date_array[1]);
+		var render_date = true;
+
+		if (online_year < this_year) {
+			render_date = false;
+		}
+
+		return render_date;
   }
 
   return {
