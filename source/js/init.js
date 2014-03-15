@@ -195,23 +195,22 @@ PrettyOkc.Social = (function() {
 
   			// Load Last Online information.
 	 			var online_info = secure_link + " #profile_details";
-  			$(this).append('<div class="details"></div>');
+				self.prepend('<div class="profile_pic"></div>');
+				self.append('<div class="location"></div>');
+				self.append('<div class="details"></div>');
+
   			var details_container = $(this).find('.details');
 
   			$(this).find('.details').load(online_info, function(response) {
 	 				var date_text = $(this).find('.fancydate').text();
-
-
-
-
 
 	 				if ((date_text === "") || (date_text === undefined)) {
 						if (self.find('.aso').text() === 'inactive') {
 		 					$(this).text('');
 		 				}	else {
 		 					$(this).text("Last Online: Online now!");
+		 					load_picture_and_location(self, secure_link);
 		 				}
-	 					load_picture_and_location(self, secure_link);
 	 				} else {
 	 					var render_date;
 
@@ -234,12 +233,9 @@ PrettyOkc.Social = (function() {
 
 		function load_picture_and_location(self, secure_link) {
 			var pic_url = secure_link + " #thumb0_a";
-			self.prepend('<div class="profile_pic"></div>');
-			self.find('.profile_pic').load(pic_url);
-
 			var location = secure_link + " #ajax_location";
-			self.append('<div class="location"></div>');
 			self.find('.location').load(location);
+			self.find('.profile_pic').load(pic_url);
 		}
   }
 
