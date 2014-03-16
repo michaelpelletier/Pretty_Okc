@@ -1,6 +1,6 @@
 var PrettyOkc = PrettyOkc || {};
 var all_settings = ["settings", "favorites"];
-var favorites_array, matches_mode, excerpt_priority, message_count;
+var favorites_array, excerpt_priority, message_count;
 
 chrome.storage.sync.get(all_settings, function (obj) {
 	// Set defaults in case the user did not visit the options page first.
@@ -11,7 +11,7 @@ chrome.storage.sync.get(all_settings, function (obj) {
   var current_page = PrettyOkc.Common.get_location();
 
   PrettyOkc.Common.set_default_options(obj);
-  PrettyOkc.Common.init_body_classes();  
+  PrettyOkc.Common.init_body_classes();
 	PrettyOkc.Social.init_message_icon();
 
 	switch(current_page) {
@@ -36,8 +36,7 @@ chrome.storage.sync.get(all_settings, function (obj) {
 
 PrettyOkc.Common = (function() {
 	function init_body_classes() {
-		// Add Body Class
-		$('body').addClass("pretty_okc").addClass(matches_mode);
+		$('body').addClass('pretty_okc');
 	}
 
 	function add_private_notes() {
@@ -81,13 +80,6 @@ PrettyOkc.Common = (function() {
 	}
 
   function set_default_options(obj) {
- 	  // Default Options
-	  if (obj && obj['settings'] && obj['settings']['mode']) {
-			matches_mode = obj['settings']['mode'];
-		} else {
-			matches_mode = default_tiles;
-		}
-
 		// Default Favorites
 		if (obj && obj['favorites']) {
 			favorites_array = obj['favorites'];
