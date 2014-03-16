@@ -33,7 +33,9 @@ PrettyOkc.Matches = (function() {
           case 1:
             // Left Click
             if (!self.find('#personality-rating').is(':hover')) {
-              document.location.href=link;
+              if (!self.find('.under_card').is(':hover')) {
+                document.location.href=link;
+              }              
             }
           break;
           case 2:
@@ -45,10 +47,6 @@ PrettyOkc.Matches = (function() {
           break;
           case 3:
             // Right Click
-            if (!self.find('#personality-rating').is(':hover')) {
-              window.open(link, '_blank');
-              e.preventDefault();
-            }
           break;
         }
         return true;// to allow the browser to know that we handled it.

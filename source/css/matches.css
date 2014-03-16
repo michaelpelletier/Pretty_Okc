@@ -124,8 +124,18 @@ General Styling Fixes for Matches Page
 }
 
 .pretty_okc #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .under_card {
-  bottom: -25px;
+  background-color: #DDD;
+  bottom: -20px;
+  box-shadow: 0px 1px 5px 2px rgba(0,0,0,.3);
+  left: -1px;
+  padding: 0px;
+  width: 735px;
 }
+
+.pretty_okc #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .under_card a {
+  padding: 0px;
+}
+
 
 /* Move message after having hidden someone's profile */
 .pretty_okc .match_card_wrapper.user-hidden .user_hidden_overlay {
