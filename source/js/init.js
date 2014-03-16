@@ -20,10 +20,6 @@ chrome.storage.sync.get(all_settings, function (obj) {
   		break;
   	case "matches":
   		PrettyOkc.Matches.init();
-
-  		if (matches_mode === "classic") {
-      	PrettyOkc.ClassicMatches.init();
-    	}
 			break;
 		case "favorites":
 			PrettyOkc.Favorites.init();
