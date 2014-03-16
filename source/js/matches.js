@@ -20,15 +20,17 @@ PrettyOkc.Matches = (function() {
       var self = $(this);
       var username = self.attr('id').replace('usr-', '').replace('-wrapper', '');
       var left_offset = $('#match_results').offset().left - self.offset().left + 7;
+      var link = self.find('.image_wrapper').attr('href'); 
 
       if (self.find('.content_wrap').length === 0) {
         self.children().wrapAll('<div class="content_wrap" />');
         self.find('.match_card_text').after('<div class="pretty_okc_profile_excerpt"></div>');
       }
 
-      var link = self.find('.image_wrapper').attr('href');
-      self.find('.pretty_okc_profile_excerpt').click(function() {
-        document.location.href=link;
+      self.click(function(e) {
+        if (!self.find('#personality-rating').is(':hover')) {
+          document.location.href=link;
+        }
       });
 
       self.mouseover(function() {
