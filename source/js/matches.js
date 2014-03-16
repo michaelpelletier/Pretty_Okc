@@ -9,9 +9,110 @@ PrettyOkc.Matches = (function() {
   }
 
   function update_matches_page() {
+    set_up_hover();
+
     change_tile_text();
     add_star_ratings();
   }
+
+  function set_up_hover() {
+    $('.match_card_wrapper').each(function() {
+      var self = $(this);
+      var username = self.attr('id').replace('usr-', '').replace('-wrapper', '');
+      var left_offset = $('#match_results').offset().left - self.offset().left + 7;
+
+      if (self.find('.content_wrap').length === 0) {
+        self.children().wrapAll('<div class="content_wrap" />');
+        self.find('.match_card_text').after('<div class="pretty_okc_profile_excerpt"></div>');
+      }
+
+      var link = self.find('.image_wrapper').attr('href');
+      self.find('.pretty_okc_profile_excerpt').click(function() {
+        document.location.href=link;
+      });
+
+      self.mouseover(function() {
+        self.find('.content_wrap').css({
+          left: left_offset
+        });
+        get_profile_excerpt(username, self)
+      }).mouseout(function() {
+        self.find('.content_wrap').css({
+          left: '0'
+        });
+      });
+    });
+
+
+    function get_profile_excerpt(username, self) {
+      var full_url = 'http://www.okcupid.com/profile/' + username + " #main_column";
+      var excerpt = self.find('.pretty_okc_profile_excerpt')
+
+      if (excerpt.is(':empty')) {
+        excerpt.load(full_url, function(response) {
+          parse_excerpt(response, excerpt);
+        });
+      }
+    }
+
+    function parse_excerpt(response, excerpt) {
+      var available_excerpts = [];
+      var priority = excerpt_priority;
+      
+      excerpt.find('.essay').each(function() {
+        available_excerpts.push($(this).attr('id'));
+      });
+
+      // If their profile is empty
+      if (available_excerpts.length === 0) {
+        excerpt.html('').text('No profile yet');
+      } else {
+        for ( var index = 0; index < priority.length; ++index ) {
+          if (check_array(priority[index])) {
+            excerpt.find('.sr_message').remove();
+            var container = excerpt.find('#essay_' + priority[index]);
+            container.siblings().each(function() {
+              $(this).remove();
+            });
+            truncate_excerpt(container);
+            break;
+          } 
+        }
+      }
+
+      function check_array(iteration) {
+        var content = 'essay_' + iteration;
+        if ($.inArray(content, available_excerpts) !== -1) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    }
+
+    function truncate_excerpt(container) {
+      container.dotdotdot({
+        ellipsis  : '... ',
+        wrap    : 'word',
+        fallbackToLetter: true,
+        after   : null,
+        watch   : false,
+        height    : 100,
+        tolerance : 0,
+        callback  : function( isTruncated, orgContent ) {},
+        lastCharacter : {
+          remove    : [ ' ', ',', ';', '.', '!', '?' ],
+          noEllipsis  : []
+        }
+      });
+    }
+
+
+
+
+
+  }
+
 
   function change_tile_text() {
     $('.match_card_wrapper').each(function() {
