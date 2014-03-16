@@ -27,10 +27,31 @@ PrettyOkc.Matches = (function() {
         self.find('.match_card_text').after('<div class="pretty_okc_profile_excerpt"></div>');
       }
 
-      self.click(function(e) {
-        if (!self.find('#personality-rating').is(':hover')) {
-          document.location.href=link;
+      self.unbind('mousedown');
+      self.mousedown(function(e) {
+        switch(e.which) {
+          case 1:
+            // Left Click
+            if (!self.find('#personality-rating').is(':hover')) {
+              document.location.href=link;
+            }
+          break;
+          case 2:
+            // Middle Click
+            if (!self.find('#personality-rating').is(':hover')) {
+              window.open(link, '_blank');
+              e.preventDefault();
+            }
+          break;
+          case 3:
+            // Right Click
+            if (!self.find('#personality-rating').is(':hover')) {
+              window.open(link, '_blank');
+              e.preventDefault();
+            }
+          break;
         }
+        return true;// to allow the browser to know that we handled it.
       });
 
       self.mouseover(function() {
