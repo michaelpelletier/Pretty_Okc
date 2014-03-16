@@ -23,34 +23,10 @@ PrettyOkc.Matches = (function() {
       var link = self.find('.image_wrapper').attr('href'); 
 
       if (self.find('.content_wrap').length === 0) {
-        self.children().wrapAll('<div class="content_wrap" />');
+        self.children().wrapAll('<a class="content_wrap" href="' + link + '" />');
+        self.prepend('<a class="base_link" href="' + link + '" />')
         self.find('.match_card_text').after('<div class="pretty_okc_profile_excerpt"></div>');
       }
-
-      self.unbind('mousedown');
-      self.mousedown(function(e) {
-        switch(e.which) {
-          case 1:
-            // Left Click
-            if (!self.find('#personality-rating').is(':hover')) {
-              if (!self.find('.under_card').is(':hover')) {
-                document.location.href=link;
-              }              
-            }
-          break;
-          case 2:
-            // Middle Click
-            if (!self.find('#personality-rating').is(':hover')) {
-              window.open(link, '_blank');
-              e.preventDefault();
-            }
-          break;
-          case 3:
-            // Right Click
-          break;
-        }
-        return true;// to allow the browser to know that we handled it.
-      });
 
       self.mouseover(function() {
         self.find('.content_wrap').css({
