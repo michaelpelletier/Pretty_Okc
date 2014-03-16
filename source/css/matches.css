@@ -251,6 +251,8 @@ Styling Fixes for Matches Search Page - Tiles View
 }
 
 .pretty_okc #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .online_indicator,
+.pretty_okc #match_results.not-scrolling .match_card_wrapper.user-not-hidden:hover .online_indicator.chat_enabled,
+.pretty_okc .match_card_wrapper .online_indicator,
 .pretty_okc a.online_indicator.online {
   top: 102px;
 }
