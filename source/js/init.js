@@ -198,6 +198,7 @@ PrettyOkc.Social = (function() {
 				self.prepend('<div class="profile_pic"></div>');
 				self.append('<div class="location"></div>');
 				self.append('<div class="details"></div>');
+				self.append('<div class="temp"></div>');
 
   			var details_container = $(this).find('.details');
 
@@ -232,10 +233,16 @@ PrettyOkc.Social = (function() {
   	});
 
 		function load_picture_and_location(self, secure_link) {
-			var pic_url = secure_link + " #thumb0_a";
-			var location = secure_link + " #ajax_location";
-			self.find('.location').load(location);
-			self.find('.profile_pic').load(pic_url);
+			var full_url = secure_link + " #main_content";
+
+			self.find('.temp').load(full_url, function() {
+				var image = self.find('.temp').find('#thumb0 img').attr('src');
+				image = image.replace('http', 'https');
+				var location = self.find('#basic_info #ajax_location').text();
+				self.find('.temp').empty();
+				self.find('.location').text(location);
+				self.find('.profile_pic').append('<img src="' + image + '" />');
+			});
 		}
   }
 
