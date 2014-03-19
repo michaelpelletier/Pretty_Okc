@@ -53,14 +53,15 @@ PrettyOkc.Common = (function() {
 			var title;
 
 			if (notes.is(':visible')) {
-				classes = "favorites_action action_add_note has_note";
+				classes = "flatbutton white notes has_note";
 				title = "Edit private note";
 			} else {
-				classes = "favorites_action action_add_note";
+				classes = "flatbutton white notes";
 				title = "Add private note";
 			}
 
-			$(this).find('.action_rate').before('<span class="' + classes + '" onclick="' + onclick + '" title="' + title + '">private note</span>');
+			$(this).find('.hide_btn').addClass('flatbutton white');
+			$(this).find('.hide_btn').before('<span class="' + classes + '" onclick="' + onclick + '" title="' + title + '">private note</span>');
 		});
 	}
 

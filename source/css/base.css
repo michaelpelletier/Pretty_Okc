@@ -147,6 +147,24 @@ body#p_profile.pretty_okc div.big_dig > div.header #search_container #question_s
 
 
 /**************************************
+Styling Fixes for Visitors Page 
+***************************************/
+
+.pretty_okc div.user_row_item.new_style .match_percentage {
+  right: 5px;
+  top: 20px;
+}
+
+.pretty_okc div.user_row_item.new_style .user_info {
+  padding-top: 5px;
+}
+
+.pretty_okc div.user_row_item.new_style.rated .timestamp {
+  display: none;
+}
+
+
+/**************************************
 Styling Fixes for Favorites Page 
 ***************************************/
 
