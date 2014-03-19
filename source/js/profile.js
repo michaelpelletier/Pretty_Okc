@@ -21,13 +21,12 @@ PrettyOkc.Profile = (function() {
     $('.action_options').find('#hide_btn').attr('title', 'Hide this user');
     $('.action_options').find('#unhide_btn').attr('title', 'Unhide this user');
     $('.action_options').find('#flag_btn').attr('title', 'Report');
-    $('.action_options').find('#flag_btn').parent('p').addClass('report');
+    $('.action_options').find('#flag_btn').addClass('report');
 
     // Add Note
     var onclick = "Profile.loadWindow('edit_notes', 244); return false;"
-    $('.action_options .btn.favorite').after('<p class="btn small white notes"><a onclick="' + onclick + '">Add Note</a></p>');
-    var notes_container = $('.action_options').find('.btn.notes');
-    var notes_button = notes_container.find('a');
+    $('.action_options #save_unsave').after('<button id="note_button" class="flatbutton white notes" onclick="' + onclick + '">Add Note</button>');
+    var notes_button = $('#note_button');
 
     check_notes_status();
     $('#edit_notes_form').find('#save_a').click(function() {
@@ -36,11 +35,9 @@ PrettyOkc.Profile = (function() {
 
     function check_notes_status() {
       if ($('#inline_notes').is(':visible')) {
-        notes_container.addClass('has_note');
-        notes_button.attr('title', 'Edit Note');
+        notes_button.addClass('has_note').attr('title', 'Edit Note');
       } else {
-        notes_container.removeClass('has_note');
-        notes_button.attr('title', 'Add Note');
+        notes_button.removeClass('has_note').attr('title', 'Add Note');
       }
     }
 
@@ -50,9 +47,7 @@ PrettyOkc.Profile = (function() {
   }
 
   function expand_favorite_options() {
-    $('.action_options').find('.btn.small.white:contains("Favorite")').addClass('favorite');
-    var favorites_container = $('.action_options').find('.btn.favorite');
-    var favorites_button = favorites_container.find('a');
+    var favorites_button = $('#save_unsave');
     var profile_name = $('#basic_info_sn').text();
     $('#actions').append('<div class="favorites_list hidden_helper"><span class="title">Add to List</span><ul class="favorites"></ul></div>');
     var favorites_list = $('.favorites_list');
@@ -84,26 +79,21 @@ PrettyOkc.Profile = (function() {
 
     function check_favorite_status_default() {
       if (favorites_button.text() === "Remove Favorite") {
-        favorites_container.addClass("is_favorite");
-        favorites_button.attr('title', 'Remove from Favorites');
+        favorites_button.addClass("is_favorite").attr('title', 'Remove from Favorites');
         bind_favorites_hover();
       } else {
-        favorites_container.removeClass("is_favorite");
-        favorites_button.attr('title', 'Add to Favorites');
-        favorites_list.addClass('hidden_helper');
+        favorites_button.removeClass("is_favorite").attr('title', 'Add to Favorites');
         favorites_button.unbind('mouseover');
       }
     }
 
     function check_favorite_status() {
-      if (favorites_container.hasClass('is_favorite')) {
-        favorites_container.removeClass("is_favorite");
-        favorites_button.attr('title', 'Add to Favorites');
+      if (favorites_button.hasClass('is_favorite')) {
+        favorites_button.removeClass("is_favorite").attr('title', 'Add to Favorites');
         favorites_list.addClass('hidden_helper');
         favorites_button.unbind('mouseover');
       } else {
-        favorites_container.addClass("is_favorite");
-        favorites_button.attr('title', 'Remove from Favorites');
+        favorites_button.addClass("is_favorite").attr('title', 'Remove from Favorites');
         favorites_list.removeClass('hidden_helper');
         bind_favorites_hover();
       }

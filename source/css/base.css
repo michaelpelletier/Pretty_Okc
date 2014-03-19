@@ -18,21 +18,9 @@ body#p_profile.pretty_okc .tabbed_heading #actions .action_options {
 }
 
 /* Change Buttons to be Icons */
-body#p_profile.pretty_okc .tabbed_heading #actions .action_options .btn.white a {
-  background: transparent!important;
-  border: none!important;
-}
-
-body#p_profile.pretty_okc .tabbed_heading #actions .action_options .btn.white.report {
-  border: 1px solid #ddd!important;
-  width: 29px;
-}
-
-body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.white.favorite,
-body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.white.notes,
-body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.white.alist,
-body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.white.report,
-body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.small_white a.hide.grey,
+body#p_profile.pretty_okc .tabbed_heading #actions .action_options button.notes,
+body#p_profile.pretty_okc .tabbed_heading #actions .action_options button.report,
+body#p_profile.pretty_okc .tabbed_heading #actions .action_options button#save_unsave,
 body#p_profile.pretty_okc .tabbed_heading #actions .action_options #hide_btn,
 body#p_profile.pretty_okc .tabbed_heading #actions .action_options #unhide_btn
 {
@@ -58,38 +46,26 @@ body#p_profile.pretty_okc .tabbed_heading #actions .action_options #unhide_btn
   -webkit-border-radius: none;
 }
 
-div.tabbed_heading div#actions p.btn a.hide,
-body#p_profile.pretty_okc .tabbed_heading #actions .action_options .btn.small_white a {
-  border: 1px solid #ddd!important;
-  border-right: none!important;
-  border-radius: 0px!important;
-  -moz-border-radius: 0px!important;
-  -webkit-border-radius: 0px!important;
+body#p_profile.pretty_okc .tabbed_heading #actions .action_options button#save_unsave {
+  background: #F6F6F6 url(http://akcdn.okccdn.com/media/img/icons/user_actions.png) no-repeat!important; 
 }
 
-body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.white.favorite:hover,
-body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.white.notes:hover,
-body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.white.alist:hover,
-body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.white.report:hover,
-body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.small_white a.hide.grey:hover,
+body#p_profile.pretty_okc .tabbed_heading #actions .action_options button#save_unsave              { background-position:  -31px   0px!important; }
+body#p_profile.pretty_okc .tabbed_heading #actions .action_options button#save_unsave.is_favorite  { background-position:  -31px -26px!important; }
+
+body#p_profile.pretty_okc .tabbed_heading #actions .action_options button.flatbutton.white:hover,
+body#p_profile.pretty_okc .tabbed_heading #actions .action_options button#save_unsave:hover,
 body#p_profile.pretty_okc .tabbed_heading #actions .action_options #hide_btn:hover,
 body#p_profile.pretty_okc .tabbed_heading #actions .action_options #unhide_btn:hover {
   background-color: #FFF!important;
 }
 
-.pretty_okc .btn.white.alist          { background-position: -191px -26px!important; }
-.pretty_okc .btn.notes.white          { background-position:  -30px   0px!important; }
-.pretty_okc .btn.notes.white.has_note { background-position:  -30px -26px!important; }
+.pretty_okc #note_button              { background-position:  -30px   0px!important; }
+.pretty_okc #note_button.has_note     { background-position:  -30px -26px!important; }
 .pretty_okc #hide_btn                 { background-position:  -90px -26px!important; }
 .pretty_okc #unhide_btn               { background-position:  -90px   2px!important; }
-.pretty_okc .btn.white.report         { background-position: -160px -25px!important; }
+.pretty_okc #flag_btn                 { background-position: -160px -25px!important; }
 
-body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.white.favorite { 
-  background: #F6F6F6 url(http://akcdn.okccdn.com/media/img/icons/user_actions.png) -31px 0px no-repeat!important; 
-}
-body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.white.favorite.is_favorite { 
-  background-position: -31px -26px!important;
-}
 
 /* Styles Button Area. */
 body#p_profile.pretty_okc .tabbed_heading #actions {
@@ -109,11 +85,6 @@ body#p_profile.pretty_okc .tabbed_heading #actions .action_options {
 }
 
 /* Various Fixes */
-body#p_profile.pretty_okc .tabbed_heading #actions .action_options .hide {
-  float: left;
-}
-
-body#p_profile.pretty_okc .tabbed_heading #actions .action_options .flag { border-right: 1px solid #ddd; }
 
 body#p_profile.pretty_okc #upgrade_form {
   display: inline-block;
@@ -125,31 +96,8 @@ body#p_profile.pretty_okc .tabbed_heading #actions .action_options #unhide_btn.u
   display: none!important;
 }
 
-.pretty_okc .action_options .btn.small_white {
-  display: inline-block;
-  height: 32px!important;
-  margin-bottom: 0px;
-  width: 65px!important;
-  vertical-align: top;
-}
-
-.pretty_okc .btn.white.favorite a,
-.pretty_okc .btn.white.alist a,
-.pretty_okc .btn.notes.white a,
-.pretty_okc .btn.a-list.white a { 
-  background: transparent!important;
-}
-
-body#p_profile.pretty_okc #message_form {
+body#p_profile.pretty_okc #message_modal {
   cursor: pointer;
-}
-
-
-
-/* Enhanced Options for Favoriting from the Profile Page. */
-body#p_profile.pretty_okc .tabbed_heading #actions .action_options p.btn.white.favorite {
-  overflow: visible;
-  vertical-align: top;
 }
 
 /* Online Indicator */
