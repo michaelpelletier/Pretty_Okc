@@ -73,11 +73,6 @@ function bind_import_settings() {
 function save_options(favorites_array, message) {
   var settings = {}
 
-  // Save options for Matches View Mode.
-  var chosen_mode = $("select#mode").val();
-
-  settings["mode"] = chosen_mode;
-
   // Store Priority as an Array
   var priority_array = []
   $('#excerpt_priority').find('li').each(function() {
@@ -101,20 +96,14 @@ function save_options(favorites_array, message) {
 }
 
 function restore_options() {
-  // Restore Matches View Mode Settings.
+  // Restore Settings.
   var all_settings = ["settings", "favorites"];
   chrome.storage.sync.get(all_settings, function (obj) {
 
-    var options_mode = "tiles";
     var priority_settings = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     var favorites_array = [];
 
     if (obj) {
-      if (obj['settings'] && obj['settings']['mode']) {
-        // Retrieve settings for Matches View Mode.
-        options_mode = obj['settings']['mode'];
-      }
-
       if (obj['settings'] && obj['settings']['priority']) {
         priority_settings = obj['settings']['priority'];
       }
@@ -123,9 +112,6 @@ function restore_options() {
         favorites_array = obj['favorites'];
       }
     }
-
-    // Adjust page settings with values.
-    $('select#mode').val(options_mode);
 
     // Set priority order.
     for (var i = 0; i < priority_settings.length; i++) {
