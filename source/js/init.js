@@ -1,12 +1,16 @@
 var PrettyOkc = PrettyOkc || {};
-var all_settings = ["settings", "favorites"];
-var favorites_array, matches_mode, excerpt_priority, message_count;
+var all_settings = ["settings", "favorites", "hidden_users"];
+var favorites_array, matches_mode, excerpt_priority, message_count, hidden_users;
 
 chrome.storage.sync.get(all_settings, function (obj) {
 	// Set defaults in case the user did not visit the options page first.
   var default_tiles = "tiles";
   var default_favorites = [];
   var default_priority = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+  var default_hidden_users = {
+  	"hidden_users_inactive": false, 
+  	"hidden_users_older": false
+  };
 
   var current_page = PrettyOkc.Common.get_location();
 
@@ -34,6 +38,9 @@ chrome.storage.sync.get(all_settings, function (obj) {
   	case "you_like":
   		PrettyOkc.Social.init();
   		PrettyOkc.Social.add_likes_filters();
+  		break;
+  	case "hidden":
+  		PrettyOkc.Social.fix_hidden_users();
   		break;
  	}
 });
@@ -81,6 +88,7 @@ PrettyOkc.Common = (function() {
 		else if (url.indexOf("visitors") > 0) 			{	page = "likes";	} 
 		else if (url.indexOf("who-you-like") > 0) 	{	page = "you_like";	} 
 		else if (url.indexOf("who-likes-you") > 0) 	{ page = "likes"; }
+		else if (url.indexOf("hidden") > 0) 				{ page = "hidden"; }
 
 		return page;
 	}
@@ -93,6 +101,13 @@ PrettyOkc.Common = (function() {
 			matches_mode = default_tiles;
 		}
 
+		// Default Priority
+		if (obj && obj['settings'] && obj['settings']['priority']) {
+			excerpt_priority = obj['settings']['priority'];
+		} else {
+			excerpt_priority = default_priority;	
+		}
+
 		// Default Favorites
 		if (obj && obj['favorites']) {
 			favorites_array = obj['favorites'];
@@ -100,12 +115,12 @@ PrettyOkc.Common = (function() {
 			favorites_array = default_favorites;
 		}
 
-		// Default Priority
-		if (obj && obj['settings'] && obj['settings']['priority']) {
-			excerpt_priority = obj['settings']['priority'];
-		} else {
-			excerpt_priority = default_priority;	
-		}
+		// Hidden User Settings
+    if (obj && obj['hidden_users']) {
+      hidden_users = obj['hidden_users'];
+    } else {
+    	hidden_users = default_hidden_users;
+    }
   }
 
 	return {
@@ -166,9 +181,90 @@ PrettyOkc.Social = (function() {
 		chrome.runtime.sendMessage({ messages: message_count});
   }
 
+  function fix_hidden_users() {
+    var settings_display_inactive = hidden_users['hidden_users_inactive'];
+    var settings_display_older = hidden_users['hidden_users_older'];
+
+  	$('.dead').each(function() {
+  		var self = $(this)
+
+			if (($(this).find('.aso').text() === 'inactive') && (!settings_display_inactive)) {
+  			$(this).remove();
+  		} else {
+  			var link = $(this).find('.user_name a').attr('href');
+  			var secure_link = "https://www.okcupid.com" + link;
+
+  			// Load Last Online information.
+	 			var online_info = secure_link + " #profile_details";
+				self.prepend('<div class="profile_pic"></div>');
+				self.append('<div class="location"></div>');
+				self.append('<div class="details"></div>');
+				self.append('<div class="temp"></div>');
+
+  			var details_container = $(this).find('.details');
+
+  			$(this).find('.details').load(online_info, function(response) {
+	 				var date_text = $(this).find('.fancydate').text();
+
+	 				if ((date_text === "") || (date_text === undefined)) {
+						if (self.find('.aso').text() === 'inactive') {
+		 					$(this).text('');
+		 				}	else {
+		 					$(this).text("Last Online: Online now!");
+		 					load_picture_and_location(self, secure_link);
+		 				}
+	 				} else {
+	 					var render_date;
+
+	 					if (settings_display_older) {
+	 						render_date = true;
+	 					} else {
+	 						render_date = filter_by_year(date_text);
+	 					}
+
+		 				if (render_date === true) {
+		 					$(this).text("Last Online: " + date_text);
+		 					load_picture_and_location(self, secure_link);
+		 				} else {
+		 					self.remove();
+		 				}
+	 				}
+  			});
+  		}
+  	});
+
+		function load_picture_and_location(self, secure_link) {
+			var full_url = secure_link + " #main_content";
+
+			self.find('.temp').load(full_url, function() {
+				var image = self.find('.temp').find('#thumb0 img').attr('src');
+				image = image.replace('http', 'https');
+				var location = self.find('#basic_info #ajax_location').text();
+				self.find('.temp').empty();
+				self.find('.location').text(location);
+				self.find('.profile_pic').append('<img src="' + image + '" />');
+			});
+		}
+  }
+
+  function filter_by_year(year) {
+  	var date = new Date();	
+		var this_year = date.getFullYear();
+		var date_array = year.split(', ');
+		var online_year = parseInt(date_array[1]);
+		var render_date = true;
+
+		if (online_year < this_year) {
+			render_date = false;
+		}
+
+		return render_date;
+  }
+
   return {
     init: init,
     init_message_icon: init_message_icon,
-    add_likes_filters: add_likes_filters
+    add_likes_filters: add_likes_filters,
+    fix_hidden_users: fix_hidden_users
   }
 })();

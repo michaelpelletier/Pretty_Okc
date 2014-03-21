@@ -71,11 +71,11 @@ function bind_import_settings() {
 
 // Saves options to Google Storage.
 function save_options(favorites_array, message) {
-  var settings = {}
+  var settings = {};
+  var hidden_users = {};
 
   // Save options for Matches View Mode.
   var chosen_mode = $("select#mode").val();
-
   settings["mode"] = chosen_mode;
 
   // Store Priority as an Array
@@ -86,8 +86,12 @@ function save_options(favorites_array, message) {
   });
   settings["priority"] = priority_array;
 
+  // Hidden User Settings
+  hidden_users['hidden_users_inactive'] = $('#hidden_users_inactive').is(':checked');
+  hidden_users['hidden_users_older'] = $('#hidden_users_older').is(':checked');
+
+  // Update status to let user know options were saved.
   if (message === true) {
-    // Update status to let user know options were saved.
     var status = $("#status");
     status.html("<div class='oknotice success'>Options Saved.</div>");
     setTimeout(function() {
@@ -98,16 +102,21 @@ function save_options(favorites_array, message) {
   // Store in Chrome Storage.
   chrome.storage.sync.set({"settings": settings});
   chrome.storage.sync.set({"favorites": favorites_array});
+  chrome.storage.sync.set({"hidden_users": hidden_users});  
 }
 
 function restore_options() {
   // Restore Matches View Mode Settings.
-  var all_settings = ["settings", "favorites"];
+  var all_settings = ["settings", "favorites", "hidden_users"];
   chrome.storage.sync.get(all_settings, function (obj) {
 
     var options_mode = "tiles";
     var priority_settings = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     var favorites_array = [];
+    var hidden_users = {
+      "hidden_users_inactive": false,
+      "hidden_users_older": false
+    };
 
     if (obj) {
       if (obj['settings'] && obj['settings']['mode']) {
@@ -122,6 +131,10 @@ function restore_options() {
       if (obj['favorites']) {
         favorites_array = obj['favorites'];
       }
+
+      if (obj['hidden_users']) {
+        hidden_users = obj['hidden_users'];
+      }
     }
 
     // Adjust page settings with values.
@@ -133,13 +146,28 @@ function restore_options() {
       $('#excerpt_priority').append(item);
     }
 
+    // Update hidden users options.
+    var display_inactive = hidden_users['hidden_users_inactive'];
+    var display_older = hidden_users['hidden_users_older'];
+
+    if (display_inactive) {
+      $('#hidden_users_inactive').prop('checked', true);
+    } else{
+      $('#hidden_users_inactive').removeAttr('checked');
+    }
+
+    if (display_older) {
+      $('#hidden_users_older').prop('checked', true);
+    } else{
+      $('#hidden_users_older').removeAttr('checked');
+    }   
+
     generate_export_link();
     save_options(favorites_array, false);
 
     $('[data-js-link="import_link"]').click(function() {
       $(this).siblings('.file_uploader').removeClass('hidden_helper');
     });
-
 
     $('#save').click(function() {
       save_options(favorites_array, true);

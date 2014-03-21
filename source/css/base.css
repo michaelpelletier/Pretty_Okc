@@ -460,3 +460,37 @@ Styling Fixes for Favorites Page
   background: #eee;
   height: 38px;
 }
+
+
+
+/* Hidden Users Page */
+.pretty_okc .dead {
+  height: 60px;
+  position: relative;
+}
+
+.pretty_okc .dead .profile_pic {
+  background: url(http://ak1.okccdn.com/media/img/user/placeholder_60.png) no-repeat;
+  float: left;
+  height: 65px;
+  width: 65px;
+}
+
+.pretty_okc .dead .profile_pic img {
+  height: 60px;
+  width: 60px;
+}
+
+.pretty_okc .dead .location {
+  padding-bottom: 2px;
+  font-size: 10px;
+  line-height: 14px;
+  color: #999;
+}
+
+.pretty_okc .dead .details {
+  bottom: 4px;
+  font-size: 10px;
+  left: 80px;
+  position: absolute;
+}
